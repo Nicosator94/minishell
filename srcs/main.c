@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:19:42 by niromano          #+#    #+#             */
-/*   Updated: 2023/09/27 15:35:48 by niromano         ###   ########.fr       */
+/*   Updated: 2023/09/27 15:55:05 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	exec(char *cmd, char **env)
 		printf("error\n");
 		exit(0);
 	}
+	if (pid != 0)
+		wait(NULL);
 }
 
 int parsing(char *s, char **env)
@@ -58,8 +60,7 @@ int	prompt(int argc, char *argv[], char *env[])
 {
 	(void)argc;
 	(void)argv;
-	(void)env;
-	const char *prompt = "minishell> ";
+	const char *prompt = "minishell$ ";
 	char	*s;
 	char	*lim;
 
@@ -70,10 +71,9 @@ int	prompt(int argc, char *argv[], char *env[])
 		free(s);
 		s = readline(prompt);
 		if (s[0] != '\0')
-		{
 			add_history(s);
+		if (ft_strncmp(s, lim, 5) != 0)
 			parsing(s, env);
-		}
 	}
 	printf("%s\n", s);
 	free(s);
@@ -84,6 +84,9 @@ int	main(int argc, char *argv[], char *env[])
 {
 	(void)argc;
 	(void)argv;
+	// char **env;
+
+	// env = set_env();
 	prompt(argc, argv, env);
 	return (0);
 }
