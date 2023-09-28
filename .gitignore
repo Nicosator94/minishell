@@ -1,0 +1,7 @@
+*.o
+*.d
+minishell
+.vscode
+pipex
+libft.a
+objs_deps

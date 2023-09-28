@@ -6,87 +6,186 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:19:42 by niromano          #+#    #+#             */
-/*   Updated: 2023/09/27 15:55:05 by niromano         ###   ########.fr       */
+/*   Updated: 2023/09/28 14:44:05 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	exec(char *cmd, char **env)
+void	free_mat(char **mat)
 {
-	pid_t	pid;
-	char	*path = "/usr/bin/clear";
-	char	**cmd1;
+	int	i;
 
-	(void)cmd;
-	cmd1 = malloc(sizeof(char *) * 2);
-	cmd1[0] = "clear";
-	cmd1[1] = NULL;
-	pid = fork();
-	if (pid == 0)
+	i = 0;
+	while (mat[i] != NULL)
 	{
-		execve(path, cmd1, env);
-		printf("error\n");
-		exit(0);
+		free(mat[i]);
+		i ++;
 	}
-	if (pid != 0)
-		wait(NULL);
+	free(mat);
 }
 
-int parsing(char *s, char **env)
+void	affiche_mat(char **mat)
 {
-	char	**cmd;
+	int	i;
+
+	i = 0;
+	while (mat[i] != NULL)
+	{
+		printf("%d = %s\n", i, mat[i]);
+		i ++;
+	}
+}
+
+int	len_of_parsed(char *s)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (s[i] != '\0')
+	{
+		if (s[i] == '|' || s[i] == '<' || s[i] == '>')
+		{
+			while ((s[i] == '|' || s[i] == '<' || s[i] == '>') && s[i] != '\0')
+				i ++;
+			j ++;
+		}
+		if (s[i] != '|' && s[i] != '<' && s[i] != '>' && s[i] != '\0')
+		{
+			while (s[i] != '|' && s[i] != '<' && s[i] != '>' && s[i] != '\0')
+				i ++;
+			j ++;
+		}
+	}
+	return (j);
+}
+
+void	copy(char *dst, const char *src, int size)
+{
+	int	i;
+
+	i = 0;
+	while (i < size)
+	{
+		dst[i] = src[i];
+		i ++;
+	}
+	dst[i] = '\0';
+}
+
+char	**parser(char *s)
+{
+	char	**parsed;
 	int		i;
+	int		j;
+	int		old;
 
 	i = 0;
-	cmd = ft_split(s, ' ');
-	while (cmd[i] != NULL)
+	j = 0;
+	old = 0;
+	parsed = malloc(sizeof(char *) * (len_of_parsed(s) + 1));
+	while (s[i] != '\0')
 	{
-		printf("%d = %s\n", i, cmd[i]);
-		i ++;
+		if (s[i] == '|' || s[i] == '<' || s[i] == '>')
+		{
+			while ((s[i] == '|' || s[i] == '<' || s[i] == '>') && s[i] != '\0')
+				i ++;
+			parsed[j] = malloc(sizeof(char) * (i - old + 1));
+			copy(parsed[j], &s[old], i - old);
+			j ++;
+		}
+		while (s[i] == ' ')
+			i ++;
+		old = i;
+		if (s[i] != '|' && s[i] != '<' && s[i] != '>' && s[i] != '\0')
+		{
+			while (s[i] != '|' && s[i] != '<' && s[i] != '>' && s[i] != '\0')
+				i ++;
+			parsed[j] = malloc(sizeof(char) * (i - old + 1));
+			copy(parsed[j], &s[old], i - old);
+			j ++;
+		}
+		while (s[i] == ' ')
+			i ++;
+		old = i;
 	}
-	exec(cmd[0], env);
+	parsed[j] = NULL;
+	return (parsed);
+}
+
+int	check_quotes(char *s)
+{
+	int	i;
+
 	i = 0;
-	while (cmd[i] != NULL)
+	while (s[i] != '\0')
 	{
-		free(cmd[i]);
+		if (s[i] == '\'')
+		{
+			i ++;
+			while (s[i] != '\'' && s[i] != '\0')
+				i ++;
+			if (s[i] == '\0')
+				return (1);
+		}
+		else if (s[i] == '\"')
+		{
+			i ++;
+			while (s[i] != '\"' && s[i] != '\0')
+				i ++;
+			if (s[i] == '\0')
+				return (1);
+		}
 		i ++;
 	}
-	free(cmd);
 	return (0);
 }
 
-int	prompt(int argc, char *argv[], char *env[])
+char	**parsing(char *s)
+{
+	char	**parsed;
+	char	*temp_s;
+
+	while (check_quotes(s) == 1)
+	{
+		s = ft_strjoin(s, "\n");
+		temp_s = readline("> ");
+		s = ft_strjoin(s, temp_s);
+		free(temp_s);
+	}
+	if (s[0] != '\0')
+		add_history(s);
+	parsed = parser(s);
+	return (parsed);
+}
+
+int	prompt(int argc, char **argv, char **env)
 {
 	(void)argc;
 	(void)argv;
-	const char *prompt = "minishell$ ";
-	char	*s;
-	char	*lim;
+	(void)env;
+	const char	*prompt = "minishell$ ";
+	char		*s;
+	char		**parsed;
 
-	lim = "exit";
-	s = malloc(1);
-	while (ft_strncmp(s, lim, 5) != 0)
+	while (1)
 	{
-		free(s);
 		s = readline(prompt);
-		if (s[0] != '\0')
-			add_history(s);
-		if (ft_strncmp(s, lim, 5) != 0)
-			parsing(s, env);
+		parsed = parsing(s);
+		free(s);
+		affiche_mat(parsed);
+		free_mat(parsed);
 	}
-	printf("%s\n", s);
-	free(s);
 	return (0);
 }
 
-int	main(int argc, char *argv[], char *env[])
+int	main(int argc, char **argv, char **env)
 {
 	(void)argc;
 	(void)argv;
-	// char **env;
-
-	// env = set_env();
+	(void)env;
 	prompt(argc, argv, env);
 	return (0);
 }
