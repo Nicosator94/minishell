@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/09/27 13:21:49 by niromano         ###   ########.fr       */
+/*   Updated: 2023/09/29 10:19:19 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,12 @@
 # include <term.h>
 
 # include "../libft/libft.h"
+
+char	**parsing(char *s, char **env);
+char	**parser(char *s);
+int		len_of_parsed(char *s);
+int		check_quotes(char *s);
+
+void	expend(char **parsed, char **env);
 
 #endif

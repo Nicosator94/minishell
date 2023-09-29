@@ -3,7 +3,10 @@ CFLAGS = -Wall -Wextra -Werror -MMD -g3
 
 HEADERS = minishell.h
 
-SOURCES = main.c
+SOURCES = main.c \
+		parsing.c \
+		parsing_utils.c \
+		expend.c
 
 SRC = srcs/
 DIR = objs_deps/
