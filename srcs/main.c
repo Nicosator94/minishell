@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:19:42 by niromano          #+#    #+#             */
-/*   Updated: 2023/09/29 14:42:37 by niromano         ###   ########.fr       */
+/*   Updated: 2023/09/29 14:50:14 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	prompt(int argc, char **argv, char **env)
 		s = readline(prompt);
 		if (s[0] != '\0')
 			add_history(s);
-		if (check_quotes(s) == 0)
+		if (syntax_error_check(s) == 0)
 		{
 			parsed = parsing(s, env);
 			free(s);

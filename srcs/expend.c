@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 10:17:45 by niromano          #+#    #+#             */
-/*   Updated: 2023/09/29 13:10:30 by niromano         ###   ########.fr       */
+/*   Updated: 2023/09/29 15:25:11 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ char	*replace_env_name_by_value(char *s, int j, char **env)
 	int		i;
 	char	*new_s;
 	char	*env_value;
+	char	*temp_s;
 	char	*end;
 
 	(void)env;
@@ -98,9 +99,14 @@ char	*replace_env_name_by_value(char *s, int j, char **env)
 	new_s[i] = '\0';
 	j ++;
 	env_value = get_value_of_env_name(&s[j], env);
-	new_s = ft_strjoin(new_s, env_value);
+	temp_s = ft_strjoin(new_s, env_value);
+	free(new_s);
 	end = ft_strdup(&s[j + size_of_name(&s[j])]);
-	new_s = ft_strjoin(new_s, end);
+	new_s = ft_strjoin(temp_s, end);
+	free(end);
+	free(temp_s);
+	free(env_value);
+	free(s);
 	return (new_s);
 }
 
@@ -117,7 +123,20 @@ char	*interpret_quotes(char *s, char **env)
 			while (s[i] != '\'')
 				i ++;
 		}
-		if (s[i] == '$')
+		else if (s[i] == '\"')
+		{
+			i ++;
+			while (s[i] != '\"')
+			{
+				// if (s[i] == '$')
+				// {
+				// 	s = replace_env_name_by_value(s, i, env);
+				// 	i = -1;
+				// }
+				i ++;
+			}
+		}
+		else if (s[i] == '$')
 		{
 			s = replace_env_name_by_value(s, i, env);
 			i = -1;

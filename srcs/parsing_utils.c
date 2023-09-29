@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 10:07:07 by niromano          #+#    #+#             */
-/*   Updated: 2023/09/29 10:08:19 by niromano         ###   ########.fr       */
+/*   Updated: 2023/09/29 14:47:26 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	len_of_parsed(char *s)
 	return (j);
 }
 
-int	check_quotes(char *s)
+int	syntax_error_check(char *s)
 {
 	int	i;
 
