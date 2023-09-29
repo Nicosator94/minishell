@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:19:42 by niromano          #+#    #+#             */
-/*   Updated: 2023/09/29 12:47:01 by niromano         ###   ########.fr       */
+/*   Updated: 2023/09/29 14:42:37 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,22 @@ int	prompt(int argc, char **argv, char **env)
 	while (1)
 	{
 		s = readline(prompt);
-		parsed = parsing(s, env);
-		free(s);
-		if (parsed == NULL)
-			return (1);
-		affiche_mat(parsed);
-		free_mat(parsed);
+		if (s[0] != '\0')
+			add_history(s);
+		if (check_quotes(s) == 0)
+		{
+			parsed = parsing(s, env);
+			free(s);
+			if (parsed == NULL)
+				return (1);
+			affiche_mat(parsed);
+			free_mat(parsed);
+		}
+		else
+		{
+			free(s);
+			printf("error syntax\n");
+		}
 	}
 	return (0);
 }
