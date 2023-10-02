@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:19:42 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/02 09:06:34 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/02 11:18:18 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,8 @@
 void	free_mat(char **mat);
 void	affiche_mat(char **mat);
 
-int	prompt(int argc, char **argv, char **env)
+int	prompt(char **env)
 {
-	(void)argc;
-	(void)argv;
 	const char	*prompt = "minishell$ ";
 	char		*s;
 	char		**parsed;
@@ -61,7 +59,7 @@ int	main(int argc, char **argv, char **env)
 {
 	(void)argc;
 	(void)argv;
-	prompt(argc, argv, env);
+	prompt(env);
 	return (0);
 }
 

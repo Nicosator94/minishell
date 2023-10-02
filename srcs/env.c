@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 07:27:15 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/02 09:03:36 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/02 10:29:05 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,30 +16,16 @@ char	**separate_env(char *s)
 {
 	char	**tmp;
 	int		i;
-	int		j;
 
 	i = 0;
-	j = 0;
 	tmp = malloc(sizeof(char *) * 3);
 	while (s[i] != '=')
 		i ++;
-	tmp[0] = malloc(sizeof(char) * (i + 1));
-	i = 0;
-	while (s[i] != '=')
-	{
-		tmp[0][i] = s[i];
-		i ++;
-	}
-	tmp[0][i] = '\0';
 	i ++;
+	tmp[0] = malloc(sizeof(char) * i);
+	ft_strlcpy(tmp[0], s, i);
 	tmp[1] = malloc(sizeof(char) * (ft_strlen(s) - i + 1));
-	while (s[i] != '\0')
-	{
-		tmp[1][j] = s[i];
-		i ++;
-		j ++;
-	}
-	tmp[1][j] = '\0';
+	ft_strlcpy(tmp[1], &s[i], ft_strlen(s) - i + 1);
 	tmp[2] = NULL;
 	return (tmp);
 }
@@ -58,15 +44,6 @@ t_env	*fill_env(char **tmp)
 	return (new_env);
 }
 
-char	**create_env(void)
-{
-	char	**env;
-
-	env = malloc(sizeof(char *) * 3);
-	
-	return (env);
-}
-
 t_env	*create_without_env(void)
 {
 	t_env	*own_env;
@@ -75,17 +52,13 @@ t_env	*create_without_env(void)
 
 	own_env = malloc(sizeof(t_env));
 	own_env->name = ft_strdup("PWD");
-	printf("%s\n", own_env->name);
 	pwd = getcwd(NULL, 100);
 	own_env->value = ft_strdup(pwd);
 	free(pwd);
-	printf("%s\n", own_env->value);
 	next = malloc(sizeof(t_env));
 	own_env->next = next;
 	next->name = ft_strdup("SHLVL");
-	printf("%s\n", next->name);
 	next->value = ft_strdup("1");
-	printf("%s\n", next->value);
 	next->next = NULL;
 	return (own_env);
 }
@@ -98,10 +71,10 @@ t_env	*create_own_env(char **env)
 	char	**tmp;
 	int		i;
 
-	i = 1;
 	tmp = separate_env(env[0]);
 	own_env = fill_env(tmp);
 	start_env = own_env;
+	i = 1;
 	while (env[i] != NULL)
 	{
 		tmp = separate_env(env[i]);
@@ -117,7 +90,7 @@ void	clear_env(t_env *env)
 {
 	t_env	*tmp;
 
-	while (env->next != NULL)
+	while (env != NULL)
 	{
 		free(env->name);
 		free(env->value);
@@ -125,7 +98,5 @@ void	clear_env(t_env *env)
 		env = env->next;
 		free(tmp);
 	}
-	free(env->name);
-	free(env->value);
 	free(env);
 }

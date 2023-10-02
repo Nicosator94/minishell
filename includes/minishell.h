@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/02 08:56:09 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/02 10:37:21 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ typedef struct s_env
 t_env	*create_own_env(char **env);
 t_env	*create_without_env(void);
 void	clear_env(t_env *env);
+
+char	**list_to_matrix(t_env *env);
 
 char	**parsing(char *s, char **env);
 char	**parser(char *s);

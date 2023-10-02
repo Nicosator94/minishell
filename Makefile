@@ -5,6 +5,7 @@ HEADERS = minishell.h
 
 SOURCES = main.c \
 		env.c \
+		utils_env.c \
 		parsing.c \
 		parsing_utils.c \
 		expend.c
