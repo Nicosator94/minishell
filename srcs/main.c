@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:19:42 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/02 11:18:18 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/02 11:38:41 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,7 @@ int	prompt(char **env)
 			free_mat(parsed);
 		}
 		else
-		{
 			free(s);
-			printf("error syntax\n");
-		}
 	}
 	return (0);
 }

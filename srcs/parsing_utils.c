@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 10:07:07 by niromano          #+#    #+#             */
-/*   Updated: 2023/09/29 14:47:26 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/02 11:22:44 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,38 +36,3 @@ int	len_of_parsed(char *s)
 	}
 	return (j);
 }
-
-int	syntax_error_check(char *s)
-{
-	int	i;
-
-	i = 0;
-	while (s[i] != '\0')
-	{
-		if (s[i] == '\'')
-		{
-			i ++;
-			while (s[i] != '\'' && s[i] != '\0')
-				i ++;
-			if (s[i] == '\0')
-				return (1);
-		}
-		else if (s[i] == '\"')
-		{
-			i ++;
-			while (s[i] != '\"' && s[i] != '\0')
-				i ++;
-			if (s[i] == '\0')
-				return (1);
-		}
-		i ++;
-	}
-	return (0);
-}
-
-// int	check_syntax_error(char *s)
-// {
-// 	if (s[0] == '|' || s[ft_strlen(s) - 1] == '>' || s[ft_strlen(s) - 1] == '<')
-// 		printf("minishell: syntax error near unexpected token\n");
-// 	return (0);
-// }
