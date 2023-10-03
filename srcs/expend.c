@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 10:17:45 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/03 11:30:03 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/03 12:18:53 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,9 @@ void	expend(t_cmd *cmd, t_env *env)
 {
 	int	i;
 
-	i = 0;
 	while (cmd != NULL)
 	{
+		i = 0;
 		while (cmd->cmd[i] != '\0')
 		{
 			if (cmd->cmd[i] == '\'')
@@ -101,15 +101,13 @@ void	expend(t_cmd *cmd, t_env *env)
 				i ++;
 				while (cmd->cmd[i] != '\'')
 					i ++;
-				i ++;
 			}
 			else if (cmd->cmd[i] == '$')
 			{
 				cmd->cmd = replace_with_env(cmd->cmd, i, env);
-				i = 0;
+				i = -1;
 			}
-			else
-				i ++;
+			i ++;
 		}
 		cmd = cmd->next;
 	}

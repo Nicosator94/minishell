@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 10:05:41 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/03 10:35:26 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/03 12:15:34 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,27 @@ t_cmd	*init_cmd(char *s)
 	start_cmd = cmd;
 	while (s[i] != '\0')
 	{
-		if (s[i] == '|')
+		if (s[i] == '\'')
+		{
+			i ++;
+			while (s[i] != '\'')
+				i ++;
+		}
+		else if (s[i] == '\"')
+		{
+			i ++;
+			while (s[i] != '\"')
+				i ++;
+		}
+		else if (s[i] == '|')
 		{
 			s = copy(s, i, cmd);
 			add_cmd = malloc(sizeof(t_cmd));
 			cmd->next = add_cmd;
 			cmd = cmd->next;
-			i = 0;
+			i = -1;
 		}
-		else
-			i ++;
+		i ++;
 	}
 	cmd->cmd = ft_strdup(s);
 	cmd->next = NULL;
