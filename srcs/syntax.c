@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 11:22:03 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/02 14:53:06 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/03 08:08:46 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,7 @@ int	syntax_error_check(char *s)
 	}
 	if (check_brackets(s) == 1 || check_multi_brackets(s) == 1 || check_space_brackets(s) == 1)
 	{
-		ft_putstr_fd("minishell: syntax error near unexpected token `bracket'\n", 2);
+		ft_putstr_fd("minishell: syntax error near unexpected token `angle bracket'\n", 2);
 		return (1);
 	}
 	if (check_pipes(s) == 1 || check_multi_pipes(s) == 1 || check_brackets_before_pipes(s) == 1)

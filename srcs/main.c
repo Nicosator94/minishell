@@ -6,20 +6,43 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:19:42 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/02 11:38:41 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/03 10:18:46 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	free_mat(char **mat);
-void	affiche_mat(char **mat);
+void	affiche_cmd(t_cmd *cmd)
+{
+	int	i;
+
+	i = 1;
+	while (cmd != NULL)
+	{
+		printf("cmd %d : %s\n", i, cmd->cmd);
+		cmd = cmd->next;
+		i ++;
+	}
+}
+
+void	clear_cmd(t_cmd *cmd)
+{
+	t_cmd	*tmp;
+
+	while (cmd != NULL)
+	{
+		free(cmd->cmd);
+		tmp = cmd;
+		cmd = cmd->next;
+		free(tmp);
+	}
+}
 
 int	prompt(char **env)
 {
 	const char	*prompt = "minishell$ ";
 	char		*s;
-	char		**parsed;
+	t_cmd		*cmd;
 	t_env		*own_env;
 
 	if (env[0] == NULL)
@@ -39,12 +62,9 @@ int	prompt(char **env)
 			add_history(s);
 		if (syntax_error_check(s) == 0)
 		{
-			parsed = parsing(s, env);
-			free(s);
-			if (parsed == NULL)
-				return (1);
-			affiche_mat(parsed);
-			free_mat(parsed);
+			cmd = parsing(s, own_env);
+			affiche_cmd(cmd);
+			clear_cmd(cmd);
 		}
 		else
 			free(s);
@@ -58,29 +78,4 @@ int	main(int argc, char **argv, char **env)
 	(void)argv;
 	prompt(env);
 	return (0);
-}
-
-void	free_mat(char **mat)
-{
-	int	i;
-
-	i = 0;
-	while (mat[i] != NULL)
-	{
-		free(mat[i]);
-		i ++;
-	}
-	free(mat);
-}
-
-void	affiche_mat(char **mat)
-{
-	int	i;
-
-	i = 0;
-	while (mat[i] != NULL)
-	{
-		printf("%d = %s\n", i, mat[i]);
-		i ++;
-	}
 }

@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/02 11:38:50 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/03 10:22:41 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,20 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+typedef struct s_cmd
+{
+	char			*cmd;
+	struct s_cmd	*next;
+}	t_cmd;
+
 t_env	*create_own_env(char **env);
 t_env	*create_without_env(void);
 void	clear_env(t_env *env);
 
 char	**list_to_matrix(t_env *env);
 
-char	**parsing(char *s, char **env);
-char	**parser(char *s);
-int		len_of_parsed(char *s);
 int		syntax_error_check(char *s);
-
-void	expend(char **parsed, char **env);
+t_cmd	*parsing(char *s, t_env *env);
+void	expend(t_cmd *cmd, t_env *env);
 
 #endif

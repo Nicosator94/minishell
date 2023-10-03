@@ -6,70 +6,64 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 10:05:41 by niromano          #+#    #+#             */
-/*   Updated: 2023/09/29 14:50:51 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/03 10:35:26 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static void	copy(char *dst, const char *src, int size)
+static char	*copy(char *s, int i, t_cmd *cmd)
 {
-	int	i;
+	int		j;
+	char	*new_s;
 
-	i = 0;
-	while (i < size)
+	j = 0;
+	cmd->cmd = malloc(sizeof(char) * (i + 1));
+	while (j != i)
 	{
-		dst[i] = src[i];
-		i ++;
+		cmd->cmd[j] = s[j];
+		j ++;
 	}
-	dst[i] = '\0';
+	cmd->cmd[j] = '\0';
+	new_s = ft_strdup(&s[i + 1]);
+	free(s);
+	return (new_s);
 }
 
-char	**parser(char *s)
+t_cmd	*init_cmd(char *s)
 {
-	char	**parsed;
+	t_cmd	*start_cmd;
+	t_cmd	*cmd;
+	t_cmd	*add_cmd;
 	int		i;
-	int		j;
-	int		old;
 
 	i = 0;
-	j = 0;
-	old = 0;
-	parsed = malloc(sizeof(char *) * (len_of_parsed(s) + 1));
+	cmd = malloc(sizeof(t_cmd));
+	start_cmd = cmd;
 	while (s[i] != '\0')
 	{
-		if (s[i] == '|' || s[i] == '<' || s[i] == '>')
+		if (s[i] == '|')
 		{
-			while ((s[i] == '|' || s[i] == '<' || s[i] == '>') && s[i] != '\0')
-				i ++;
-			parsed[j] = malloc(sizeof(char) * (i - old + 1));
-			copy(parsed[j], &s[old], i - old);
-			j ++;
+			s = copy(s, i, cmd);
+			add_cmd = malloc(sizeof(t_cmd));
+			cmd->next = add_cmd;
+			cmd = cmd->next;
+			i = 0;
 		}
-		while (s[i] == ' ' && s[i] != '\0')
+		else
 			i ++;
-		old = i;
-		if (s[i] != '|' && s[i] != '<' && s[i] != '>' && s[i] != '\0')
-		{
-			while (s[i] != '|' && s[i] != '<' && s[i] != '>' && s[i] != '\0')
-				i ++;
-			parsed[j] = malloc(sizeof(char) * (i - old + 1));
-			copy(parsed[j], &s[old], i - old);
-			j ++;
-		}
-		while (s[i] == ' ' && s[i] != '\0')
-			i ++;
-		old = i;
 	}
-	parsed[j] = NULL;
-	return (parsed);
+	cmd->cmd = ft_strdup(s);
+	cmd->next = NULL;
+	free(s);
+	return (start_cmd);
 }
 
-char	**parsing(char *s, char **env)
+t_cmd	*parsing(char *s, t_env *env)
 {
-	char	**parsed;
+	t_cmd	*cmd;
 
-	parsed = parser(s);
-	expend(parsed, env);
-	return (parsed);
+	cmd = init_cmd(s);
+	expend(cmd, env);
+	return (cmd);
 }
