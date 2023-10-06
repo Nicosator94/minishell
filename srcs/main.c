@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:19:42 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/03 10:18:46 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/06 09:31:48 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	affiche_cmd(t_cmd *cmd)
 	i = 1;
 	while (cmd != NULL)
 	{
-		printf("cmd %d : %s\n", i, cmd->cmd);
+		printf("cmd %d : %s\n", i, cmd->line);
 		cmd = cmd->next;
 		i ++;
 	}
@@ -31,7 +31,7 @@ void	clear_cmd(t_cmd *cmd)
 
 	while (cmd != NULL)
 	{
-		free(cmd->cmd);
+		free(cmd->line);
 		tmp = cmd;
 		cmd = cmd->next;
 		free(tmp);
@@ -63,6 +63,7 @@ int	prompt(char **env)
 		if (syntax_error_check(s) == 0)
 		{
 			cmd = parsing(s, own_env);
+			treatment_cmd(cmd);
 			affiche_cmd(cmd);
 			clear_cmd(cmd);
 		}

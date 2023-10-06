@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 10:05:41 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/03 12:15:34 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/03 13:23:48 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ static char	*copy(char *s, int i, t_cmd *cmd)
 	char	*new_s;
 
 	j = 0;
-	cmd->cmd = malloc(sizeof(char) * (i + 1));
+	cmd->line = malloc(sizeof(char) * (i + 1));
 	while (j != i)
 	{
-		cmd->cmd[j] = s[j];
+		cmd->line[j] = s[j];
 		j ++;
 	}
-	cmd->cmd[j] = '\0';
+	cmd->line[j] = '\0';
 	new_s = ft_strdup(&s[i + 1]);
 	free(s);
 	return (new_s);
@@ -64,7 +64,7 @@ t_cmd	*init_cmd(char *s)
 		}
 		i ++;
 	}
-	cmd->cmd = ft_strdup(s);
+	cmd->line = ft_strdup(s);
 	cmd->next = NULL;
 	free(s);
 	return (start_cmd);

@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 10:17:45 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/03 12:18:53 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/03 13:23:19 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,17 +94,17 @@ void	expend(t_cmd *cmd, t_env *env)
 	while (cmd != NULL)
 	{
 		i = 0;
-		while (cmd->cmd[i] != '\0')
+		while (cmd->line[i] != '\0')
 		{
-			if (cmd->cmd[i] == '\'')
+			if (cmd->line[i] == '\'')
 			{
 				i ++;
-				while (cmd->cmd[i] != '\'')
+				while (cmd->line[i] != '\'')
 					i ++;
 			}
-			else if (cmd->cmd[i] == '$')
+			else if (cmd->line[i] == '$')
 			{
-				cmd->cmd = replace_with_env(cmd->cmd, i, env);
+				cmd->line = replace_with_env(cmd->line, i, env);
 				i = -1;
 			}
 			i ++;

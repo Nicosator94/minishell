@@ -9,7 +9,8 @@ SOURCES = main.c \
 		syntax.c \
 		parsing.c \
 		parsing_utils.c \
-		expend.c
+		expend.c \
+		treatment_cmd.c
 
 SRC = srcs/
 DIR = objs_deps/

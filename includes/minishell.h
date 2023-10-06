@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/03 10:22:41 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/06 07:39:33 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,11 @@
 
 # include "../libft/libft.h"
 
+#define INPUT 1;
+#define OUTPUT 2;
+#define HEREDOC 3;
+#define APPEND 4;
+
 typedef struct s_env
 {
 	char			*name;
@@ -41,9 +46,18 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+typedef struct s_redi
+{
+	char			*file;
+	int				status;
+	struct s_redi	*next;
+}	t_redi;
+
 typedef struct s_cmd
 {
-	char			*cmd;
+	char			*line;
+	char			**cmd;
+	t_redi			*file;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -55,6 +69,8 @@ char	**list_to_matrix(t_env *env);
 
 int		syntax_error_check(char *s);
 t_cmd	*parsing(char *s, t_env *env);
-void	expend(t_cmd *cmd, t_env *env);
+void	expend(t_cmd *line, t_env *env);
+
+void	treatment_cmd(t_cmd *cmd);
 
 #endif
