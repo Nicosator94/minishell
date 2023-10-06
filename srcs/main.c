@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:19:42 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/06 09:31:48 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/06 11:41:14 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,41 @@
 
 void	affiche_cmd(t_cmd *cmd)
 {
-	int	i;
+	t_cmd	*tmp;
+	t_redi	*f_tmp;
+	int		i = 1;
+	int		j = 1;
 
-	i = 1;
-	while (cmd != NULL)
+	tmp = cmd;
+	while (tmp != NULL)
 	{
-		printf("cmd %d : %s\n", i, cmd->line);
-		cmd = cmd->next;
+		f_tmp = tmp->file;
+		while (f_tmp != NULL)
+		{
+			printf("%d = %d = %s\n", i, j, f_tmp->file);
+			j ++;
+			f_tmp = f_tmp->next;
+		}
 		i ++;
+		j = 1;
+		tmp = tmp->next;
 	}
 }
 
 void	clear_cmd(t_cmd *cmd)
 {
 	t_cmd	*tmp;
+	t_redi	*f_tmp;
 
 	while (cmd != NULL)
 	{
-		free(cmd->line);
+		while (cmd->file != NULL)
+		{
+			free(cmd->file->file);
+			f_tmp = cmd->file;
+			cmd->file = cmd->file->next;
+			free(f_tmp);
+		}
 		tmp = cmd;
 		cmd = cmd->next;
 		free(tmp);
