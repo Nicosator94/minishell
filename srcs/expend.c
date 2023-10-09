@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 10:17:45 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/09 08:33:59 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/09 08:47:48 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ void	expend(t_cmd *cmd, t_env *env)
 			{
 				cmd->line = replace_with_env(cmd->line, i, env);
 				i = -1;
+				count = 0;
 			}
 			i ++;
 		}
