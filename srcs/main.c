@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:19:42 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/09 12:18:29 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/09 14:18:32 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	affiche_cmd(t_cmd *cmd)
 			printf("Commandes =\n");
 		while (tmp->cmd[i] != NULL)
 		{
-			printf("		%s === %zu\n", tmp->cmd[i], ft_strlen(tmp->cmd[i]));
+			printf("		%s\n", tmp->cmd[i]);
 			i ++;
 		}
 		f_tmp = tmp->file;
@@ -34,7 +34,7 @@ void	affiche_cmd(t_cmd *cmd)
 			printf("Redirection =\n1 = INPUT / 2 = OUTPUT / 3 = HEREDOC / 4 = APPEND\n");
 		while (f_tmp != NULL)
 		{
-			printf("		 %d = %s === %zu\n", f_tmp->status, f_tmp->file, ft_strlen(f_tmp->file));
+			printf("		 %d = %s\n", f_tmp->status, f_tmp->file);
 			f_tmp = f_tmp->next;
 		}
 		printf("-------------------------------------------------------------\n");
