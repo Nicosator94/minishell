@@ -1,16 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_env.c                                        :+:      :+:    :+:   */
+/*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 10:09:17 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/02 11:11:21 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/09 15:00:20 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	clear_env(t_env *env)
+{
+	t_env	*tmp;
+
+	while (env != NULL)
+	{
+		free(env->name);
+		free(env->value);
+		tmp = env;
+		env = env->next;
+		free(tmp);
+	}
+	free(env);
+}
 
 int	size_env(t_env *env)
 {

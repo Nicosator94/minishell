@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:19:42 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/09 14:18:32 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/09 14:27:08 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,31 +70,25 @@ void	clear_cmd(t_cmd *cmd)
 	}
 }
 
-int	prompt(char **env)
+int	prompt(t_env *env)
 {
 	const char	*prompt = "minishell$ ";
 	char		*s;
 	t_cmd		*cmd;
-	t_env		*own_env;
-
-	if (env[0] == NULL)
-		own_env = create_without_env();
-	else
-		own_env = create_own_env(env);
 	while (1)
 	{
 		s = readline(prompt);
 		if (s == NULL)
 		{
 			printf("exit\n");
-			clear_env(own_env);
+			clear_env(env);
 			exit(0);
 		}
 		if (s[0] != '\0')
 			add_history(s);
 		if (syntax_error_check(s) == 0)
 		{
-			cmd = parsing(s, own_env);
+			cmd = parsing(s, env);
 			treatment_cmd(cmd);
 			affiche_cmd(cmd);
 			clear_cmd(cmd);
@@ -107,8 +101,14 @@ int	prompt(char **env)
 
 int	main(int argc, char **argv, char **env)
 {
+	t_env	*own_env;
+
 	(void)argc;
 	(void)argv;
-	prompt(env);
+	if (env[0] == NULL)
+		own_env = create_without_env();
+	else
+		own_env = create_own_env(env);
+	prompt(own_env);
 	return (0);
 }

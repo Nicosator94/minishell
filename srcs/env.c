@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 07:27:15 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/02 10:29:05 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/09 15:31:46 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,25 +44,6 @@ t_env	*fill_env(char **tmp)
 	return (new_env);
 }
 
-t_env	*create_without_env(void)
-{
-	t_env	*own_env;
-	t_env	*next;
-	char	*pwd;
-
-	own_env = malloc(sizeof(t_env));
-	own_env->name = ft_strdup("PWD");
-	pwd = getcwd(NULL, 100);
-	own_env->value = ft_strdup(pwd);
-	free(pwd);
-	next = malloc(sizeof(t_env));
-	own_env->next = next;
-	next->name = ft_strdup("SHLVL");
-	next->value = ft_strdup("1");
-	next->next = NULL;
-	return (own_env);
-}
-
 t_env	*create_own_env(char **env)
 {
 	t_env	*start_env;
@@ -84,19 +65,4 @@ t_env	*create_own_env(char **env)
 		i ++;
 	}
 	return (start_env);
-}
-
-void	clear_env(t_env *env)
-{
-	t_env	*tmp;
-
-	while (env != NULL)
-	{
-		free(env->name);
-		free(env->value);
-		tmp = env;
-		env = env->next;
-		free(tmp);
-	}
-	free(env);
 }
