@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/06 07:39:33 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/06 14:24:48 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_redi
 typedef struct s_cmd
 {
 	char			*line;
+	t_list			*l_cmd;
 	char			**cmd;
 	t_redi			*file;
 	struct s_cmd	*next;
@@ -72,5 +73,7 @@ t_cmd	*parsing(char *s, t_env *env);
 void	expend(t_cmd *line, t_env *env);
 
 void	treatment_cmd(t_cmd *cmd);
+int		get_file(t_cmd *cmd, int i);
+int		get_command(t_cmd *cmd, int i);
 
 #endif

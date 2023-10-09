@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:19:42 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/06 11:41:14 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/06 16:16:06 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	affiche_cmd(t_cmd *cmd)
 {
 	t_cmd	*tmp;
 	t_redi	*f_tmp;
+	t_list	*c_tmp;
 	int		i = 1;
 	int		j = 1;
 
@@ -25,9 +26,18 @@ void	affiche_cmd(t_cmd *cmd)
 		f_tmp = tmp->file;
 		while (f_tmp != NULL)
 		{
-			printf("%d = %d = %s\n", i, j, f_tmp->file);
+			printf(" = %d\nn = %d\ns = %s\n\n", i, j, f_tmp->file);
 			j ++;
 			f_tmp = f_tmp->next;
+		}
+		j = 1;
+		printf("-------------------------------------------------------------\n");
+		c_tmp = tmp->l_cmd;
+		while (c_tmp != NULL)
+		{
+			printf("p = %d\nn = %d\ns = %s\n\n", i, j, c_tmp->content);
+			j ++;
+			c_tmp = c_tmp->next;
 		}
 		i ++;
 		j = 1;
@@ -39,6 +49,7 @@ void	clear_cmd(t_cmd *cmd)
 {
 	t_cmd	*tmp;
 	t_redi	*f_tmp;
+	t_list	*c_tmp;
 
 	while (cmd != NULL)
 	{
@@ -48,6 +59,13 @@ void	clear_cmd(t_cmd *cmd)
 			f_tmp = cmd->file;
 			cmd->file = cmd->file->next;
 			free(f_tmp);
+		}
+		while (cmd->l_cmd != NULL)
+		{
+			free(cmd->l_cmd->content);
+			c_tmp = cmd->l_cmd;
+			cmd->l_cmd = cmd->l_cmd->next;
+			free(c_tmp);
 		}
 		tmp = cmd;
 		cmd = cmd->next;

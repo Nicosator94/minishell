@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 10:17:45 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/03 13:23:19 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/09 08:33:59 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,19 +90,26 @@ char	*replace_with_env(char *s, int i, t_env *env)
 void	expend(t_cmd *cmd, t_env *env)
 {
 	int	i;
+	int	count;
 
+	count = 0;
 	while (cmd != NULL)
 	{
 		i = 0;
 		while (cmd->line[i] != '\0')
 		{
-			if (cmd->line[i] == '\'')
+			if (cmd->line[i] == '\"')
+				count += 1;
+			if (cmd->line[i] == '\'' && count % 2 == 0)
 			{
 				i ++;
 				while (cmd->line[i] != '\'')
 					i ++;
 			}
-			else if (cmd->line[i] == '$')
+			else if (cmd->line[i] == '$'
+				&& ((cmd->line[i + 1] >= 'a' && cmd->line[i + 1] <= 'z')
+					|| (cmd->line[i + 1] >= 'A' && cmd->line[i + 1] <= 'Z')
+					|| cmd->line[i + 1] == '_'))
 			{
 				cmd->line = replace_with_env(cmd->line, i, env);
 				i = -1;
