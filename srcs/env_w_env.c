@@ -6,13 +6,13 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:31:26 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/09 15:31:48 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/11 11:19:21 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	print_malloc_failed(t_env *env, int trig)
+static int	print_malloc_failed(t_env *env, int trig)
 {
 	if (trig == 1)
 	{
@@ -20,7 +20,7 @@ int	print_malloc_failed(t_env *env, int trig)
 		free(env->name);
 		free(env);
 	}
-	ft_putstr_fd("Malloc Failed !", 2);
+	ft_putstr_fd("Malloc Failed !\n", 2);
 	return (1);
 }
 

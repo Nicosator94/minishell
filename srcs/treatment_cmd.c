@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 09:51:12 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/09 13:59:26 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/11 09:32:15 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,42 +50,49 @@ void	fill_mat_of_cmd(t_cmd *cmd)
 	cmd->cmd[i] = NULL;
 }
 
-char	*set_file(t_cmd *cmd)
+char	*set_file(t_redi *tmp)
 {
 	int		i;
 	char	*new_file;
 
 	i = 0;
-	while (cmd->file->file[i] == '<' || cmd->file->file[i] == '>')
+	while (tmp->file[i] == '<' || tmp->file[i] == '>')
 		i ++;
-	while (cmd->file->file[i] == ' ' || (cmd->file->file[i] >= 9 && cmd->file->file[i] <= 13))
+	while (tmp->file[i] == ' ' || (tmp->file[i] >= 9 && tmp->file[i] <= 13))
 		i ++;
-	new_file = ft_strdup(&cmd->file->file[i]);
-	free(cmd->file->file);
+	new_file = ft_strdup(&tmp->file[i]);
+	free(tmp->file);
 	return (new_file);
 }
 
 void	set_redi(t_cmd *cmd)
 {
-	if (cmd->file->file[0] == '>')
+	t_redi	*tmp;
+
+	tmp = cmd->file;
+	while (tmp != NULL)
 	{
-		if (cmd->file->file[1] == '>')
+		if (tmp->file[0] == '>')
 		{
-			cmd->file->status = APPEND;
+			if (tmp->file[1] == '>')
+			{
+				tmp->status = APPEND;
+			}
+			else
+				tmp->status = OUTPUT;
 		}
-		else
-			cmd->file->status = OUTPUT;
-	}
-	else if (cmd->file->file[0] == '<')
-	{
-		if (cmd->file->file[1] == '<')
+		else if (tmp->file[0] == '<')
 		{
-			cmd->file->status = HEREDOC;
+			if (tmp->file[1] == '<')
+			{
+				tmp->status = HEREDOC;
+			}
+			else
+				tmp->status = INPUT;
 		}
-		else
-			cmd->file->status = INPUT;
+		tmp->file = set_file(tmp);
+		tmp = tmp->next;
 	}
-	cmd->file->file = set_file(cmd);
 }
 
 char	*rm(char *s, int start, int end)
