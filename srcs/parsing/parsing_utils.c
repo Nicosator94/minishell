@@ -6,11 +6,11 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 10:07:07 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/02 11:22:44 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/11 15:24:25 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 int	len_of_parsed(char *s)
 {

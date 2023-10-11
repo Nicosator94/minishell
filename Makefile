@@ -3,18 +3,18 @@ CFLAGS = -Wall -Wextra -Werror -MMD -g3
 
 HEADERS = minishell.h
 
-SOURCES = main.c \
-		env.c \
-		env_utils.c \
-		env_w_env.c \
-		syntax.c \
-		parsing.c \
-		parsing_utils.c \
-		expend.c \
-		treatment_cmd.c \
-		get_file.c \
-		get_command.c \
-		all_clear_command.c
+SOURCES = parsing/main.c \
+		env/env.c \
+		env/env_utils.c \
+		env/env_w_env.c \
+		parsing/syntax.c \
+		parsing/parsing.c \
+		parsing/parsing_utils.c \
+		expend/expend.c \
+		expend/treatment_cmd.c \
+		expend/get_file.c \
+		expend/get_command.c \
+		parsing/all_clear_command.c
 
 SRC = srcs/
 DIR = objs_deps/
@@ -46,6 +46,9 @@ $(DIR) :
 	@echo "Start Compilation for $(NAME)"
 	@echo "Wait ..."
 	@mkdir -p objs_deps
+	@mkdir -p objs_deps/env
+	@mkdir -p objs_deps/expend
+	@mkdir -p objs_deps/parsing
 
 clean :
 	@echo "Deleting Objects and Dependencies"

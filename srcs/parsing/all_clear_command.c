@@ -6,11 +6,11 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 14:32:59 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/11 14:42:11 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/11 15:23:53 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 static void	clear_matrix(char **mat)
 {

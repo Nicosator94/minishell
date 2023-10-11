@@ -6,11 +6,11 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:19:42 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/11 15:02:02 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/11 15:23:45 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 void	affiche_cmd(t_cmd *cmd)
 {
@@ -31,13 +31,13 @@ void	affiche_cmd(t_cmd *cmd)
 		}
 		f_tmp = tmp->file;
 		if (f_tmp != NULL)
-			printf("Redirection =\n1 = INPUT / 2 = OUTPUT / 3 = HEREDOC / 4 = APPEND\n");
+			printf("Redirection =\n1 = INP / 2 = OUT / 3 = HERED / 4 = APP\n");
 		while (f_tmp != NULL)
 		{
 			printf("		 %d = %s\n", f_tmp->status, f_tmp->file);
 			f_tmp = f_tmp->next;
 		}
-		printf("-------------------------------------------------------------\n");
+		printf("----------------------------------------------------------\n");
 		tmp = tmp->next;
 	}
 }
@@ -75,6 +75,7 @@ int	prompt(t_env *env)
 	const char	*prompt = "minishell$ ";
 	char		*s;
 	t_cmd		*cmd;
+
 	while (1)
 	{
 		s = readline(prompt);

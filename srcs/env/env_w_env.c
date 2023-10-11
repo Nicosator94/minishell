@@ -6,11 +6,11 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:31:26 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/11 11:19:21 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/11 15:24:01 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 static int	print_malloc_failed(t_env *env, int trig)
 {

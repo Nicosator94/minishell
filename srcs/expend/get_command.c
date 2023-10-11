@@ -6,11 +6,11 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 14:01:35 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/11 14:43:13 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/11 15:24:16 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 int	get_len_of_command(char *s)
 {
@@ -19,7 +19,8 @@ int	get_len_of_command(char *s)
 	i = 0;
 	while (s[i] == ' ' || (s[i] >= 9 && s[i] <= 13))
 		i ++;
-	while (s[i] != '\0' && s[i] != '<' && s[i] != '>' && s[i] != ' ' && !(s[i] >= 9 && s[i] <= 13))
+	while (s[i] != '\0' && s[i] != '<' && s[i] != '>'
+		&& s[i] != ' ' && !(s[i] >= 9 && s[i] <= 13))
 	{
 		if (s[i] == '\'')
 		{

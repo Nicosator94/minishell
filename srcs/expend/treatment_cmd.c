@@ -6,11 +6,11 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 09:51:12 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/11 15:02:16 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/11 15:24:37 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 void	separate_cmd(t_cmd *cmd, t_env *env, t_cmd *start_cmd)
 {
@@ -25,7 +25,9 @@ void	separate_cmd(t_cmd *cmd, t_env *env, t_cmd *start_cmd)
 			i = get_file(cmd, i, env, start_cmd);
 		else
 			i = get_command(cmd, i, env, start_cmd);
-		while ((cmd->line[i] == ' ' || (cmd->line[i] >= 9 && cmd->line[i] <= 13)) && cmd->line[i] != '\0')
+		while ((cmd->line[i] == ' '
+				|| (cmd->line[i] >= 9 && cmd->line[i] <= 13))
+			&& cmd->line[i] != '\0')
 			i ++;
 	}
 	free(cmd->line);

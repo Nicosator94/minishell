@@ -6,11 +6,11 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 11:22:03 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/03 08:08:46 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/11 15:24:35 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 int	check_quotes(char *s)
 {
@@ -81,7 +81,8 @@ int	check_multi_brackets(char *s)
 	{
 		if (s[i] == '>' || s[i] == '<')
 			brackets ++;
-		else if (s[i] != '>' && s[i] != '<' && s[i] != ' ' && (s[i] < 9 || s[i] > 13))
+		else if (s[i] != '>' && s[i] != '<' && s[i] != ' '
+			&& (s[i] < 9 || s[i] > 13))
 			brackets = 0;
 		if (brackets == 3)
 			return (1);
@@ -186,17 +187,22 @@ int	syntax_error_check(char *s)
 {
 	if (check_quotes(s) == 1)
 	{
-		ft_putstr_fd("minishell: syntax error near unexpected token `quote'\n", 2);
+		ft_putstr_fd("minishell: syntax error near unexpected ", 2);
+		ft_putstr_fd("token `quote'\n", 2);
 		return (1);
 	}
-	if (check_brackets(s) == 1 || check_multi_brackets(s) == 1 || check_space_brackets(s) == 1)
+	if (check_brackets(s) == 1 || check_multi_brackets(s) == 1
+		|| check_space_brackets(s) == 1)
 	{
-		ft_putstr_fd("minishell: syntax error near unexpected token `angle bracket'\n", 2);
+		ft_putstr_fd("minishell: syntax error near unexpected ", 2);
+		ft_putstr_fd("token `angle bracket'\n", 2);
 		return (1);
 	}
-	if (check_pipes(s) == 1 || check_multi_pipes(s) == 1 || check_brackets_before_pipes(s) == 1)
+	if (check_pipes(s) == 1 || check_multi_pipes(s) == 1
+		|| check_brackets_before_pipes(s) == 1)
 	{
-		ft_putstr_fd("minishell: syntax error near unexpected token `pipe'\n", 2);
+		ft_putstr_fd("minishell: syntax error near unexpected ", 2);
+		ft_putstr_fd("token `pipe'\n", 2);
 		return (1);
 	}
 	return (0);

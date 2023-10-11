@@ -6,11 +6,11 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 10:09:17 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/09 15:00:20 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/11 15:23:56 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 void	clear_env(t_env *env)
 {

@@ -6,11 +6,11 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 07:27:15 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/11 11:19:30 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/11 15:24:04 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 static char	**return_malloc_failed(char **tmp)
 {
