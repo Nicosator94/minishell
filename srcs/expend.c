@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 10:17:45 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/09 08:47:48 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/11 12:51:11 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static char	*copy(char *s, int i)
 
 	j = 0;
 	cpy = malloc(sizeof(char) * (i + 1));
+	if (cpy == NULL)
+		return (NULL);
 	while (j != i)
 	{
 		cpy[j] = s[j];
@@ -58,12 +60,35 @@ char	*replace(char *name, t_env *env)
 		env = env->next;
 	}
 	value = malloc(sizeof(char));
+	if (value == NULL)
+	{
+		free(name);
+		return (NULL);
+	}
 	value[0] = '\0';
 	free(name);
 	return (value);
 }
 
-char	*replace_with_env(char *s, int i, t_env *env)
+void	clear_all(t_env *env, t_cmd *cmd, char *s)
+{
+	t_cmd	*tmp;
+
+	if (s != NULL)
+		free(s);
+	clear_env(env);
+	while (cmd != NULL)
+	{
+		free(cmd->line);
+		tmp = cmd;
+		cmd = cmd->next;
+		free(tmp);
+	}
+	ft_putstr_fd("Malloc Failed !\n", 2);
+	exit(1);
+}
+
+char	*replace_with_env(char *s, int i, t_env *env, t_cmd *cmd)
 {
 	char	*new_cmd;
 	char	*tmp1;
@@ -72,17 +97,29 @@ char	*replace_with_env(char *s, int i, t_env *env)
 	int		len;
 
 	tmp1 = copy(s, i);
+	if (tmp1 == NULL)
+		clear_all(env, cmd, NULL);
 	i ++;
 	len = dollar_len(s, i);
 	tmp2 = copy(&s[i], len);
+	if (tmp2 == NULL)
+		clear_all(env, cmd, tmp1);
 	tmp2 = replace(tmp2, env);
+	if (tmp2 == NULL)
+		clear_all(env, cmd, tmp1);
 	tmp3 = ft_strjoin(tmp1, tmp2);
 	free(tmp1);
 	free(tmp2);
+	if (tmp3 == NULL)
+		clear_all(env, cmd, NULL);
 	tmp1 = ft_strdup(&s[i + len]);
+	if (tmp1 == NULL)
+		clear_all(env, cmd, tmp3);
 	new_cmd = ft_strjoin(tmp3, tmp1);
 	free(tmp3);
 	free(tmp1);
+	if (new_cmd == NULL)
+		clear_all(env, cmd, NULL);
 	free(s);
 	return (new_cmd);
 }
@@ -111,7 +148,7 @@ void	expend(t_cmd *cmd, t_env *env)
 					|| (cmd->line[i + 1] >= 'A' && cmd->line[i + 1] <= 'Z')
 					|| cmd->line[i + 1] == '_'))
 			{
-				cmd->line = replace_with_env(cmd->line, i, env);
+				cmd->line = replace_with_env(cmd->line, i, env, cmd);
 				i = -1;
 				count = 0;
 			}
