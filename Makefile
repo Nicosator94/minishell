@@ -13,7 +13,8 @@ SOURCES = main.c \
 		expend.c \
 		treatment_cmd.c \
 		get_file.c \
-		get_command.c
+		get_command.c \
+		all_clear_command.c
 
 SRC = srcs/
 DIR = objs_deps/

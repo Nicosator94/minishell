@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 13:54:18 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/06 14:24:38 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/11 14:44:08 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ char	*copy_file(char *s, int len)
 
 	i = 0;
 	cpy = malloc(sizeof(char) * (len + 1));
+	if (cpy == NULL)
+		return (NULL);
 	while (i != len)
 	{
 		cpy[i] = s[i];
@@ -72,14 +74,21 @@ void	add_redi(t_cmd *cmd, t_redi *add)
 	}
 }
 
-int	get_file(t_cmd *cmd, int i)
+int	get_file(t_cmd *cmd, int i, t_env *env, t_cmd *start_cmd)
 {
 	int		len;
 	t_redi	*add;
 
 	len = get_len_of_file(&cmd->line[i]);
 	add = malloc(sizeof(t_redi));
+	if (add == NULL)
+		all_clear_command(env, start_cmd);
 	add->file = copy_file(&cmd->line[i], len);
+	if (add->file == NULL)
+	{
+		free(add);
+		all_clear_command(env, start_cmd);
+	}
 	add->next = NULL;
 	add_redi(cmd, add);
 	i += len;

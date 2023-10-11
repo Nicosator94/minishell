@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/11 09:27:42 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/11 14:40:43 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,10 @@ int		syntax_error_check(char *s);
 t_cmd	*parsing(char *s, t_env *env);
 void	expend(t_cmd *line, t_env *env);
 
-void	treatment_cmd(t_cmd *cmd);
-int		get_file(t_cmd *cmd, int i);
-int		get_command(t_cmd *cmd, int i);
+void	treatment_cmd(t_cmd *cmd, t_env *env);
+int		get_file(t_cmd *cmd, int i, t_env *env, t_cmd *start_cmd);
+int		get_command(t_cmd *cmd, int i, t_env *env, t_cmd *start_cmd);
+
+void	all_clear_command(t_env *env, t_cmd *cmd);
 
 #endif

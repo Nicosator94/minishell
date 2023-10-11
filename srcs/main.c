@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:19:42 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/09 14:27:08 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/11 15:02:02 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	prompt(t_env *env)
 		if (syntax_error_check(s) == 0)
 		{
 			cmd = parsing(s, env);
-			treatment_cmd(cmd);
+			treatment_cmd(cmd, env);
 			affiche_cmd(cmd);
 			clear_cmd(cmd);
 		}

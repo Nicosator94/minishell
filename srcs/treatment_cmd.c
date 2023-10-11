@@ -6,13 +6,13 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 09:51:12 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/11 09:32:15 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/11 15:02:16 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	separate_cmd(t_cmd *cmd)
+void	separate_cmd(t_cmd *cmd, t_env *env, t_cmd *start_cmd)
 {
 	int		i;
 
@@ -22,25 +22,30 @@ void	separate_cmd(t_cmd *cmd)
 	while (cmd->line[i] != '\0')
 	{
 		if (cmd->line[i] == '<' || cmd->line[i] == '>')
-			i = get_file(cmd, i);
+			i = get_file(cmd, i, env, start_cmd);
 		else
-			i = get_command(cmd, i);
+			i = get_command(cmd, i, env, start_cmd);
 		while ((cmd->line[i] == ' ' || (cmd->line[i] >= 9 && cmd->line[i] <= 13)) && cmd->line[i] != '\0')
 			i ++;
 	}
 	free(cmd->line);
+	cmd->line = NULL;
 }
 
-void	fill_mat_of_cmd(t_cmd *cmd)
+void	fill_mat_of_cmd(t_cmd *cmd, t_env *env, t_cmd *start_cmd)
 {
 	int		i;
 	t_list	*tmp;
 
 	i = 0;
 	cmd->cmd = malloc(sizeof(char *) * (ft_lstsize(cmd->l_cmd) + 1));
+	if (cmd->cmd == NULL)
+		all_clear_command(env, start_cmd);
 	while (cmd->l_cmd != NULL)
 	{
 		cmd->cmd[i] = ft_strdup(cmd->l_cmd->content);
+		if (cmd->cmd[i] == NULL)
+			all_clear_command(env, start_cmd);
 		i ++;
 		free(cmd->l_cmd->content);
 		tmp = cmd->l_cmd->next;
@@ -65,7 +70,7 @@ char	*set_file(t_redi *tmp)
 	return (new_file);
 }
 
-void	set_redi(t_cmd *cmd)
+void	set_redi(t_cmd *cmd, t_env *env, t_cmd *start_cmd)
 {
 	t_redi	*tmp;
 
@@ -91,6 +96,8 @@ void	set_redi(t_cmd *cmd)
 				tmp->status = INPUT;
 		}
 		tmp->file = set_file(tmp);
+		if (tmp->file == NULL)
+			all_clear_command(env, start_cmd);
 		tmp = tmp->next;
 	}
 }
@@ -102,6 +109,8 @@ char	*rm(char *s, int start, int end)
 
 	i = 0;
 	new_s = malloc(sizeof(char) * (ft_strlen(s) - 1));
+	if (new_s == NULL)
+		return (NULL);
 	while (i != start)
 	{
 		new_s[i] = s[i];
@@ -122,7 +131,7 @@ char	*rm(char *s, int start, int end)
 	return (new_s);
 }
 
-void	remove_quotes(t_cmd *cmd)
+void	remove_quotes(t_cmd *cmd, t_env *env, t_cmd *start_cmd)
 {
 	int	i;
 	int	j;
@@ -141,6 +150,8 @@ void	remove_quotes(t_cmd *cmd)
 				while (cmd->cmd[i][j] != '\'')
 					j ++;
 				cmd->cmd[i] = rm(cmd->cmd[i], start, j);
+				if (cmd->cmd[i] == NULL)
+					all_clear_command(env, start_cmd);
 				j -= 2;
 			}
 			else if (cmd->cmd[i][j] == '\"')
@@ -150,6 +161,8 @@ void	remove_quotes(t_cmd *cmd)
 				while (cmd->cmd[i][j] != '\"')
 					j ++;
 				cmd->cmd[i] = rm(cmd->cmd[i], start, j);
+				if (cmd->cmd[i] == NULL)
+					all_clear_command(env, start_cmd);
 				j -= 2;
 			}
 			j ++;
@@ -158,17 +171,33 @@ void	remove_quotes(t_cmd *cmd)
 	}
 }
 
-void	treatment_cmd(t_cmd *cmd)
+void	add_null_cmd(t_cmd *cmd)
 {
+	t_cmd	*tmp;
+
+	tmp = cmd;
+	while (tmp != NULL)
+	{
+		tmp->l_cmd = NULL;
+		tmp->cmd = NULL;
+		tmp->file = NULL;
+		tmp = tmp->next;
+	}
+}
+
+void	treatment_cmd(t_cmd *cmd, t_env *env)
+{
+	t_cmd	*start_cmd;
+
+	add_null_cmd(cmd);
+	start_cmd = cmd;
 	while (cmd != NULL)
 	{
-		cmd->file = NULL;
-		cmd->l_cmd = NULL;
-		separate_cmd(cmd);
-		fill_mat_of_cmd(cmd);
+		separate_cmd(cmd, env, start_cmd);
+		fill_mat_of_cmd(cmd, env, start_cmd);
 		if (cmd->file != NULL)
-			set_redi(cmd);
-		remove_quotes(cmd);
+			set_redi(cmd, env, start_cmd);
+		remove_quotes(cmd, env, start_cmd);
 		cmd = cmd->next;
 	}
 }
