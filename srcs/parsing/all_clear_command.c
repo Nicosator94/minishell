@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 14:32:59 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/11 15:23:53 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/12 16:22:25 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,22 @@ void	all_clear_command(t_env *env, t_cmd *cmd)
 	}
 	ft_putstr_fd("Malloc Failed !\n", 2);
 	exit(1);
+}
+
+void	all_free(t_env *env, t_cmd *cmd)
+{	
+	if (env != NULL)
+		clear_env(env);
+	while (cmd != NULL)
+	{
+		if (cmd->cmd != NULL)
+			clear_matrix(cmd->cmd);
+		if (cmd->file != NULL)
+			clear_file(cmd->file);
+		if (cmd->l_cmd != NULL)
+			clear_list(cmd->l_cmd);
+		if (cmd->line != NULL)
+			free(cmd->line);
+		cmd = cmd->next;
+	}
 }

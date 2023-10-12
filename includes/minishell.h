@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/12 11:50:54 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/12 16:22:29 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ void	fill_mat_of_cmd(t_cmd *cmd, t_env *env, t_cmd *start_cmd);
 void	set_redi(t_cmd *cmd, t_env *env, t_cmd *start_cmd);
 
 void	all_clear_command(t_env *env, t_cmd *cmd);
+void	all_free(t_env *env, t_cmd *cmd);
 
 void	exec(t_cmd *cmd, t_env *env);
 
