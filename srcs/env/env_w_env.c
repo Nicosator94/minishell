@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:31:26 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/11 15:24:01 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/12 11:45:55 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ t_env	*create_without_env2(void)
 		free(own_env);
 		exit(print_malloc_failed(own_env, 0));
 	}
+	own_env->val = 1;
 	return (own_env);
 }
 
@@ -70,6 +71,7 @@ t_env	*create_without_env(void)
 		free(next);
 		exit(print_malloc_failed(own_env, 1));
 	}
+	next->val = 1;
 	next->next = NULL;
 	return (own_env);
 }

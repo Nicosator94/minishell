@@ -18,7 +18,14 @@ SOURCES = main.c \
 		expend/get_file.c \
 		expend/get_command.c \
 		parsing/all_clear_command.c \
-		exec/exec.c
+		exec/exec.c \
+		builtin/cd.c \
+		builtin/echo.c \
+		builtin/env.c \
+		builtin/exit.c \
+		builtin/export.c \
+		builtin/pwd.c \
+		builtin/unset.c
 
 SRC = srcs/
 DIR = objs_deps/
@@ -50,6 +57,7 @@ $(DIR) :
 	@echo "Start Compilation for $(NAME)"
 	@echo "Wait ..."
 	@mkdir -p objs_deps
+	@mkdir -p objs_deps/builtin
 	@mkdir -p objs_deps/env
 	@mkdir -p objs_deps/exec
 	@mkdir -p objs_deps/expend

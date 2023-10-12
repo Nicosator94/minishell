@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 10:09:17 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/12 07:36:24 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/12 11:45:12 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ t_env	*fill_env(char **tmp)
 	free(tmp[0]);
 	free(tmp[1]);
 	free(tmp);
+	new_env->val = 1;
 	return (new_env);
 }
 

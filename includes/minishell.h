@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/12 11:12:04 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/12 11:50:54 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 
 typedef struct s_env
 {
+	int				val;
 	char			*name;
 	char			*value;
 	struct s_env	*next;
@@ -93,5 +94,13 @@ void	set_redi(t_cmd *cmd, t_env *env, t_cmd *start_cmd);
 void	all_clear_command(t_env *env, t_cmd *cmd);
 
 void	exec(t_cmd *cmd, t_env *env);
+
+int				cd(char **cmd, t_env *env);
+void			my_echo(char **cmd);
+void			 my_env(char **cmd, t_env *env);
+unsigned int 	my_exit(char **cmd, t_env *env);
+void			export(char **cmd, t_env *env);
+void			pwd(char **cmd);
+void			unset(char **cmd, t_env **env);
 
 #endif
