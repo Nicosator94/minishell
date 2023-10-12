@@ -3,7 +3,7 @@ CFLAGS = -Wall -Wextra -Werror -MMD -g3
 
 HEADERS = minishell.h
 
-SOURCES = parsing/main.c \
+SOURCES = main.c \
 		env/env.c \
 		env/env_utils.c \
 		env/env_w_env.c \
@@ -17,7 +17,8 @@ SOURCES = parsing/main.c \
 		expend/treatment_cmd_utils.c \
 		expend/get_file.c \
 		expend/get_command.c \
-		parsing/all_clear_command.c
+		parsing/all_clear_command.c \
+		exec/exec.c
 
 SRC = srcs/
 DIR = objs_deps/
@@ -50,6 +51,7 @@ $(DIR) :
 	@echo "Wait ..."
 	@mkdir -p objs_deps
 	@mkdir -p objs_deps/env
+	@mkdir -p objs_deps/exec
 	@mkdir -p objs_deps/expend
 	@mkdir -p objs_deps/parsing
 
