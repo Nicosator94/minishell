@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 11:07:38 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/12 11:52:19 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/12 12:07:13 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@ void	exec(t_cmd *cmd, t_env *env)
 	(void)env;
 	while (tmp != NULL && tmp->cmd[0] != NULL)
 	{
+
+
+		
+		
 		if (ft_strncmp(tmp->cmd[0], "echo", 5) == 0)
 			my_echo(cmd->cmd);
 		else if (ft_strncmp(tmp->cmd[0], "cd", 3) == 0)
