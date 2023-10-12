@@ -11,7 +11,9 @@ SOURCES = parsing/main.c \
 		parsing/parsing.c \
 		parsing/parsing_utils.c \
 		expend/expend.c \
+		expend/expend_utils.c \
 		expend/treatment_cmd.c \
+		expend/treatment_cmd_utils.c \
 		expend/get_file.c \
 		expend/get_command.c \
 		parsing/all_clear_command.c
