@@ -8,6 +8,7 @@ SOURCES = parsing/main.c \
 		env/env_utils.c \
 		env/env_w_env.c \
 		parsing/syntax.c \
+		parsing/syntax_utils.c \
 		parsing/parsing.c \
 		parsing/parsing_utils.c \
 		expend/expend.c \

@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/12 09:22:50 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/12 11:02:10 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,19 @@ t_env	*create_own_env(char **env);
 t_env	*create_without_env(void);
 t_env	*fill_env(char **tmp);
 void	clear_env(t_env *env);
-
 char	**list_to_matrix(t_env *env);
 
 int		syntax_error_check(char *s);
+int		check_brackets(char *s);
+int		check_multi_brackets(char *s);
+int		check_space_brackets(char *s);
+int		check_opposite_brackets(char *s);
+
 t_cmd	*parsing(char *s, t_env *env);
+int		pass_quotes(char *s, int i);
+char	*init_new_cmd(char *s, int i, t_cmd *cmd);
 void	add_null_cmd(t_cmd *cmd);
+
 void	expend(t_cmd *line, t_env *env);
 char	*replace_with_env_utils(char *s, char *tmp1, char *tmp2);
 char	*replace(char *name, t_env *env);
