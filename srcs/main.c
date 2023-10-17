@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:19:42 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/12 11:37:01 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/13 08:56:48 by agomes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	prompt(t_env *env)
 		{
 			cmd = parsing(s, env);
 			treatment_cmd(cmd, env);
-			exec(cmd, env);
+			exec(cmd, &env);
 			// affiche_cmd(cmd);
 			clear_cmd(cmd);
 		}
