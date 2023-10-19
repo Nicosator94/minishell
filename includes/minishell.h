@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/12 16:22:29 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/19 01:46:05 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,12 @@ typedef struct s_cmd
 t_env	*create_own_env(char **env);
 t_env	*create_without_env(void);
 t_env	*fill_env(char **tmp);
+void	add_shlvl(t_env *env);
 void	clear_env(t_env *env);
-char	**list_to_matrix(t_env *env);
+char	**list_to_matrix(t_env *env, t_cmd *start_cmd);
 
 int		syntax_error_check(char *s);
+int		check_quotes(char *s);
 int		check_brackets(char *s);
 int		check_multi_brackets(char *s);
 int		check_space_brackets(char *s);

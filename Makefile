@@ -7,6 +7,7 @@ SOURCES = main.c \
 		env/env.c \
 		env/env_utils.c \
 		env/env_w_env.c \
+		env/env_list_to_matrix.c \
 		parsing/syntax.c \
 		parsing/syntax_utils.c \
 		parsing/parsing.c \

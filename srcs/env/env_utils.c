@@ -6,11 +6,33 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 10:09:17 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/12 11:45:12 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/19 01:59:17 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	add_shlvl(t_env *env)
+{
+	int		shlvl;
+
+	while (env != NULL)
+	{
+		if (ft_strncmp(env->name, "SHLVL", 6) == 0)
+		{
+			shlvl = ft_atoi(env->value);
+			free(env->value);
+			env->value = ft_itoa(shlvl + 1);
+			if (env->value == NULL)
+			{
+				clear_env(env);
+				ft_putstr_fd("Malloc Failed !\n", 2);
+				exit (1);
+			}
+		}
+		env = env->next;
+	}
+}
 
 t_env	*fill_env(char **tmp)
 {
@@ -46,48 +68,13 @@ void	clear_env(t_env *env)
 
 	while (env != NULL)
 	{
-		free(env->name);
-		free(env->value);
+		if (env->name != NULL)
+			free(env->name);
+		if (env->value != NULL)
+			free(env->value);
 		tmp = env;
 		env = env->next;
 		free(tmp);
 	}
 	free(env);
-}
-
-int	size_env(t_env *env)
-{
-	int	i;
-
-	i = 0;
-	while (env != NULL)
-	{
-		env = env->next;
-		i ++;
-	}
-	return (i);
-}
-
-char	**list_to_matrix(t_env *env)
-{
-	char	**mat;
-	char	*tmp1;
-	char	*tmp2;
-	int		i;
-
-	i = 0;
-	mat = malloc(sizeof(char *) * (size_env(env) + 1));
-	while (env != NULL)
-	{
-		tmp1 = ft_strdup(env->name);
-		tmp2 = ft_strjoin(tmp1, "=");
-		free(tmp1);
-		mat[i] = ft_strjoin(tmp2, env->value);
-		free(tmp2);
-		mat[i][ft_strlen(env->name) + ft_strlen(env->value) + 1] = '\0';
-		env = env->next;
-		i ++;
-	}
-	mat[i] = NULL;
-	return (mat);
 }

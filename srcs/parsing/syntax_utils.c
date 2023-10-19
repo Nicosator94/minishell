@@ -6,11 +6,39 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 10:56:08 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/12 11:00:34 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/18 23:35:56 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+int	check_quotes(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] != '\0')
+	{
+		if (s[i] == '\'')
+		{
+			i ++;
+			while (s[i] != '\'' && s[i] != '\0')
+				i ++;
+			if (s[i] == '\0')
+				return (1);
+		}
+		else if (s[i] == '\"')
+		{
+			i ++;
+			while (s[i] != '\"' && s[i] != '\0')
+				i ++;
+			if (s[i] == '\0')
+				return (1);
+		}
+		i ++;
+	}
+	return (0);
+}
 
 int	check_brackets(char *s)
 {

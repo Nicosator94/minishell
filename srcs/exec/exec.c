@@ -6,29 +6,38 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 11:07:38 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/12 16:29:34 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/19 01:45:43 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	take_infile(t_cmd *cmd)
+int	take_infile(t_cmd *cmd, int tmp_file)
 {
 	t_redi	*tmp;
 	int		infile;
 
-	infile = open("/dev/stdin", O_RDONLY);
+	infile = tmp_file;
 	tmp = cmd->file;
 	while (tmp != NULL)
 	{
 		if (tmp->status == 1)
 		{
-			close(infile);
+			if (infile > 0)
+				close(infile);
 			infile = open(tmp->file, O_RDONLY);
+			if (infile == -1)
+			{
+				ft_putstr_fd("minishell: ", 2);
+				ft_putstr_fd(tmp->file, 2);
+				ft_putstr_fd(": Permission denied\n", 2);
+				return (-1);
+			}
 		}
 		else if (tmp->status == 3)
 		{
-			close(infile);
+			if (infile > 0)
+				close(infile);
 			// here doc
 		}
 		tmp = tmp->next;
@@ -36,24 +45,42 @@ int	take_infile(t_cmd *cmd)
 	return (infile);
 }
 
-int	take_outfile(t_cmd *cmd)
+int	take_outfile(t_cmd *cmd, int last)
 {
 	t_redi	*tmp;
 	int		outfile;
 
-	outfile = open("/dev/stdout", O_WRONLY);
+	outfile = -2;
+	if (last == 1)
+		outfile = open("/dev/stdout", O_WRONLY | O_TRUNC);
 	tmp = cmd->file;
 	while (tmp != NULL)
 	{
 		if (tmp->status == 2)
 		{
-			close(outfile);
-			outfile = open(tmp->file, O_WRONLY | O_TRUNC);
+			if (outfile > 0)
+				close(outfile);
+			outfile = open(tmp->file, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+			if (outfile == -1)
+			{
+				ft_putstr_fd("minishell: ", 2);
+				ft_putstr_fd(tmp->file, 2);
+				ft_putstr_fd(": Permission denied\n", 2);
+				return (-1);
+			}
 		}
 		else if (tmp->status == 4)
 		{
-			close(outfile);
-			outfile = open(tmp->file, O_WRONLY | O_APPEND);
+			if (outfile > 0)
+				close(outfile);
+			outfile = open(tmp->file, O_WRONLY | O_APPEND | O_CREAT, 0644);
+			if (outfile == -1)
+			{
+				ft_putstr_fd("minishell: ", 2);
+				ft_putstr_fd(tmp->file, 2);
+				ft_putstr_fd(": Permission denied\n", 2);
+				return (-1);
+			}
 		}
 		tmp = tmp->next;
 	}
@@ -137,31 +164,136 @@ void	exec_failed(t_cmd *cmd, t_env *env, char *path, char **mat_env)
 	exit(0);
 }
 
-void	exec_cmd(t_cmd *cmd, t_env *env)
+void	print_failed(char *cmd)
+{
+	int	i;
+	int	trig;
+
+	i = 0;
+	trig = 0;
+	while (cmd[i] != '\0')
+	{
+		if (cmd[i] == '/')
+			trig = 1;
+		i ++;
+	}
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd, 2);
+	if (trig == 0)
+		ft_putstr_fd(": command not found\n", 2);
+	else
+		ft_putstr_fd(": No such file or directory\n", 2);
+}
+
+int	exec_cmd(t_cmd *cmd, t_env *env, int tmp_file, t_cmd *start_cmd)
 {
 	int		infile;
 	int		outfile;
 	char	*path;
 	char	**mat_env;
 	pid_t	pid;
+	int		tube[2];
 
-	infile = take_infile(cmd);
-	outfile = take_outfile(cmd);
+	pipe(tube);
+	infile = take_infile(cmd, tmp_file);
+	outfile = take_outfile(cmd, 0);
+	if (infile == -1 || outfile == -1)
+	{
+		if (infile > 0)
+			close(infile);
+		if (outfile > 0)
+			close(outfile);
+		close(tube[1]);
+		return (tube[0]);
+	}
 	pid = fork();
 	if (pid == 0)
 	{
-		dup2(infile, 0);
-		dup2(outfile, 1);
-		close(infile);
-		close(outfile);
+		close(tube[0]);
+		if (infile > 0)
+		{
+			dup2(infile, 0);
+			close(infile);
+		}
+		if (outfile > 0)
+		{
+			dup2(outfile, 1);
+			close(outfile);
+		}
+		else
+		{
+			dup2(tube[1], 1);
+			close(tube[1]);
+		}
+		mat_env = list_to_matrix(env, start_cmd);
 		path = get_path(cmd->cmd[0], env);
-		mat_env = list_to_matrix(env);
 		if (path != NULL && mat_env != NULL)
 			execve(path, cmd->cmd, mat_env);
-		exec_failed(cmd, env, path, mat_env);
+		print_failed(cmd->cmd[0]);
+		exec_failed(start_cmd, env, path, mat_env);
 	}
-	close(infile);
-	close(outfile);
+	if (infile > 0)
+		close(infile);
+	if (outfile > 0)
+		close(outfile);
+	close(tube[1]);
+	return (tube[0]);
+}
+
+void	exec_last_cmd(t_cmd *cmd, t_env *env, int tmp_file, t_cmd *start_cmd)
+{
+	int		infile;
+	int		outfile;
+	char	*path;
+	char	**mat_env;
+	pid_t	pid;
+	int		tube[2];
+
+	pipe(tube);
+	infile = take_infile(cmd, tmp_file);
+	outfile = take_outfile(cmd, 1);
+	if (infile == -1 || outfile == -1)
+	{
+		if (infile > 0)
+			close(infile);
+		if (outfile > 0)
+			close(outfile);
+		close(tube[1]);
+		close(tube[0]);
+		return ;
+	}
+	pid = fork();
+	if (pid == 0)
+	{
+		close(tube[0]);
+		if (infile > 0)
+		{
+			dup2(infile, 0);
+			close(infile);
+		}
+		if (outfile > 0)
+		{
+			dup2(outfile, 1);
+			close(outfile);
+		}
+		else
+		{
+			dup2(tube[1], 1);
+			close(tube[1]);
+		}
+		mat_env = list_to_matrix(env, start_cmd);
+		path = get_path(cmd->cmd[0], env);
+		if (path != NULL && mat_env != NULL)
+			execve(path, cmd->cmd, mat_env);
+		print_failed(cmd->cmd[0]);
+		exec_failed(start_cmd, env, path, mat_env);
+	}
+	if (infile > 0)
+		close(infile);
+	if (outfile > 0)
+		close(outfile);
+	close(tube[1]);
+	close(tube[0]);
 }
 
 void	wait_all(t_cmd *cmd)
@@ -179,13 +311,16 @@ void	wait_all(t_cmd *cmd)
 void	exec(t_cmd *cmd, t_env *env)
 {
 	t_cmd	*tmp;
+	int		tmp_file;
 
 	tmp = cmd;
-	while (tmp != NULL)
+	tmp_file = -2;
+	while (tmp->next != NULL)
 	{
-		exec_cmd(tmp, env);
+		tmp_file = exec_cmd(tmp, env, tmp_file, cmd);
 		tmp = tmp->next;
 	}
+	exec_last_cmd(tmp, env, tmp_file, cmd);
 	wait_all(cmd);
 }
 
