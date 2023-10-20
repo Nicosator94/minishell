@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 11:07:38 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/19 01:45:43 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/20 07:43:36 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	take_infile(t_cmd *cmd, int tmp_file)
 	tmp = cmd->file;
 	while (tmp != NULL)
 	{
-		if (tmp->status == 1)
+		if (tmp->status == 1 || tmp->status == 3)
 		{
 			if (infile > 0)
 				close(infile);
@@ -33,12 +33,6 @@ int	take_infile(t_cmd *cmd, int tmp_file)
 				ft_putstr_fd(": Permission denied\n", 2);
 				return (-1);
 			}
-		}
-		else if (tmp->status == 3)
-		{
-			if (infile > 0)
-				close(infile);
-			// here doc
 		}
 		tmp = tmp->next;
 	}
@@ -127,6 +121,8 @@ char	*get_path(char *cmd, t_env *env)
 	int		i;
 
 	i = 0;
+	if (cmd == NULL)
+		return (NULL);
 	if (cmd[0] == '.' || cmd[0] == '/')
 		return(ft_strdup(cmd));
 	path_of_env = get_list_of_path(env);
@@ -171,6 +167,8 @@ void	print_failed(char *cmd)
 
 	i = 0;
 	trig = 0;
+	if (cmd == NULL)
+		return ;
 	while (cmd[i] != '\0')
 	{
 		if (cmd[i] == '/')
@@ -221,10 +219,8 @@ int	exec_cmd(t_cmd *cmd, t_env *env, int tmp_file, t_cmd *start_cmd)
 			close(outfile);
 		}
 		else
-		{
 			dup2(tube[1], 1);
-			close(tube[1]);
-		}
+		close(tube[1]);
 		mat_env = list_to_matrix(env, start_cmd);
 		path = get_path(cmd->cmd[0], env);
 		if (path != NULL && mat_env != NULL)
@@ -277,10 +273,8 @@ void	exec_last_cmd(t_cmd *cmd, t_env *env, int tmp_file, t_cmd *start_cmd)
 			close(outfile);
 		}
 		else
-		{
 			dup2(tube[1], 1);
-			close(tube[1]);
-		}
+		close(tube[1]);
 		mat_env = list_to_matrix(env, start_cmd);
 		path = get_path(cmd->cmd[0], env);
 		if (path != NULL && mat_env != NULL)
@@ -321,6 +315,7 @@ void	exec(t_cmd *cmd, t_env *env)
 		tmp = tmp->next;
 	}
 	exec_last_cmd(tmp, env, tmp_file, cmd);
+	clean_here_doc(cmd);
 	wait_all(cmd);
 }
 

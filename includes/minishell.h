@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/19 01:46:05 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/19 04:58:06 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,9 @@ int		get_file(t_cmd *cmd, int i, t_env *env, t_cmd *start_cmd);
 int		get_command(t_cmd *cmd, int i, t_env *env, t_cmd *start_cmd);
 void	fill_mat_of_cmd(t_cmd *cmd, t_env *env, t_cmd *start_cmd);
 void	set_redi(t_cmd *cmd, t_env *env, t_cmd *start_cmd);
+
+void	create_here_doc(t_cmd *start_cmd, t_env *env);
+void	clean_here_doc(t_cmd *cmd);
 
 void	all_clear_command(t_env *env, t_cmd *cmd);
 void	all_free(t_env *env, t_cmd *cmd);

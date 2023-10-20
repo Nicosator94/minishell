@@ -18,6 +18,7 @@ SOURCES = main.c \
 		expend/treatment_cmd_utils.c \
 		expend/get_file.c \
 		expend/get_command.c \
+		expend/create_here_doc.c \
 		parsing/all_clear_command.c \
 		exec/exec.c \
 		builtin/cd.c \
