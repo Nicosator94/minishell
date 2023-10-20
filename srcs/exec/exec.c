@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 11:07:38 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/20 07:43:36 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/20 08:16:29 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,10 @@ int	exec_cmd(t_cmd *cmd, t_env *env, int tmp_file, t_cmd *start_cmd)
 
 	pipe(tube);
 	infile = take_infile(cmd, tmp_file);
-	outfile = take_outfile(cmd, 0);
+	if (cmd->next != NULL)
+		outfile = take_outfile(cmd, 0);
+	else
+		outfile = take_outfile(cmd, 1);
 	if (infile == -1 || outfile == -1)
 	{
 		if (infile > 0)
@@ -202,92 +205,44 @@ int	exec_cmd(t_cmd *cmd, t_env *env, int tmp_file, t_cmd *start_cmd)
 		if (outfile > 0)
 			close(outfile);
 		close(tube[1]);
+		if (cmd->next != NULL)
+			return (tube[0]);
+		close(tube[0]);
+		return (-1);
+	}
+	pid = fork();
+	if (pid == 0)
+	{
+		close(tube[0]);
+		if (infile > 0)
+		{
+			dup2(infile, 0);
+			close(infile);
+		}
+		if (outfile > 0)
+		{
+			dup2(outfile, 1);
+			close(outfile);
+		}
+		else
+			dup2(tube[1], 1);
+		close(tube[1]);
+		mat_env = list_to_matrix(env, start_cmd);
+		path = get_path(cmd->cmd[0], env);
+		if (path != NULL && mat_env != NULL)
+			execve(path, cmd->cmd, mat_env);
+		print_failed(cmd->cmd[0]);
+		exec_failed(start_cmd, env, path, mat_env);
+	}
+	if (infile > 0)
+		close(infile);
+	if (outfile > 0)
+		close(outfile);
+	close(tube[1]);
+	if (cmd->next != NULL)
 		return (tube[0]);
-	}
-	pid = fork();
-	if (pid == 0)
-	{
-		close(tube[0]);
-		if (infile > 0)
-		{
-			dup2(infile, 0);
-			close(infile);
-		}
-		if (outfile > 0)
-		{
-			dup2(outfile, 1);
-			close(outfile);
-		}
-		else
-			dup2(tube[1], 1);
-		close(tube[1]);
-		mat_env = list_to_matrix(env, start_cmd);
-		path = get_path(cmd->cmd[0], env);
-		if (path != NULL && mat_env != NULL)
-			execve(path, cmd->cmd, mat_env);
-		print_failed(cmd->cmd[0]);
-		exec_failed(start_cmd, env, path, mat_env);
-	}
-	if (infile > 0)
-		close(infile);
-	if (outfile > 0)
-		close(outfile);
-	close(tube[1]);
-	return (tube[0]);
-}
-
-void	exec_last_cmd(t_cmd *cmd, t_env *env, int tmp_file, t_cmd *start_cmd)
-{
-	int		infile;
-	int		outfile;
-	char	*path;
-	char	**mat_env;
-	pid_t	pid;
-	int		tube[2];
-
-	pipe(tube);
-	infile = take_infile(cmd, tmp_file);
-	outfile = take_outfile(cmd, 1);
-	if (infile == -1 || outfile == -1)
-	{
-		if (infile > 0)
-			close(infile);
-		if (outfile > 0)
-			close(outfile);
-		close(tube[1]);
-		close(tube[0]);
-		return ;
-	}
-	pid = fork();
-	if (pid == 0)
-	{
-		close(tube[0]);
-		if (infile > 0)
-		{
-			dup2(infile, 0);
-			close(infile);
-		}
-		if (outfile > 0)
-		{
-			dup2(outfile, 1);
-			close(outfile);
-		}
-		else
-			dup2(tube[1], 1);
-		close(tube[1]);
-		mat_env = list_to_matrix(env, start_cmd);
-		path = get_path(cmd->cmd[0], env);
-		if (path != NULL && mat_env != NULL)
-			execve(path, cmd->cmd, mat_env);
-		print_failed(cmd->cmd[0]);
-		exec_failed(start_cmd, env, path, mat_env);
-	}
-	if (infile > 0)
-		close(infile);
-	if (outfile > 0)
-		close(outfile);
-	close(tube[1]);
 	close(tube[0]);
+	return (-1);
 }
 
 void	wait_all(t_cmd *cmd)
@@ -309,12 +264,11 @@ void	exec(t_cmd *cmd, t_env *env)
 
 	tmp = cmd;
 	tmp_file = -2;
-	while (tmp->next != NULL)
+	while (tmp != NULL)
 	{
 		tmp_file = exec_cmd(tmp, env, tmp_file, cmd);
 		tmp = tmp->next;
 	}
-	exec_last_cmd(tmp, env, tmp_file, cmd);
 	clean_here_doc(cmd);
 	wait_all(cmd);
 }

@@ -6,33 +6,11 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 04:08:12 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/20 07:20:05 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/20 08:02:11 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-void	clean_here_doc(t_cmd *cmd)
-{
-	t_cmd	*tmp_cmd;
-	t_redi	*tmp_file;
-
-	tmp_cmd = cmd;
-	while (tmp_cmd != NULL)
-	{
-		tmp_file = tmp_cmd->file;
-		while (tmp_file != NULL)
-		{
-			if (tmp_file->status == 3)
-			{
-				if (access(tmp_file->file, F_OK) == 0)
-					unlink(tmp_file->file);
-			}
-			tmp_file = tmp_file->next;
-		}
-		tmp_cmd = tmp_cmd->next;
-	}
-}
 
 char	*create_file(char *lim, int nb, t_cmd *start_cmd, t_env *env)
 {
@@ -93,5 +71,27 @@ void	create_here_doc(t_cmd *start_cmd, t_env *env)
 			tmp = tmp->next;
 		}
 		cmd = cmd->next;
+	}
+}
+
+void	clean_here_doc(t_cmd *cmd)
+{
+	t_cmd	*tmp_cmd;
+	t_redi	*tmp_file;
+
+	tmp_cmd = cmd;
+	while (tmp_cmd != NULL)
+	{
+		tmp_file = tmp_cmd->file;
+		while (tmp_file != NULL)
+		{
+			if (tmp_file->status == 3)
+			{
+				if (access(tmp_file->file, F_OK) == 0)
+					unlink(tmp_file->file);
+			}
+			tmp_file = tmp_file->next;
+		}
+		tmp_cmd = tmp_cmd->next;
 	}
 }
