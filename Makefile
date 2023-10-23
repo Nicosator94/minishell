@@ -21,6 +21,9 @@ SOURCES = main.c \
 		expend/create_here_doc.c \
 		parsing/all_clear_command.c \
 		exec/exec.c \
+		exec/file.c \
+		exec/get_path.c \
+		exec/wait.c \
 		builtin/cd.c \
 		builtin/echo.c \
 		builtin/env.c \

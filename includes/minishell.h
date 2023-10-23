@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/19 04:58:06 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/20 12:53:01 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_cmd
 	char			**cmd;
 	t_redi			*file;
 	struct s_cmd	*next;
+	pid_t			pid;
 }	t_cmd;
 
 t_env	*create_own_env(char **env);
@@ -100,6 +101,10 @@ void	all_clear_command(t_env *env, t_cmd *cmd);
 void	all_free(t_env *env, t_cmd *cmd);
 
 void	exec(t_cmd *cmd, t_env *env);
+int		take_infile(t_cmd *cmd, int tmp_file);
+int		take_outfile(t_cmd *cmd, int last);
+char	*get_path(char *cmd, t_env *env);
+void	wait_all(t_cmd *cmd);
 
 int				cd(char **cmd, t_env *env);
 void			my_echo(char **cmd);
