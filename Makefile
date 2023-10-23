@@ -28,6 +28,8 @@ SOURCES = main.c \
 		builtin/echo.c \
 		builtin/env.c \
 		builtin/exit.c \
+		builtin/export_new_element.c \
+		builtin/export_print.c \
 		builtin/export.c \
 		builtin/pwd.c \
 		builtin/unset.c

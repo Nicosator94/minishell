@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/20 12:53:01 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/23 08:24:29 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	clean_here_doc(t_cmd *cmd);
 void	all_clear_command(t_env *env, t_cmd *cmd);
 void	all_free(t_env *env, t_cmd *cmd);
 
-void	exec(t_cmd *cmd, t_env *env);
+void	exec(t_cmd *cmd, t_env **env);
 int		take_infile(t_cmd *cmd, int tmp_file);
 int		take_outfile(t_cmd *cmd, int last);
 char	*get_path(char *cmd, t_env *env);

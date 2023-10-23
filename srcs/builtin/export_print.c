@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_print.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 20:13:03 by agomes-g          #+#    #+#             */
-/*   Updated: 2023/10/17 20:29:26 by agomes-g         ###   ########.fr       */
+/*   Updated: 2023/10/23 08:19:03 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	sort_list(t_env *env)
 	}
 }
 
-t_env	*copy_env_annexe(t_env *copy, t_env *tmp)
+t_env	*copy_env_annexe(/*t_env *copy, */t_env *tmp)
 {
 	t_env	*new;
 
@@ -80,7 +80,7 @@ t_env	*copy_env(t_env *env)
 	tmp = env;
 	while (tmp)
 	{
-		new = (copy_env_annexe(copy, tmp));
+		new = (copy_env_annexe(/*copy, */tmp));
 		if (!new)
 			return (NULL);
 		if (!copy)
