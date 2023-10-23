@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 10:09:17 by niromano          #+#    #+#             */
 /*   Updated: 2023/10/19 01:59:17 by niromano         ###   ########.fr       */

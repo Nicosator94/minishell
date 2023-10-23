@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   treatment_cmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 09:51:12 by niromano          #+#    #+#             */
 /*   Updated: 2023/10/19 04:07:49 by niromano         ###   ########.fr       */

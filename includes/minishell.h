@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
 /*   Updated: 2023/10/20 12:53:01 by niromano         ###   ########.fr       */
@@ -110,8 +110,16 @@ int				cd(char **cmd, t_env *env);
 void			my_echo(char **cmd);
 void			 my_env(char **cmd, t_env *env);
 unsigned int 	my_exit(char **cmd, t_env *env);
-void			export(char **cmd, t_env *env);
 void			pwd(char **cmd);
 void			unset(char **cmd, t_env **env);
+
+void	export(char **cmd, t_env *env);
+void	print_sort_list(t_env *env);
+char	*get_name(char *s);
+char	*get_value(char *s);
+void	add_back(t_env **lst, t_env *new);
+t_env	*new_element(char *name, char *value, char *cmd);
+
+int	size_env(t_env *env);
 
 #endif

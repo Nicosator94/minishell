@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 08:36:23 by agomes-g          #+#    #+#             */
-/*   Updated: 2023/10/12 11:42:48 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/17 21:42:57 by agomes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	check_option(char *opt)
 {
-	int i;
+	int	i;
 
 	i = 1;
 	if (!opt)
@@ -42,14 +42,14 @@ void	my_echo(char **cmd)
 	if (!cmd[i])
 	{
 		printf("\n");
-		return;
+		return ;
 	}
-	while(check_option(cmd[i]))
+	while (check_option(cmd[i]))
 	{
 		j ++;
 		i ++;
 	}
-	while(cmd[i])
+	while (cmd[i])
 	{
 		printf("%s", cmd[i]);
 		i ++;

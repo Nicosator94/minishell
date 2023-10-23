@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 11:07:38 by niromano          #+#    #+#             */
 /*   Updated: 2023/10/23 07:58:15 by niromano         ###   ########.fr       */

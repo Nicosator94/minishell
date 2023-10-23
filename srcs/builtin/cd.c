@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 09:00:36 by agomes-g          #+#    #+#             */
-/*   Updated: 2023/10/12 11:42:40 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/17 21:40:47 by agomes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ int	count(char **cmd)
 
 int	cd(char **cmd, t_env *env)
 {
-	int i;
-	char *home;
+	int		i;
+	char	*home;
 
 	i = 1;
 	if (count(cmd) > 1)
