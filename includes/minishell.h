@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/23 10:34:09 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/23 11:41:36 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,13 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 	pid_t			pid;
 }	t_cmd;
+
+typedef struct s_mini
+{
+	t_cmd	*cmd;
+	t_env	**env;
+	int		exit_status;
+}	t_mini;
 
 t_env	*create_own_env(char **env);
 t_env	*create_without_env(void);
