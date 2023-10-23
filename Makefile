@@ -20,6 +20,7 @@ SOURCES = main.c \
 		expend/get_command.c \
 		expend/create_here_doc.c \
 		parsing/all_clear_command.c \
+		exec/exec_builtin.c \
 		exec/exec.c \
 		exec/file.c \
 		exec/get_path.c \

@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/23 08:24:29 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/23 10:34:09 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,9 @@ int		take_infile(t_cmd *cmd, int tmp_file);
 int		take_outfile(t_cmd *cmd, int last);
 char	*get_path(char *cmd, t_env *env);
 void	wait_all(t_cmd *cmd);
+
+int		check_builtin(char *main_cmd);
+void	do_builtin(t_cmd *cmd, t_env **env, int trigger);
 
 int				cd(char **cmd, t_env *env);
 void			my_echo(char **cmd);
