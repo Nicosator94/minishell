@@ -6,39 +6,11 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 11:22:03 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/12 11:00:30 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/19 05:28:37 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-int	check_quotes(char *s)
-{
-	int	i;
-
-	i = 0;
-	while (s[i] != '\0')
-	{
-		if (s[i] == '\'')
-		{
-			i ++;
-			while (s[i] != '\'' && s[i] != '\0')
-				i ++;
-			if (s[i] == '\0')
-				return (1);
-		}
-		else if (s[i] == '\"')
-		{
-			i ++;
-			while (s[i] != '\"' && s[i] != '\0')
-				i ++;
-			if (s[i] == '\0')
-				return (1);
-		}
-		i ++;
-	}
-	return (0);
-}
 
 int	check_pipes(char *s)
 {

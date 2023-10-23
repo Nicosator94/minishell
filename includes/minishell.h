@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/12 11:50:54 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/20 12:53:01 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,15 +61,18 @@ typedef struct s_cmd
 	char			**cmd;
 	t_redi			*file;
 	struct s_cmd	*next;
+	pid_t			pid;
 }	t_cmd;
 
 t_env	*create_own_env(char **env);
 t_env	*create_without_env(void);
 t_env	*fill_env(char **tmp);
+void	add_shlvl(t_env *env);
 void	clear_env(t_env *env);
-char	**list_to_matrix(t_env *env);
+char	**list_to_matrix(t_env *env, t_cmd *start_cmd);
 
 int		syntax_error_check(char *s);
+int		check_quotes(char *s);
 int		check_brackets(char *s);
 int		check_multi_brackets(char *s);
 int		check_space_brackets(char *s);
@@ -91,9 +94,17 @@ int		get_command(t_cmd *cmd, int i, t_env *env, t_cmd *start_cmd);
 void	fill_mat_of_cmd(t_cmd *cmd, t_env *env, t_cmd *start_cmd);
 void	set_redi(t_cmd *cmd, t_env *env, t_cmd *start_cmd);
 
+void	create_here_doc(t_cmd *start_cmd, t_env *env);
+void	clean_here_doc(t_cmd *cmd);
+
 void	all_clear_command(t_env *env, t_cmd *cmd);
+void	all_free(t_env *env, t_cmd *cmd);
 
 void	exec(t_cmd *cmd, t_env *env);
+int		take_infile(t_cmd *cmd, int tmp_file);
+int		take_outfile(t_cmd *cmd, int last);
+char	*get_path(char *cmd, t_env *env);
+void	wait_all(t_cmd *cmd);
 
 int				cd(char **cmd, t_env *env);
 void			my_echo(char **cmd);
