@@ -7,6 +7,7 @@ SOURCES = main.c \
 		env/env.c \
 		env/env_utils.c \
 		env/env_w_env.c \
+		env/env_list_to_matrix.c \
 		parsing/syntax.c \
 		parsing/syntax_utils.c \
 		parsing/parsing.c \
@@ -17,8 +18,12 @@ SOURCES = main.c \
 		expend/treatment_cmd_utils.c \
 		expend/get_file.c \
 		expend/get_command.c \
+		expend/create_here_doc.c \
 		parsing/all_clear_command.c \
 		exec/exec.c \
+		exec/file.c \
+		exec/get_path.c \
+		exec/wait.c \
 		builtin/cd.c \
 		builtin/echo.c \
 		builtin/env.c \

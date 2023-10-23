@@ -6,41 +6,11 @@
 /*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:19:42 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/13 08:56:48 by agomes-g         ###   ########.fr       */
+/*   Updated: 2023/10/20 06:51:55 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	affiche_cmd(t_cmd *cmd)
-{
-	t_cmd	*tmp;
-	t_redi	*f_tmp;
-	int		i;
-
-	tmp = cmd;
-	while (tmp != NULL)
-	{
-		i = 0;
-		if (tmp->cmd[i] != NULL)
-			printf("Commandes =\n");
-		while (tmp->cmd[i] != NULL)
-		{
-			printf("		%s\n", tmp->cmd[i]);
-			i ++;
-		}
-		f_tmp = tmp->file;
-		if (f_tmp != NULL)
-			printf("Redirection =\n1 = INP / 2 = OUT / 3 = HERED / 4 = APP\n");
-		while (f_tmp != NULL)
-		{
-			printf("		 %d = %s\n", f_tmp->status, f_tmp->file);
-			f_tmp = f_tmp->next;
-		}
-		printf("----------------------------------------------------------\n");
-		tmp = tmp->next;
-	}
-}
 
 void	clear_cmd(t_cmd *cmd)
 {
@@ -91,8 +61,7 @@ int	prompt(t_env *env)
 		{
 			cmd = parsing(s, env);
 			treatment_cmd(cmd, env);
-			exec(cmd, &env);
-			// affiche_cmd(cmd);
+			exec(cmd, env);
 			clear_cmd(cmd);
 		}
 		else
@@ -111,6 +80,7 @@ int	main(int argc, char **argv, char **env)
 		own_env = create_without_env();
 	else
 		own_env = create_own_env(env);
+	add_shlvl(own_env);
 	prompt(own_env);
 	return (0);
 }

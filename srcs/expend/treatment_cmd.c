@@ -6,7 +6,7 @@
 /*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 09:51:12 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/13 08:28:35 by agomes-g         ###   ########.fr       */
+/*   Updated: 2023/10/19 04:07:49 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,4 +116,5 @@ void	treatment_cmd(t_cmd *cmd, t_env *env)
 		remove_quotes(cmd, env, start_cmd);
 		cmd = cmd->next;
 	}
+	create_here_doc(start_cmd, env);
 }
