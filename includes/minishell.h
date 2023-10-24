@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/24 09:11:54 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/24 11:26:42 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ t_env	*create_own_env(char **env);
 t_env	*create_without_env(void);
 t_env	*fill_env(char **tmp);
 void	add_shlvl(t_env *env);
-void	clear_env(t_env *env);
 char	**list_to_matrix(t_env *env, t_cmd *start_cmd);
 
 int		syntax_error_check(char *s);
@@ -85,12 +84,12 @@ int		check_multi_brackets(char *s);
 int		check_space_brackets(char *s);
 int		check_opposite_brackets(char *s);
 
-t_cmd	*parsing(char *s, t_mini minishell);
+t_cmd	*parsing(char *s, t_mini *minishell);
 int		pass_quotes(char *s, int i);
 char	*init_new_cmd(char *s, int i, t_cmd *cmd);
 void	add_null_cmd(t_cmd *cmd);
 
-void	expend(t_cmd *cmd, t_mini minishell);
+void	expend(t_cmd *cmd, t_mini *minishell);
 char	*replace_with_env_utils(char *s, char *tmp1, char *tmp2);
 char	*replace(char *name, t_env *env, int *exit_status);
 int		dollar_len(char *s, int i);
@@ -131,5 +130,13 @@ void	add_back(t_env **lst, t_env *new);
 t_env	*new_element(char *name, char *value, char *cmd);
 
 int	size_env(t_env *env);
+
+void	clear_all(t_mini *minishell);
+void	clear_all_malloc_failed(t_mini *minishell);
+void	clear_env(t_env *env);
+void	clear_cmd(t_cmd *cmd);
+void	clear_list_cmd(t_list *l_cmd);
+void	clear_mat_cmd(char **cmd);
+void	clear_redi(t_redi *redi);
 
 #endif

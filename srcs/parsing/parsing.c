@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 10:05:41 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/24 09:12:25 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/24 11:26:25 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static int	print_malloc_failed(t_env *env)
 {
 	clear_env(env);
+	rl_clear_history();
 	ft_putstr_fd("Malloc Failed !\n", 2);
 	return (1);
 }
@@ -76,11 +77,11 @@ t_cmd	*init_cmd(char *s, t_env *env)
 	return (start_cmd);
 }
 
-t_cmd	*parsing(char *s, t_mini minishell)
+t_cmd	*parsing(char *s, t_mini *minishell)
 {
 	t_cmd	*cmd;
 
-	cmd = init_cmd(s, minishell.env);
+	cmd = init_cmd(s, minishell->env);
 	expend(cmd, minishell);
 	return (cmd);
 }
