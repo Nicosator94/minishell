@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 11:11:38 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/20 11:11:58 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/23 10:44:02 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	**get_list_of_path(t_env *env)
 	tmp = env;
 	while (tmp != NULL && ft_strncmp(tmp->name, "PATH", 5) != 0)
 		tmp = tmp->next;
-	if (ft_strncmp(tmp->name, "PATH", 5) == 0)
+	if (tmp != NULL && ft_strncmp(tmp->name, "PATH", 5) == 0)
 	{
 		list_of_path = ft_split(tmp->value, ':');
 		return (list_of_path);
@@ -33,7 +33,7 @@ void	free_get_path(char **path_of_env, char *tmp)
 	int	i;
 
 	i = 0;
-	while (path_of_env[i] != NULL && path_of_env != NULL)
+	while (path_of_env != NULL && path_of_env[i] != NULL)
 	{
 		free(path_of_env[i]);
 		i ++;
@@ -58,7 +58,7 @@ char	*get_path(char *cmd, t_env *env)
 		return (ft_strdup(cmd));
 	path_of_env = get_list_of_path(env);
 	tmp = ft_strjoin("/", cmd);
-	while (path_of_env[i] != NULL)
+	while (path_of_env != NULL && path_of_env[i] != NULL)
 	{
 		path = ft_strjoin(path_of_env[i], tmp);
 		if (access(path, F_OK | X_OK) == 0)

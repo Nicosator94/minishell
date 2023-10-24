@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:19:42 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/23 08:24:42 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/24 09:41:59 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,10 @@ void	clear_cmd(t_cmd *cmd)
 	}
 }
 
-int	prompt(t_env *env)
+int	prompt(t_mini minishell)
 {
 	const char	*prompt = "minishell$ ";
 	char		*s;
-	t_cmd		*cmd;
 
 	while (1)
 	{
@@ -52,17 +51,19 @@ int	prompt(t_env *env)
 		if (s == NULL)
 		{
 			printf("exit\n");
-			clear_env(env);
+			clear_env(minishell.env);
 			exit(0);
 		}
 		if (s[0] != '\0')
 			add_history(s);
 		if (syntax_error_check(s) == 0)
 		{
-			cmd = parsing(s, env);
-			treatment_cmd(cmd, env);
-			exec(cmd, &env);
-			clear_cmd(cmd);
+			minishell.cmd = parsing(s, minishell);
+			treatment_cmd(minishell.cmd, minishell.env);
+			printf("before : %d\n", minishell.exit_status);
+			exec(minishell.cmd, &minishell.env, &minishell.exit_status);
+			printf("after : %d\n", minishell.exit_status);
+			clear_cmd(minishell.cmd);
 		}
 		else
 			free(s);
@@ -72,15 +73,17 @@ int	prompt(t_env *env)
 
 int	main(int argc, char **argv, char **env)
 {
-	t_env	*own_env;
+	t_mini	minishell;
 
 	(void)argc;
 	(void)argv;
+	minishell.cmd = NULL;
+	minishell.exit_status = 0;
 	if (env[0] == NULL)
-		own_env = create_without_env();
+		minishell.env = create_without_env();
 	else
-		own_env = create_own_env(env);
-	add_shlvl(own_env);
-	prompt(own_env);
+		minishell.env = create_own_env(env);
+	add_shlvl(minishell.env);
+	prompt(minishell);
 	return (0);
 }
