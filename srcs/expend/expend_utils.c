@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 07:59:04 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/12 08:01:37 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/24 06:45:55 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,15 @@ char	*replace_with_env_utils(char *s, char *tmp1, char *tmp2)
 	return (new_cmd);
 }
 
-char	*replace(char *name, t_env *env)
+char	*replace(char *name, t_env *env, int *exit_status)
 {
 	char	*value;
 
+	if (name[0] == '?')
+	{
+		free(name);
+		return (ft_itoa(*exit_status));
+	}
 	while (env != NULL)
 	{
 		if (ft_strncmp(env->name, name, ft_strlen(name) + 1) == 0)
@@ -63,6 +68,8 @@ int	dollar_len(char *s, int i)
 	int	len;
 
 	len = 0;
+	if (s[i] == '?')
+		return (1);
 	while (((s[i] >= 'a' && s[i] <= 'z')
 			|| (s[i] >= 'A' && s[i] <= 'Z')
 			|| (s[i] >= '0' && s[i] <= '9')

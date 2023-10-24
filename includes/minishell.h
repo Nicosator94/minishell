@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/23 11:41:36 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/24 09:11:54 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ typedef struct s_cmd
 typedef struct s_mini
 {
 	t_cmd	*cmd;
-	t_env	**env;
+	t_env	*env;
 	int		exit_status;
 }	t_mini;
 
@@ -85,14 +85,14 @@ int		check_multi_brackets(char *s);
 int		check_space_brackets(char *s);
 int		check_opposite_brackets(char *s);
 
-t_cmd	*parsing(char *s, t_env *env);
+t_cmd	*parsing(char *s, t_mini minishell);
 int		pass_quotes(char *s, int i);
 char	*init_new_cmd(char *s, int i, t_cmd *cmd);
 void	add_null_cmd(t_cmd *cmd);
 
-void	expend(t_cmd *line, t_env *env);
+void	expend(t_cmd *cmd, t_mini minishell);
 char	*replace_with_env_utils(char *s, char *tmp1, char *tmp2);
-char	*replace(char *name, t_env *env);
+char	*replace(char *name, t_env *env, int *exit_status);
 int		dollar_len(char *s, int i);
 
 void	treatment_cmd(t_cmd *cmd, t_env *env);
@@ -107,11 +107,11 @@ void	clean_here_doc(t_cmd *cmd);
 void	all_clear_command(t_env *env, t_cmd *cmd);
 void	all_free(t_env *env, t_cmd *cmd);
 
-void	exec(t_cmd *cmd, t_env **env);
+void	exec(t_cmd *cmd, t_env **env, int *exit_status);
 int		take_infile(t_cmd *cmd, int tmp_file);
 int		take_outfile(t_cmd *cmd, int last);
 char	*get_path(char *cmd, t_env *env);
-void	wait_all(t_cmd *cmd);
+void	wait_all(t_cmd *cmd, int *exit_status);
 
 int		check_builtin(char *main_cmd);
 void	do_builtin(t_cmd *cmd, t_env **env, int trigger);

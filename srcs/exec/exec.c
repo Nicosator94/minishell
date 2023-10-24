@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 11:07:38 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/23 10:48:40 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/24 06:21:54 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	exec_failed(t_cmd *cmd, t_env *env, char *path, char **mat_env)
 	}
 	if (mat_env != NULL)
 		free(mat_env);
-	exit(0);
+	exit(1);
 }
 
 void	print_failed(char *cmd)
@@ -119,7 +119,7 @@ int	exec_cmd(t_cmd *cmd, t_env **env, int tmp_file, t_cmd *start_cmd)
 	return (-1);
 }
 
-void	exec(t_cmd *cmd, t_env **env)
+void	exec(t_cmd *cmd, t_env **env, int *exit_status)
 {
 	t_cmd	*tmp;
 	int		tmp_file;
@@ -136,6 +136,6 @@ void	exec(t_cmd *cmd, t_env **env)
 			tmp = tmp->next;
 		}
 		clean_here_doc(cmd);
-		wait_all(cmd);
+		wait_all(cmd, exit_status);
 	}
 }
