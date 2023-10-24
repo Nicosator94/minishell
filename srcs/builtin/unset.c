@@ -6,7 +6,7 @@
 /*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 06:26:17 by agomes-g          #+#    #+#             */
-/*   Updated: 2023/10/17 21:39:05 by agomes-g         ###   ########.fr       */
+/*   Updated: 2023/10/24 10:20:48 by agomes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ void	delete_element(char *name, t_env **env)
 
 	new = NULL;
 	tmp = *env;
-	if (!(ft_strncmp(tmp->name, name, ft_strlen(tmp->name))))
+	if (!(ft_strncmp(tmp->name, name, ft_strlen(tmp->name) + 1)))
 	{
 		*env = tmp->next;
-		if (tmp->value)
+		if (tmp->value && tmp->value[0] != '\0')
 			free(tmp->value);
 		return (free(tmp->name), free(tmp));
 	}
-	while (tmp && (ft_strncmp(tmp->name, name, ft_strlen(tmp->name)) != 0))
+	while (tmp && (ft_strncmp(tmp->name, name, ft_strlen(tmp->name) + 1) != 0))
 	{
 		new = tmp;
 		tmp = tmp->next;
@@ -34,7 +34,7 @@ void	delete_element(char *name, t_env **env)
 	if (tmp)
 	{
 		new->next = tmp->next;
-		if (tmp->value)
+		if (tmp->value && tmp->value[0] != '\0')
 			free(tmp->value);
 		return (free(tmp->name), free(tmp));
 	}
@@ -47,11 +47,6 @@ void	unset(char **cmd, t_env **env)
 	i = 1;
 	if (!cmd[1] || !(*env))
 		return ;
-	if (cmd[i][0] == '-')
-	{
-		printf("Invalid option\n");
-		return ;
-	}
 	while (cmd[i])
 	{
 		delete_element(cmd[i], env);

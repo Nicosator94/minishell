@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/23 08:24:29 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/24 11:25:45 by agomes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,14 +106,15 @@ int		take_outfile(t_cmd *cmd, int last);
 char	*get_path(char *cmd, t_env *env);
 void	wait_all(t_cmd *cmd);
 
-int				cd(char **cmd, t_env *env);
+int				cd(char **cmd, t_env **env);
 void			my_echo(char **cmd);
-void			 my_env(char **cmd, t_env *env);
+void			my_env(t_env *env);
 unsigned int 	my_exit(char **cmd, t_env *env);
-void			pwd(char **cmd);
+void			pwd(void);
 void			unset(char **cmd, t_env **env);
 
-void	export(char **cmd, t_env *env);
+void	export(char **cmd, t_env **env);
+int		check_occurence(t_env **env, t_env *new);
 void	print_sort_list(t_env *env);
 char	*get_name(char *s);
 char	*get_value(char *s);
