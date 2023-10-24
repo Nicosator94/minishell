@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 11:07:38 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/24 06:21:54 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/24 09:30:49 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,10 @@ void	exec(t_cmd *cmd, t_env **env, int *exit_status)
 	tmp = cmd;
 	tmp_file = -2;
 	if (tmp->next == NULL && check_builtin(cmd->cmd[0]) == 0)
+	{
 		do_builtin(cmd, env, 1);
+		*exit_status = 0;
+	}
 	else
 	{
 		while (tmp != NULL)
