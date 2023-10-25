@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:19:42 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/24 12:38:39 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/25 09:06:11 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,8 @@ int	prompt(t_mini *minishell)
 		if (syntax_error_check(s) == 0)
 		{
 			minishell->cmd = parsing(s, minishell);
-			treatment_cmd(minishell->cmd, minishell->env);
-			printf("before : %d\n", minishell->exit_status);
-			exec(minishell->cmd, &minishell->env, &minishell->exit_status);
-			printf("after : %d\n", minishell->exit_status);
+			treatment_cmd(minishell);
+			exec(minishell);
 			clear_cmd(minishell->cmd);
 			minishell->cmd = NULL;
 		}

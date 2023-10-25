@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 10:12:14 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/24 11:49:28 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/25 08:52:56 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,18 +42,21 @@ void	clear_list_cmd(t_list *l_cmd)
 	}
 }
 
-void	clear_mat_cmd(char **cmd)
+void	clear_mat(char **mat)
 {
 	int	i;
 
 	i = 0;
-	while (cmd[i] != NULL)
+	if (mat != NULL)
 	{
-		free(cmd[i]);
-		i ++;
+		while (mat[i] != NULL)
+		{
+			free(mat[i]);
+			i ++;
+		}
+		free(mat);
+		mat = NULL;
 	}
-	free(cmd);
-	cmd = NULL;
 }
 
 void	clear_redi(t_redi *redi)
@@ -63,7 +66,14 @@ void	clear_redi(t_redi *redi)
 	while (redi != NULL)
 	{
 		if (redi->file != NULL)
+		{
+			if (redi->status == 3)
+			{
+				if (access(redi->file, F_OK) == 0)
+					unlink(redi->file);
+			}
 			free(redi->file);
+		}
 		tmp = redi;
 		redi = redi->next;
 		free(tmp);
@@ -81,7 +91,7 @@ void	clear_cmd(t_cmd *cmd)
 		if (cmd->l_cmd != NULL)
 			clear_list_cmd(cmd->l_cmd);
 		if (cmd->cmd != NULL)
-			clear_mat_cmd(cmd->cmd);
+			clear_mat(cmd->cmd);
 		if (cmd->file != NULL)
 			clear_redi(cmd->file);
 		tmp = cmd;
