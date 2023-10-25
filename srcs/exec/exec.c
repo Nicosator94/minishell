@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 11:07:38 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/25 09:03:03 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/25 12:39:06 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	exec_cmd(t_cmd *cmd, t_mini *minishell, int tmp_file)
 	int		tube[2];
 
 	pipe(tube);
+	cmd->pid = -2;
 	file[0] = take_infile(cmd, tmp_file);
 	if (cmd->next != NULL)
 		file[1] = take_outfile(cmd, 0);

@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 09:06:23 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/25 07:54:06 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/25 11:50:22 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,12 @@ void	do_builtin(t_cmd *cmd, t_env **env, int trigger)
 	{
 		outfile = take_outfile(cmd, 1);
 		real_outfile = open("/dev/stdout", O_WRONLY);
+		if (outfile == -1)
+		{
+			if (real_outfile > 0)
+				close(real_outfile);
+			return ;
+		}
 		dup2(outfile, 1);
 		close(outfile);
 	}
@@ -61,7 +67,10 @@ void	do_builtin(t_cmd *cmd, t_env **env, int trigger)
 		my_exit(cmd->cmd, *env);
 	if (trigger == 1)
 	{
-		dup2(real_outfile, 1);
-		close(real_outfile);
+		if (real_outfile > 0)
+		{
+			dup2(real_outfile, 1);
+			close(real_outfile);
+		}
 	}
 }

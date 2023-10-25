@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:19:42 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/25 09:06:11 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/25 11:56:04 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,25 @@ int	prompt(t_mini *minishell)
 	return (0);
 }
 
+void	sigint()
+{
+	printf("\nminishell$ ");
+}
+
+void	sigquit()
+{
+	printf("\n");
+	rl_on_new_line();
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	t_mini	*minishell;
 
 	(void)argc;
 	(void)argv;
+	signal(SIGQUIT, &sigquit);
+	signal(SIGINT, &sigint);
 	minishell = malloc(sizeof(t_mini));
 	if (minishell == NULL)
 	{
@@ -60,6 +73,7 @@ int	main(int argc, char **argv, char **env)
 	else
 		minishell->env = create_own_env(env);
 	add_shlvl(minishell->env);
+	minishell->cmd = NULL;
 	prompt(minishell);
 	return (0);
 }
