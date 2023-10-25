@@ -6,24 +6,24 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 04:08:12 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/20 09:51:18 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/25 09:13:19 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-char	*create_name(int nb, t_env *env, t_cmd *start_cmd)
+char	*create_name(int nb, t_mini *minishell)
 {
 	char	*name;
 	char	*number;
 
 	number = ft_itoa(nb);
 	if (number == NULL)
-		all_clear_command(env, start_cmd);
+		clear_all_malloc_failed(minishell);
 	name = ft_strjoin("/tmp/here_doc_", number);
 	free(number);
 	if (name == NULL)
-		all_clear_command(env, start_cmd);
+		clear_all_malloc_failed(minishell);
 	return (name);
 }
 
@@ -41,13 +41,13 @@ void	end_of_here_doc(char *s, char *lim, int fd)
 	close(fd);
 }
 
-char	*create_file(char *lim, int nb, t_cmd *start_cmd, t_env *env)
+char	*create_file(char *lim, int nb, t_mini *minishell)
 {
 	char	*name;
 	char	*s;
 	int		fd;
 
-	name = create_name(nb, env, start_cmd);
+	name = create_name(nb, minishell);
 	fd = open(name, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd != -1)
 	{
@@ -68,13 +68,13 @@ char	*create_file(char *lim, int nb, t_cmd *start_cmd, t_env *env)
 	return (name);
 }
 
-void	create_here_doc(t_cmd *start_cmd, t_env *env)
+void	create_here_doc(t_mini *minishell)
 {
 	t_cmd	*cmd;
 	t_redi	*tmp;
 	int		nb;
 
-	cmd = start_cmd;
+	cmd = minishell->cmd;
 	nb = 1;
 	while (cmd != NULL)
 	{
@@ -83,7 +83,7 @@ void	create_here_doc(t_cmd *start_cmd, t_env *env)
 		{
 			if (tmp->status == 3)
 			{
-				tmp->file = create_file(tmp->file, nb, start_cmd, env);
+				tmp->file = create_file(tmp->file, nb, minishell);
 				nb += 1;
 			}
 			tmp = tmp->next;

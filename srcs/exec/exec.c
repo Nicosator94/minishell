@@ -6,29 +6,11 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 11:07:38 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/24 09:30:49 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/25 09:03:03 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-void	exec_failed(t_cmd *cmd, t_env *env, char *path, char **mat_env)
-{
-	int	i;
-
-	i = 0;
-	all_free(env, cmd);
-	if (path != NULL)
-		free(path);
-	while (mat_env[i] != NULL && mat_env != NULL)
-	{
-		free(mat_env[i]);
-		i ++;
-	}
-	if (mat_env != NULL)
-		free(mat_env);
-	exit(1);
-}
 
 void	print_failed(char *cmd)
 {
@@ -53,7 +35,26 @@ void	print_failed(char *cmd)
 		ft_putstr_fd(": No such file or directory\n", 2);
 }
 
-int	exec_cmd(t_cmd *cmd, t_env **env, int tmp_file, t_cmd *start_cmd)
+void	exec_failed(t_mini *minishell, char *path, char **mat_env, char *cmd)
+{
+	int	i;
+
+	i = 0;
+	print_failed(cmd);
+	if (path != NULL)
+		free(path);
+	while (mat_env[i] != NULL && mat_env != NULL)
+	{
+		free(mat_env[i]);
+		i ++;
+	}
+	if (mat_env != NULL)
+		free(mat_env);
+	clear_all(minishell);
+	exit(1);
+}
+
+int	exec_cmd(t_cmd *cmd, t_mini *minishell, int tmp_file)
 {
 	int		file[2];
 	char	*path;
@@ -97,16 +98,15 @@ int	exec_cmd(t_cmd *cmd, t_env **env, int tmp_file, t_cmd *start_cmd)
 		close(tube[1]);
 		if (check_builtin(cmd->cmd[0]) == 0)
 		{
-			do_builtin(cmd, env, 0);
-			all_free(*env, start_cmd);
+			do_builtin(cmd, &minishell->env, 0);
+			clear_all(minishell);
 			exit(0);
 		}
-		mat_env = list_to_matrix(*env, start_cmd);
-		path = get_path(cmd->cmd[0], *env);
+		mat_env = list_to_matrix(minishell);
+		path = get_path(cmd->cmd[0], minishell);
 		if (path != NULL && mat_env != NULL)
 			execve(path, cmd->cmd, mat_env);
-		print_failed(cmd->cmd[0]);
-		exec_failed(start_cmd, *env, path, mat_env);
+		exec_failed(minishell, path, mat_env, cmd->cmd[0]);
 	}
 	if (file[0] > 0)
 		close(file[0]);
@@ -119,26 +119,25 @@ int	exec_cmd(t_cmd *cmd, t_env **env, int tmp_file, t_cmd *start_cmd)
 	return (-1);
 }
 
-void	exec(t_cmd *cmd, t_env **env, int *exit_status)
+void	exec(t_mini *minishell)
 {
 	t_cmd	*tmp;
 	int		tmp_file;
 
-	tmp = cmd;
+	tmp = minishell->cmd;
 	tmp_file = -2;
-	if (tmp->next == NULL && check_builtin(cmd->cmd[0]) == 0)
+	if (tmp->next == NULL && check_builtin(tmp->cmd[0]) == 0)
 	{
-		do_builtin(cmd, env, 1);
-		*exit_status = 0;
+		do_builtin(tmp, &minishell->env, 1);
+		minishell->exit_status = 0;
 	}
 	else
 	{
 		while (tmp != NULL)
 		{
-			tmp_file = exec_cmd(tmp, env, tmp_file, cmd);
+			tmp_file = exec_cmd(tmp, minishell, tmp_file);
 			tmp = tmp->next;
 		}
-		clean_here_doc(cmd);
-		wait_all(cmd, exit_status);
+		wait_all(minishell);
 	}
 }

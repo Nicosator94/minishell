@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   treatment_cmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 09:51:12 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/19 04:07:49 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/25 06:54:24 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	separate_cmd(t_cmd *cmd, t_env *env, t_cmd *start_cmd)
+void	separate_cmd(t_cmd *cmd, t_mini *minishell)
 {
 	int		i;
 
@@ -22,9 +22,9 @@ void	separate_cmd(t_cmd *cmd, t_env *env, t_cmd *start_cmd)
 	while (cmd->line[i] != '\0')
 	{
 		if (cmd->line[i] == '<' || cmd->line[i] == '>')
-			i = get_file(cmd, i, env, start_cmd);
+			i = get_file(cmd, i, minishell);
 		else
-			i = get_command(cmd, i, env, start_cmd);
+			i = get_command(cmd, i, minishell);
 		while ((cmd->line[i] == ' '
 				|| (cmd->line[i] >= 9 && cmd->line[i] <= 13))
 			&& cmd->line[i] != '\0')
@@ -63,7 +63,7 @@ char	*rm(char *s, int start, int end)
 	return (new_s);
 }
 
-char	*remove_quotes_utils(char *cmd, t_env *env, t_cmd *start_cmd)
+char	*remove_quotes_utils(char *cmd, t_mini *minishell)
 {
 	int		i;
 	int		start;
@@ -81,7 +81,7 @@ char	*remove_quotes_utils(char *cmd, t_env *env, t_cmd *start_cmd)
 				i ++;
 			cmd = rm(cmd, start, i);
 			if (cmd == NULL)
-				all_clear_command(env, start_cmd);
+				clear_all_malloc_failed(minishell);
 			i -= 2;
 		}
 		i ++;
@@ -89,32 +89,32 @@ char	*remove_quotes_utils(char *cmd, t_env *env, t_cmd *start_cmd)
 	return (cmd);
 }
 
-void	remove_quotes(t_cmd *cmd, t_env *env, t_cmd *start_cmd)
+void	remove_quotes(t_cmd *cmd, t_mini *minishell)
 {
 	int		i;
 
 	i = 0;
 	while (cmd->cmd[i] != NULL)
 	{
-		cmd->cmd[i] = remove_quotes_utils(cmd->cmd[i], env, start_cmd);
+		cmd->cmd[i] = remove_quotes_utils(cmd->cmd[i], minishell);
 		i ++;
 	}
 }
 
-void	treatment_cmd(t_cmd *cmd, t_env *env)
+void	treatment_cmd(t_mini *minishell)
 {
-	t_cmd	*start_cmd;
+	t_cmd	*tmp;
 
-	add_null_cmd(cmd);
-	start_cmd = cmd;
-	while (cmd != NULL)
+	add_null_cmd(minishell->cmd);
+	tmp = minishell->cmd;
+	while (tmp != NULL)
 	{
-		separate_cmd(cmd, env, start_cmd);
-		fill_mat_of_cmd(cmd, env, start_cmd);
-		if (cmd->file != NULL)
-			set_redi(cmd, env, start_cmd);
-		remove_quotes(cmd, env, start_cmd);
-		cmd = cmd->next;
+		separate_cmd(tmp, minishell);
+		fill_mat_of_cmd(tmp, minishell);
+		if (tmp->file != NULL)
+			set_redi(tmp, minishell);
+		remove_quotes(tmp, minishell);
+		tmp = tmp->next;
 	}
-	create_here_doc(start_cmd, env);
+	create_here_doc(minishell);
 }

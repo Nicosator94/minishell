@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 14:01:35 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/11 15:24:16 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/25 06:49:07 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	add_cmd(t_cmd *cmd, t_list *add)
 	}
 }
 
-int	get_command(t_cmd *cmd, int i, t_env *env, t_cmd *start_cmd)
+int	get_command(t_cmd *cmd, int i, t_mini *minishell)
 {
 	int		len;
 	t_list	*add;
@@ -80,12 +80,12 @@ int	get_command(t_cmd *cmd, int i, t_env *env, t_cmd *start_cmd)
 	len = get_len_of_command(&cmd->line[i]);
 	add = malloc(sizeof(t_redi));
 	if (add == NULL)
-		all_clear_command(env, start_cmd);
+		clear_all_malloc_failed(minishell);
 	add->content = copy_cmd(&cmd->line[i], len);
 	if (add->content == NULL)
 	{
 		free(add);
-		all_clear_command(env, start_cmd);
+		clear_all_malloc_failed(minishell);
 	}
 	add->next = NULL;
 	add_cmd(cmd, add);

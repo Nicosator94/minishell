@@ -6,13 +6,13 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 08:45:04 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/12 09:22:42 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/25 06:52:31 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	fill_mat_of_cmd(t_cmd *cmd, t_env *env, t_cmd *start_cmd)
+void	fill_mat_of_cmd(t_cmd *cmd, t_mini *minishell)
 {
 	int		i;
 	t_list	*tmp;
@@ -20,12 +20,12 @@ void	fill_mat_of_cmd(t_cmd *cmd, t_env *env, t_cmd *start_cmd)
 	i = 0;
 	cmd->cmd = malloc(sizeof(char *) * (ft_lstsize(cmd->l_cmd) + 1));
 	if (cmd->cmd == NULL)
-		all_clear_command(env, start_cmd);
+		clear_all_malloc_failed(minishell);
 	while (cmd->l_cmd != NULL)
 	{
 		cmd->cmd[i] = ft_strdup(cmd->l_cmd->content);
 		if (cmd->cmd[i] == NULL)
-			all_clear_command(env, start_cmd);
+			clear_all_malloc_failed(minishell);
 		i ++;
 		free(cmd->l_cmd->content);
 		tmp = cmd->l_cmd->next;
@@ -72,7 +72,7 @@ void	set_status(t_redi *file)
 	}
 }
 
-void	set_redi(t_cmd *cmd, t_env *env, t_cmd *start_cmd)
+void	set_redi(t_cmd *cmd, t_mini *minishell)
 {
 	t_redi	*tmp;
 
@@ -82,7 +82,7 @@ void	set_redi(t_cmd *cmd, t_env *env, t_cmd *start_cmd)
 		set_status(tmp);
 		tmp->file = set_file(tmp);
 		if (tmp->file == NULL)
-			all_clear_command(env, start_cmd);
+			clear_all_malloc_failed(minishell);
 		tmp = tmp->next;
 	}
 }
