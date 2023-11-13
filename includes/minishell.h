@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/13 07:32:05 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/13 13:14:15 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,8 @@ char	*get_path(char *cmd, t_mini *minishell);
 void	wait_all(t_mini *minishell);
 
 int		check_builtin(char *main_cmd);
-void	do_builtin(t_cmd *cmd, t_env **env, int trigger);
+int		do_builtin(t_cmd *cmd, t_mini *minishell);
+void	do_builtin_in_exec(t_cmd *cmd, t_mini *minishell);
 
 int				cd(char **cmd, t_env *env);
 void			my_echo(char **cmd);

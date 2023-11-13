@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 11:07:38 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/13 06:22:39 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/13 13:15:12 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,27 +62,24 @@ int	exec_cmd(t_cmd *cmd, t_mini *minishell, int tmp_file)
 	int		tube[2];
 
 	pipe(tube);
-	cmd->pid = -2;
 	file[0] = take_infile(cmd, tmp_file);
 	if (cmd->next != NULL)
 		file[1] = take_outfile(cmd, 0);
 	else
 		file[1] = take_outfile(cmd, 1);
-	if (file[0] == -1 || file[1] == -1)
-	{
-		if (file[0] > 0)
-			close(file[0]);
-		if (file[1] > 0)
-			close(file[1]);
-		close(tube[1]);
-		if (cmd->next != NULL)
-			return (tube[0]);
-		close(tube[0]);
-		return (-1);
-	}
 	cmd->pid = fork();
 	if (cmd->pid == 0)
 	{
+		if (file[0] == -1 || file[1] == -1)
+		{
+			if (file[0] > 0)
+				close(file[0]);
+			if (file[1] > 0)
+				close(file[1]);
+			close(tube[1]);
+			close(tube[0]);
+			exit(1);
+		}
 		close(tube[0]);
 		if (file[0] > 0)
 		{
@@ -98,11 +95,7 @@ int	exec_cmd(t_cmd *cmd, t_mini *minishell, int tmp_file)
 			dup2(tube[1], 1);
 		close(tube[1]);
 		if (check_builtin(cmd->cmd[0]) == 0)
-		{
-			do_builtin(cmd, &minishell->env, 0);
-			clear_all(minishell);
-			exit(0);
-		}
+			do_builtin_in_exec(cmd, minishell);
 		mat_env = list_to_matrix(minishell);
 		path = get_path(cmd->cmd[0], minishell);
 		if (path != NULL && mat_env != NULL)
@@ -129,8 +122,8 @@ void	exec(t_mini *minishell)
 	tmp_file = -2;
 	if (tmp->next == NULL && check_builtin(tmp->cmd[0]) == 0)
 	{
-		do_builtin(tmp, &minishell->env, 1);
-		minishell->exit_status = 0;
+		if (do_builtin(tmp, minishell) == -2)
+			clear_all_malloc_failed(minishell);
 	}
 	else
 	{
