@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:19:42 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/25 11:56:04 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/13 07:37:33 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,10 @@ int	prompt(t_mini *minishell)
 
 void	sigint()
 {
-	printf("\nminishell$ ");
-}
-
-void	sigquit()
-{
 	printf("\n");
 	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 int	main(int argc, char **argv, char **env)
@@ -59,8 +56,8 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
-	signal(SIGQUIT, &sigquit);
 	signal(SIGINT, &sigint);
+	signal(SIGQUIT, SIG_IGN);
 	minishell = malloc(sizeof(t_mini));
 	if (minishell == NULL)
 	{
