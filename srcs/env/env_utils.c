@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 10:09:17 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/24 10:52:34 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/14 07:45:01 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,21 +60,4 @@ t_env	*fill_env(char **tmp)
 	free(tmp);
 	new_env->val = 1;
 	return (new_env);
-}
-
-void	clear_env(t_env *env)
-{
-	t_env	*tmp;
-
-	while (env != NULL)
-	{
-		if (env->name != NULL)
-			free(env->name);
-		if (env->value != NULL && env->value[0] != '\0')
-			free(env->value);
-		tmp = env;
-		env = env->next;
-		free(tmp);
-	}
-	free(env);
 }

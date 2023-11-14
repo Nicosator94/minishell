@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 09:06:23 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/13 13:14:10 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/14 07:39:07 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,15 +61,15 @@ int	do_builtin(t_cmd *cmd, t_mini *minishell)
 	if (ft_strncmp(cmd->cmd[0], "echo", 5) == 0)
 		my_echo(cmd->cmd);
 	else if (ft_strncmp(cmd->cmd[0], "cd", 3) == 0)
-		cd(cmd->cmd, minishell->env);
+		cd(cmd->cmd, &minishell->env);
 	else if (ft_strncmp(cmd->cmd[0], "pwd", 4) == 0)
-		pwd(cmd->cmd);
+		pwd();
 	else if (ft_strncmp(cmd->cmd[0], "export", 7) == 0)
-		export(cmd->cmd, minishell->env);
+		export(cmd->cmd, &minishell->env);
 	else if (ft_strncmp(cmd->cmd[0], "unset", 6) == 0)
 		unset(cmd->cmd, &minishell->env);
 	else if (ft_strncmp(cmd->cmd[0], "env", 4) == 0)
-		my_env(cmd->cmd, minishell->env);
+		my_env(minishell->env);
 	else if (ft_strncmp(cmd->cmd[0], "exit", 5) == 0)
 		my_exit(cmd->cmd, minishell->env);
 	if (real_outfile > 0)
@@ -89,15 +89,15 @@ void	do_builtin_in_exec(t_cmd *cmd, t_mini *minishell)
 	if (ft_strncmp(cmd->cmd[0], "echo", 5) == 0)
 		my_echo(cmd->cmd);
 	else if (ft_strncmp(cmd->cmd[0], "cd", 3) == 0)
-		cd(cmd->cmd, minishell->env);
+		cd(cmd->cmd, &minishell->env);
 	else if (ft_strncmp(cmd->cmd[0], "pwd", 4) == 0)
-		pwd(cmd->cmd);
+		pwd();
 	else if (ft_strncmp(cmd->cmd[0], "export", 7) == 0)
-		export(cmd->cmd, minishell->env);
+		export(cmd->cmd, &minishell->env);
 	else if (ft_strncmp(cmd->cmd[0], "unset", 6) == 0)
 		unset(cmd->cmd, &minishell->env);
 	else if (ft_strncmp(cmd->cmd[0], "env", 4) == 0)
-		my_env(cmd->cmd, minishell->env);
+		my_env(minishell->env);
 	else if (ft_strncmp(cmd->cmd[0], "exit", 5) == 0)
 		my_exit(cmd->cmd, minishell->env);
 	if (res == -2)

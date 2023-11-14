@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 10:12:14 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/25 08:52:56 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/14 07:44:55 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	clear_env(t_env *env)
 	{
 		if (env->name != NULL)
 			free(env->name);
-		if (env->value != NULL)
+		if (env->value != NULL && env->value[0] != '\0')
 			free(env->value);
 		tmp = env;
 		env = env->next;
