@@ -61,3 +61,20 @@ t_env	*fill_env(char **tmp)
 	new_env->val = 1;
 	return (new_env);
 }
+
+void	clear_env(t_env *env)
+{
+	t_env	*tmp;
+
+	while (env != NULL)
+	{
+		if (env->name != NULL)
+			free(env->name);
+		if (env->value != NULL && env->value[0] != '\0')
+			free(env->value);
+		tmp = env;
+		env = env->next;
+		free(tmp);
+	}
+	free(env);
+}

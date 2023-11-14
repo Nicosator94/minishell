@@ -6,7 +6,7 @@
 /*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 10:10:33 by agomes-g          #+#    #+#             */
-/*   Updated: 2023/10/17 21:45:31 by agomes-g         ###   ########.fr       */
+/*   Updated: 2023/10/24 10:30:07 by agomes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,19 +44,19 @@ int	check_parsing(char *cmd)
 int	check_occurence(t_env **env, t_env *new)
 {
 	t_env	*tmp;
-	char	*mem;
 
+	if (!(*env))
+		return (0);
 	tmp = *env;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->name, new->name, ft_strlen(new->name)) == 0)
+		if (ft_strncmp(tmp->name, new->name, ft_strlen(new->name) + 1) == 0)
 		{
 			if (new->val)
 			{
-				mem = tmp->value;
+				if (tmp->value && tmp->value[0] != '\0')
+					free(tmp->value);
 				tmp->value = new->value;
-				if (mem)
-					free(mem);
 				tmp->val = new->val;
 				return (1);
 			}
@@ -67,26 +67,42 @@ int	check_occurence(t_env **env, t_env *new)
 	return (0);
 }
 
-void	export(char **cmd, t_env *env)
+void	export_annexe(char **cmd, t_env **env)
 {
 	t_env	*new;
 	int		check;
+	int		i;
+
+	i = 0;
+	while (cmd[++i])
+	{
+		new = new_element(get_name(cmd[i]), get_value(cmd[i]), cmd[i]);
+		if (!new)
+			return (all_clear_command(*env, NULL));
+		check = check_occurence(env, new);
+		if (!(check))
+			add_back(env, new);
+		else if (check == 2)
+			clear_env(new);
+		else
+		{
+			free(new->name);
+			free(new);
+		}
+	}
+}
+
+void	export(char **cmd, t_env **env)
+{
+	int		i;
 
 	if (!cmd[1])
-		return (print_sort_list(env));
-	if (cmd[2] || !check_parsing(cmd[1]))
-		return (ft_putstr_fd("not a valid identifier\n", 1));
-	new = new_element(get_name(cmd[1]), get_value(cmd[1]), cmd[1]);
-	if (!new)
-		return (all_clear_command(env, NULL));
-	check = check_occurence(&env, new);
-	if (!(check))
-		add_back(&env, new);
-	else if (check == 2)
-		clear_env(new);
-	else
+		return (print_sort_list(*env));
+	i = 0;
+	while (cmd[++i])
 	{
-		free(new->name);
-		free(new);
+		if (!check_parsing(cmd[i]))
+			return (ft_putstr_fd("not a valid identifier\n", 1));
 	}
+	export_annexe(cmd, env);
 }

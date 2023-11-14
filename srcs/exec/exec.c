@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 11:07:38 by niromano          #+#    #+#             */
 /*   Updated: 2023/11/14 07:14:50 by niromano         ###   ########.fr       */
@@ -53,7 +53,7 @@ void	exec_failed(t_mini *minishell, char *path, char **mat_env, char *cmd)
 {
 	int	i;
 	int	return_value;
-
+  
 	i = 0;
 	if (path != NULL)
 		free(path);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_print.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 20:13:03 by agomes-g          #+#    #+#             */
-/*   Updated: 2023/10/23 08:19:03 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/24 10:30:01 by agomes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	sort_list(t_env *env)
 		tmp = env->next;
 		while (tmp != NULL)
 		{
-			if (ft_strncmp(env->name, tmp->name, ft_strlen(env->name)) == 1)
+			if (ft_strncmp(env->name, tmp->name, ft_strlen(env->name) + 1) == 1)
 				sort_list_annexe(env, tmp);
 			tmp = tmp->next;
 		}
@@ -46,7 +46,7 @@ void	sort_list(t_env *env)
 	}
 }
 
-t_env	*copy_env_annexe(/*t_env *copy, */t_env *tmp)
+t_env	*copy_env_annexe(t_env *tmp)
 {
 	t_env	*new;
 
@@ -80,7 +80,7 @@ t_env	*copy_env(t_env *env)
 	tmp = env;
 	while (tmp)
 	{
-		new = (copy_env_annexe(/*copy, */tmp));
+		new = (copy_env_annexe(tmp));
 		if (!new)
 			return (NULL);
 		if (!copy)
@@ -100,6 +100,8 @@ void	print_sort_list(t_env *env)
 	t_env	*lst;
 	t_env	*tmp;
 
+	if (!env)
+		return ;
 	lst = copy_env(env);
 	if (!lst)
 		return (all_clear_command(env, NULL));
