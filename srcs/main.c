@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:19:42 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/13 07:37:33 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/14 12:02:55 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,13 @@ int	prompt(t_mini *minishell)
 	return (0);
 }
 
+int	g_signal = 0;
+
 void	sigint()
 {
 	printf("\n");
-	rl_on_new_line();
+	if (g_signal == 0)
+		rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
 }
