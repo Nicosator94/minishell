@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 11:22:03 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/19 05:28:37 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/25 10:44:57 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,20 @@ int	check_brackets_before_pipes(char *s)
 	return (0);
 }
 
+int	check_spaces(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] != '\0')
+	{
+		if (s[i] != ' ' && !(s[i] >= 9 && s[i] <= 13))
+			return (0);
+		i ++;
+	}
+	return (1);
+}
+
 int	syntax_error_check(char *s)
 {
 	if (check_quotes(s) == 1)
@@ -103,5 +117,7 @@ int	syntax_error_check(char *s)
 		ft_putstr_fd("token `pipe'\n", 2);
 		return (1);
 	}
+	if (check_spaces(s) == 1)
+		return (1);
 	return (0);
 }

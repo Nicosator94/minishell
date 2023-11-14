@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 01:57:49 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/19 02:16:36 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/25 08:06:02 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,6 @@ int	size_env(t_env *env)
 		i ++;
 	}
 	return (i);
-}
-
-void	clear_mat_of_env(char **mat, t_env *env, t_cmd *start_cmd)
-{
-	int	i;
-
-	i = 0;
-	while (mat[i] != NULL)
-	{
-		free(mat[i]);
-		i ++;
-	}
-	free(mat);
-	all_clear_command(env, start_cmd);
 }
 
 char	*list_to_string_to_matrix(char *name, char *value)
@@ -60,21 +46,26 @@ char	*list_to_string_to_matrix(char *name, char *value)
 	return (new_s);
 }
 
-char	**list_to_matrix(t_env *env, t_cmd *start_cmd)
+char	**list_to_matrix(t_mini *minishell)
 {
+	t_env	*tmp;
 	char	**mat;
 	int		i;
 
 	i = 0;
-	mat = malloc(sizeof(char *) * (size_env(env) + 1));
+	mat = malloc(sizeof(char *) * (size_env(minishell->env) + 1));
 	if (mat == NULL)
-		all_clear_command(env, start_cmd);
-	while (env != NULL)
+		clear_all_malloc_failed(minishell);
+	tmp = minishell->env;
+	while (tmp != NULL)
 	{
-		mat[i] = list_to_string_to_matrix(env->name, env->value);
+		mat[i] = list_to_string_to_matrix(tmp->name, tmp->value);
 		if (mat[i] == NULL)
-			clear_mat_of_env(mat, env, start_cmd);
-		env = env->next;
+		{
+			clear_mat(mat);
+			clear_all_malloc_failed(minishell);
+		}
+		tmp = tmp->next;
 		i ++;
 	}
 	mat[i] = NULL;

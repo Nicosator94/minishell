@@ -6,7 +6,7 @@
 /*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/24 11:25:45 by agomes-g         ###   ########.fr       */
+/*   Updated: 2023/11/13 13:14:15 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,18 @@ typedef struct s_cmd
 	pid_t			pid;
 }	t_cmd;
 
+typedef struct s_mini
+{
+	t_cmd	*cmd;
+	t_env	*env;
+	int		exit_status;
+}	t_mini;
+
 t_env	*create_own_env(char **env);
 t_env	*create_without_env(void);
 t_env	*fill_env(char **tmp);
 void	add_shlvl(t_env *env);
-void	clear_env(t_env *env);
-char	**list_to_matrix(t_env *env, t_cmd *start_cmd);
+char	**list_to_matrix(t_mini *minishell);
 
 int		syntax_error_check(char *s);
 int		check_quotes(char *s);
@@ -77,34 +83,38 @@ int		check_brackets(char *s);
 int		check_multi_brackets(char *s);
 int		check_space_brackets(char *s);
 int		check_opposite_brackets(char *s);
+int		check_spaces(char *s);
 
-t_cmd	*parsing(char *s, t_env *env);
+t_cmd	*parsing(char *s, t_mini *minishell);
 int		pass_quotes(char *s, int i);
 char	*init_new_cmd(char *s, int i, t_cmd *cmd);
 void	add_null_cmd(t_cmd *cmd);
 
-void	expend(t_cmd *line, t_env *env);
+void	expend(t_cmd *cmd, t_mini *minishell);
 char	*replace_with_env_utils(char *s, char *tmp1, char *tmp2);
-char	*replace(char *name, t_env *env);
+char	*replace(char *name, t_env *env, int *exit_status);
 int		dollar_len(char *s, int i);
 
-void	treatment_cmd(t_cmd *cmd, t_env *env);
-int		get_file(t_cmd *cmd, int i, t_env *env, t_cmd *start_cmd);
-int		get_command(t_cmd *cmd, int i, t_env *env, t_cmd *start_cmd);
-void	fill_mat_of_cmd(t_cmd *cmd, t_env *env, t_cmd *start_cmd);
-void	set_redi(t_cmd *cmd, t_env *env, t_cmd *start_cmd);
+void	treatment_cmd(t_mini *minishell);
+int		get_file(t_cmd *cmd, int i, t_mini *minishell);
+int		get_command(t_cmd *cmd, int i, t_mini *minishell);
+void	fill_mat_of_cmd(t_cmd *cmd, t_mini *minishell);
+void	set_redi(t_cmd *cmd, t_mini *minishell);
 
-void	create_here_doc(t_cmd *start_cmd, t_env *env);
+void	create_here_doc(t_mini *minishell);
 void	clean_here_doc(t_cmd *cmd);
 
 void	all_clear_command(t_env *env, t_cmd *cmd);
-void	all_free(t_env *env, t_cmd *cmd);
 
-void	exec(t_cmd *cmd, t_env **env);
+void	exec(t_mini *minishell);
 int		take_infile(t_cmd *cmd, int tmp_file);
 int		take_outfile(t_cmd *cmd, int last);
-char	*get_path(char *cmd, t_env *env);
-void	wait_all(t_cmd *cmd);
+char	*get_path(char *cmd, t_mini *minishell);
+void	wait_all(t_mini *minishell);
+
+int		check_builtin(char *main_cmd);
+int		do_builtin(t_cmd *cmd, t_mini *minishell);
+void	do_builtin_in_exec(t_cmd *cmd, t_mini *minishell);
 
 int				cd(char **cmd, t_env **env);
 void			my_echo(char **cmd);
@@ -122,5 +132,13 @@ void	add_back(t_env **lst, t_env *new);
 t_env	*new_element(char *name, char *value, char *cmd);
 
 int	size_env(t_env *env);
+
+void	clear_all(t_mini *minishell);
+void	clear_all_malloc_failed(t_mini *minishell);
+void	clear_env(t_env *env);
+void	clear_cmd(t_cmd *cmd);
+void	clear_list_cmd(t_list *l_cmd);
+void	clear_mat(char **mat);
+void	clear_redi(t_redi *redi);
 
 #endif

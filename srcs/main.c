@@ -6,45 +6,16 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:19:42 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/23 08:24:42 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/13 07:37:33 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	clear_cmd(t_cmd *cmd)
-{
-	t_cmd	*tmp;
-	t_redi	*f_tmp;
-	int		i;
-
-	while (cmd != NULL)
-	{
-		i = 0;
-		while (cmd->file != NULL)
-		{
-			free(cmd->file->file);
-			f_tmp = cmd->file;
-			cmd->file = cmd->file->next;
-			free(f_tmp);
-		}
-		while (cmd->cmd[i] != NULL)
-		{
-			free(cmd->cmd[i]);
-			i ++;
-		}
-		free(cmd->cmd);
-		tmp = cmd;
-		cmd = cmd->next;
-		free(tmp);
-	}
-}
-
-int	prompt(t_env *env)
+int	prompt(t_mini *minishell)
 {
 	const char	*prompt = "minishell$ ";
 	char		*s;
-	t_cmd		*cmd;
 
 	while (1)
 	{
@@ -52,35 +23,58 @@ int	prompt(t_env *env)
 		if (s == NULL)
 		{
 			printf("exit\n");
-			clear_env(env);
+			clear_all(minishell);
 			exit(0);
 		}
 		if (s[0] != '\0')
 			add_history(s);
 		if (syntax_error_check(s) == 0)
 		{
-			cmd = parsing(s, env);
-			treatment_cmd(cmd, env);
-			exec(cmd, &env);
-			clear_cmd(cmd);
+			minishell->cmd = parsing(s, minishell);
+			treatment_cmd(minishell);
+			exec(minishell);
+			clear_cmd(minishell->cmd);
+			minishell->cmd = NULL;
 		}
 		else
+		{
+			if (check_spaces(s) == 0)
+				minishell->exit_status = 2;
 			free(s);
+		}
 	}
 	return (0);
 }
 
+void	sigint()
+{
+	printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
+
 int	main(int argc, char **argv, char **env)
 {
-	t_env	*own_env;
+	t_mini	*minishell;
 
 	(void)argc;
 	(void)argv;
+	signal(SIGINT, &sigint);
+	signal(SIGQUIT, SIG_IGN);
+	minishell = malloc(sizeof(t_mini));
+	if (minishell == NULL)
+	{
+		ft_putstr_fd("Malloc Failed !\n", 2);
+		exit(1);
+	}
+	minishell->exit_status = 0;
 	if (env[0] == NULL)
-		own_env = create_without_env();
+		minishell->env = create_without_env();
 	else
-		own_env = create_own_env(env);
-	add_shlvl(own_env);
-	prompt(own_env);
+		minishell->env = create_own_env(env);
+	add_shlvl(minishell->env);
+	minishell->cmd = NULL;
+	prompt(minishell);
 	return (0);
 }

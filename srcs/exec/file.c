@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 10:51:40 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/20 11:05:21 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/13 11:13:14 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ int	take_infile(t_cmd *cmd, int tmp_file)
 			{
 				ft_putstr_fd("minishell: ", 2);
 				ft_putstr_fd(tmp->file, 2);
-				ft_putstr_fd(": Permission denied\n", 2);
+				if (access(tmp->file, F_OK) == 0)
+					ft_putstr_fd(": Permission denied\n", 2);
+				else
+					ft_putstr_fd(": No such file or directory\n", 2);
 				return (-1);
 			}
 		}
@@ -51,7 +54,10 @@ int	init_outfile(int outfile, t_redi *tmp)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(tmp->file, 2);
-		ft_putstr_fd(": Permission denied\n", 2);
+		if (access(tmp->file, F_OK) == 0)
+			ft_putstr_fd(": Permission denied\n", 2);
+		else
+			ft_putstr_fd(": No such file or directory\n", 2);
 		return (-1);
 	}
 	return (outfile);

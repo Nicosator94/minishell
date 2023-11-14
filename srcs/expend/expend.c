@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 10:17:45 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/12 13:31:35 by niromano         ###   ########.fr       */
+/*   Updated: 2023/10/24 11:28:17 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static char	*copy(char *s, int i)
 	return (cpy);
 }
 
-void	clear_all(t_env *env, t_cmd *cmd, char *s)
+void	clear_for_failed(t_env *env, t_cmd *cmd, char *s)
 {
 	t_cmd	*tmp;
 
@@ -48,7 +48,7 @@ void	clear_all(t_env *env, t_cmd *cmd, char *s)
 	exit(1);
 }
 
-char	*replace_with_env(char *s, int i, t_env *env, t_cmd *cmd)
+char	*replace_with_env(char *s, int i, t_mini *minishell, t_cmd *cmd)
 {
 	char	*new_cmd;
 	char	*tmp1;
@@ -57,23 +57,23 @@ char	*replace_with_env(char *s, int i, t_env *env, t_cmd *cmd)
 
 	tmp1 = copy(s, i);
 	if (tmp1 == NULL)
-		clear_all(env, cmd, NULL);
+		clear_for_failed(minishell->env, cmd, NULL);
 	i ++;
 	len = dollar_len(s, i);
 	tmp2 = copy(&s[i], len);
 	if (tmp2 == NULL)
-		clear_all(env, cmd, tmp1);
-	tmp2 = replace(tmp2, env);
+		clear_for_failed(minishell->env, cmd, tmp1);
+	tmp2 = replace(tmp2, minishell->env, &minishell->exit_status);
 	if (tmp2 == NULL)
-		clear_all(env, cmd, tmp1);
+		clear_for_failed(minishell->env, cmd, tmp1);
 	new_cmd = replace_with_env_utils(&s[i + len], tmp1, tmp2);
 	if (new_cmd == NULL)
-		clear_all(env, cmd, NULL);
+		clear_for_failed(minishell->env, cmd, NULL);
 	free(s);
 	return (new_cmd);
 }
 
-void	expend_utils(t_cmd *cmd, t_cmd *start_cmd, t_env *env, int count)
+void	expend_utils(t_cmd *cmd, t_cmd *start_cmd, t_mini *minishell, int count)
 {
 	int	i;
 
@@ -91,9 +91,9 @@ void	expend_utils(t_cmd *cmd, t_cmd *start_cmd, t_env *env, int count)
 		else if (cmd->line[i] == '$'
 			&& ((cmd->line[i + 1] >= 'a' && cmd->line[i + 1] <= 'z')
 				|| (cmd->line[i + 1] >= 'A' && cmd->line[i + 1] <= 'Z')
-				|| cmd->line[i + 1] == '_'))
+				|| cmd->line[i + 1] == '_' || cmd->line[i + 1] == '?'))
 		{
-			cmd->line = replace_with_env(cmd->line, i, env, start_cmd);
+			cmd->line = replace_with_env(cmd->line, i, minishell, start_cmd);
 			i = -1;
 			count = 0;
 		}
@@ -101,7 +101,7 @@ void	expend_utils(t_cmd *cmd, t_cmd *start_cmd, t_env *env, int count)
 	}
 }
 
-void	expend(t_cmd *cmd, t_env *env)
+void	expend(t_cmd *cmd, t_mini *minishell)
 {
 	int		count;
 	t_cmd	*start_cmd;
@@ -110,7 +110,7 @@ void	expend(t_cmd *cmd, t_env *env)
 	start_cmd = cmd;
 	while (cmd != NULL)
 	{
-		expend_utils(cmd, start_cmd, env, count);
+		expend_utils(cmd, start_cmd, minishell, count);
 		cmd = cmd->next;
 	}
 }

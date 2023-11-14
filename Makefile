@@ -4,6 +4,7 @@ CFLAGS = -Wall -Wextra -Werror -MMD -g3
 HEADERS = minishell.h
 
 SOURCES = main.c \
+		clear.c \
 		env/env.c \
 		env/env_utils.c \
 		env/env_w_env.c \
@@ -20,6 +21,7 @@ SOURCES = main.c \
 		expend/get_command.c \
 		expend/create_here_doc.c \
 		parsing/all_clear_command.c \
+		exec/exec_builtin.c \
 		exec/exec.c \
 		exec/file.c \
 		exec/get_path.c \
