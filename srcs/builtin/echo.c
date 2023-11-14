@@ -6,7 +6,7 @@
 /*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 08:36:23 by agomes-g          #+#    #+#             */
-/*   Updated: 2023/10/17 21:42:57 by agomes-g         ###   ########.fr       */
+/*   Updated: 2023/11/14 08:37:58 by agomes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	check_option(char *opt)
 	return (1);
 }
 
-void	my_echo(char **cmd)
+int	my_echo(char **cmd)
 {
 	int	i;
 	int	j;
@@ -42,7 +42,7 @@ void	my_echo(char **cmd)
 	if (!cmd[i])
 	{
 		printf("\n");
-		return ;
+		return (0);
 	}
 	while (check_option(cmd[i]))
 	{
@@ -58,4 +58,5 @@ void	my_echo(char **cmd)
 	}
 	if (!j)
 		printf("\n");
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/13 13:14:15 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/14 08:47:24 by agomes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,16 +116,16 @@ int		check_builtin(char *main_cmd);
 int		do_builtin(t_cmd *cmd, t_mini *minishell);
 void	do_builtin_in_exec(t_cmd *cmd, t_mini *minishell);
 
+int				pwd(void);
+int				my_env(t_env *env);
+int				my_echo(char **cmd);
 int				cd(char **cmd, t_env **env);
-void			my_echo(char **cmd);
-void			my_env(t_env *env);
+int				unset(char **cmd, t_env **env);
 unsigned int 	my_exit(char **cmd, t_env *env);
-void			pwd(void);
-void			unset(char **cmd, t_env **env);
 
-void	export(char **cmd, t_env **env);
+int		export(char **cmd, t_env **env);
 int		check_occurence(t_env **env, t_env *new);
-void	print_sort_list(t_env *env);
+int		print_sort_list(t_env *env);
 char	*get_name(char *s);
 char	*get_value(char *s);
 void	add_back(t_env **lst, t_env *new);

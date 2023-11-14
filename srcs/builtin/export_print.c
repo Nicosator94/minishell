@@ -6,7 +6,7 @@
 /*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 20:13:03 by agomes-g          #+#    #+#             */
-/*   Updated: 2023/10/24 10:30:01 by agomes-g         ###   ########.fr       */
+/*   Updated: 2023/11/14 08:39:11 by agomes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,16 +95,16 @@ t_env	*copy_env(t_env *env)
 	return (copy);
 }
 
-void	print_sort_list(t_env *env)
+int	print_sort_list(t_env *env)
 {
 	t_env	*lst;
 	t_env	*tmp;
 
 	if (!env)
-		return ;
+		return (0);
 	lst = copy_env(env);
 	if (!lst)
-		return (all_clear_command(env, NULL));
+		return (-2);
 	tmp = lst;
 	sort_list(lst);
 	while (lst != NULL)
@@ -118,4 +118,5 @@ void	print_sort_list(t_env *env)
 		lst = lst->next;
 	}
 	clear_env(tmp);
+	return (0);
 }
