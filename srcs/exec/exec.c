@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 11:07:38 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/14 07:14:50 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/14 08:56:46 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,11 @@
 
 int	directory_check(char *cmd)
 {
-	(void)cmd;
+	struct stat	buf;
+
+	stat(cmd, &buf);
+	if(buf.st_mode & __S_IFDIR)
+		return (0);
 	return (1);
 }
 
@@ -35,17 +39,17 @@ int	print_failed(char *cmd)
 	}
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd, 2);
-	if (trig == 0)
+	if (trig == 1)
 	{
+		if (directory_check(cmd) == 0)
+		{
+			ft_putstr_fd(": Is a directory\n", 2);
+			return (126);
+		}
+		ft_putstr_fd(": No such file or directory\n", 2);
+	}
+	else
 		ft_putstr_fd(": command not found\n", 2);
-		return (127);
-	}
-	else if (directory_check(cmd) == 0)
-	{
-		ft_putstr_fd(": Is a directory\n", 2);
-		return (126);
-	}
-	ft_putstr_fd(": No such file or directory\n", 2);
 	return (127);
 }
 
