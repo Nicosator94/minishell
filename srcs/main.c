@@ -37,7 +37,11 @@ int	prompt(t_mini *minishell)
 			minishell->cmd = NULL;
 		}
 		else
+		{
+			if (check_spaces(s) == 0)
+				minishell->exit_status = 2;
 			free(s);
+		}
 	}
 	return (0);
 }

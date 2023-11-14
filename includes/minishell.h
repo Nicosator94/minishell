@@ -83,6 +83,7 @@ int		check_brackets(char *s);
 int		check_multi_brackets(char *s);
 int		check_space_brackets(char *s);
 int		check_opposite_brackets(char *s);
+int		check_spaces(char *s);
 
 t_cmd	*parsing(char *s, t_mini *minishell);
 int		pass_quotes(char *s, int i);
