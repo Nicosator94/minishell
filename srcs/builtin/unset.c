@@ -6,7 +6,7 @@
 /*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 06:26:17 by agomes-g          #+#    #+#             */
-/*   Updated: 2023/10/24 10:20:48 by agomes-g         ###   ########.fr       */
+/*   Updated: 2023/11/14 08:39:20 by agomes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,17 @@ void	delete_element(char *name, t_env **env)
 	}
 }
 
-void	unset(char **cmd, t_env **env)
+int	unset(char **cmd, t_env **env)
 {
 	int		i;
 
 	i = 1;
 	if (!cmd[1] || !(*env))
-		return ;
+		return (0);
 	while (cmd[i])
 	{
 		delete_element(cmd[i], env);
 		i ++;
 	}
+	return (0);
 }

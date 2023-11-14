@@ -6,7 +6,7 @@
 /*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 10:10:33 by agomes-g          #+#    #+#             */
-/*   Updated: 2023/10/24 10:30:07 by agomes-g         ###   ########.fr       */
+/*   Updated: 2023/11/14 08:35:31 by agomes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	check_occurence(t_env **env, t_env *new)
 	return (0);
 }
 
-void	export_annexe(char **cmd, t_env **env)
+int	export_annexe(char **cmd, t_env **env)
 {
 	t_env	*new;
 	int		check;
@@ -78,7 +78,7 @@ void	export_annexe(char **cmd, t_env **env)
 	{
 		new = new_element(get_name(cmd[i]), get_value(cmd[i]), cmd[i]);
 		if (!new)
-			return (all_clear_command(*env, NULL));
+			return (-2);
 		check = check_occurence(env, new);
 		if (!(check))
 			add_back(env, new);
@@ -90,9 +90,10 @@ void	export_annexe(char **cmd, t_env **env)
 			free(new);
 		}
 	}
+	return (0);
 }
 
-void	export(char **cmd, t_env **env)
+int	export(char **cmd, t_env **env)
 {
 	int		i;
 
@@ -102,7 +103,7 @@ void	export(char **cmd, t_env **env)
 	while (cmd[++i])
 	{
 		if (!check_parsing(cmd[i]))
-			return (ft_putstr_fd("not a valid identifier\n", 1));
+			return (ft_putstr_fd("not a valid identifier\n", 1), 1);
 	}
-	export_annexe(cmd, env);
+	return (export_annexe(cmd, env));
 }
