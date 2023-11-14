@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 10:10:33 by agomes-g          #+#    #+#             */
-/*   Updated: 2023/11/14 09:22:02 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/14 09:49:11 by agomes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,11 @@ int	export(char **cmd, t_env **env)
 	while (cmd[++i])
 	{
 		if (!check_parsing(cmd[i]))
-			return (ft_putstr_fd("not a valid identifier\n", 1), 1);
+		{
+			ft_putstr_fd("minishell: export: `", 2);
+			ft_putstr_fd(cmd[i], 2);
+			return (ft_putstr_fd("\': not a valid identifier\n", 2), 1);
+		}
 	}
 	return (export_annexe(cmd, env));
 }
