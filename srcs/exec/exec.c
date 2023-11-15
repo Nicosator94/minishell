@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 11:07:38 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/14 12:02:20 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/15 06:41:26 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,11 @@ int	exec_cmd(t_cmd *cmd, t_mini *minishell, int tmp_file)
 		mat_env = list_to_matrix(minishell);
 		path = get_path(cmd->cmd[0], minishell);
 		if (path != NULL && mat_env != NULL)
+		{
+			close(minishell->stdin);
+			close(minishell->stdout);
 			execve(path, cmd->cmd, mat_env);
+		}
 		exec_failed(minishell, path, mat_env, cmd->cmd[0]);
 	}
 	if (file[0] > 0)
@@ -153,6 +157,7 @@ void	exec(t_mini *minishell)
 			tmp = tmp->next;
 		}
 		wait_all(minishell);
-		g_signal = 0;
+		if (g_signal != 2)
+			g_signal = 0;
 	}
 }

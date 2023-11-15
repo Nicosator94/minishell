@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 09:06:23 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/14 09:21:38 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/15 06:26:03 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int	do_builtin(t_cmd *cmd, t_mini *minishell)
 {
 	int	infile;
 	int	outfile;
-	int	real_outfile;
 	int	res;
 
 	res = 0;
@@ -50,11 +49,8 @@ int	do_builtin(t_cmd *cmd, t_mini *minishell)
 	else if (infile > -1)
 		close(infile);
 	outfile = take_outfile(cmd, 1);
-	real_outfile = open("/dev/stdout", O_WRONLY);
 	if (outfile == -1)
 	{
-		if (real_outfile > 0)
-			close(real_outfile);
 		minishell->exit_status = 1;
 		return (1);
 	}
@@ -75,13 +71,9 @@ int	do_builtin(t_cmd *cmd, t_mini *minishell)
 	else if (ft_strncmp(cmd->cmd[0], "exit", 5) == 0)
 	{
 		printf("exit\n");
-		my_exit(cmd->cmd, minishell->env);
+		res = my_exit(cmd->cmd, minishell->env);
 	}
-	if (real_outfile > 0)
-	{
-		dup2(real_outfile, 1);
-		close(real_outfile);
-	}
+	dup2(minishell->stdout, 1);
 	if (res == -2)
 		clear_all_malloc_failed(minishell);
 	minishell->exit_status = res;
@@ -106,8 +98,9 @@ void	do_builtin_in_exec(t_cmd *cmd, t_mini *minishell)
 	else if (ft_strncmp(cmd->cmd[0], "env", 4) == 0)
 		res = my_env(minishell->env);
 	else if (ft_strncmp(cmd->cmd[0], "exit", 5) == 0)
-		my_exit(cmd->cmd, minishell->env);
+		res = my_exit(cmd->cmd, minishell->env);
 	if (res == -2)
 		clear_all_malloc_failed(minishell);
+	clear_all(minishell);
 	exit(res);
 }

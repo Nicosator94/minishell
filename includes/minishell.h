@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/14 09:59:12 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/15 07:08:12 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@
 # include <term.h>
 
 # include "../libft/libft.h"
-
-extern int	g_signal;
 
 # define INPUT 1;
 # define OUTPUT 2;
@@ -71,7 +69,13 @@ typedef struct s_mini
 	t_cmd	*cmd;
 	t_env	*env;
 	int		exit_status;
+	int		stdin;
+	int		stdout;
 }	t_mini;
+
+extern int	g_signal;
+void	sigint(int code);
+void	check_signal(t_mini *minishell);
 
 t_env	*create_own_env(char **env);
 t_env	*create_without_env(void);
