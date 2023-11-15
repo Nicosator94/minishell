@@ -6,7 +6,7 @@
 /*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 08:02:36 by agomes-g          #+#    #+#             */
-/*   Updated: 2023/11/15 09:50:36 by agomes-g         ###   ########.fr       */
+/*   Updated: 2023/11/15 09:53:12 by agomes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 unsigned long long	ft_atoi_ulong(const char *nptr)
 {
-	int					i;
-	unsigned long long	s;
-	unsigned long long 	conv;
+	int				i;
+	unsigned long	s;
+	unsigned long	conv;
 
 	i = 0;
 	conv = 0;
@@ -41,7 +41,7 @@ unsigned long long	ft_atoi_ulong(const char *nptr)
 
 long	ft_atoi_long(const char *nptr)
 {
-	int			i;
+	int		i;
 	long	s;
 	long	conv;
 
@@ -75,7 +75,7 @@ int	ft_overflow(char *s)
 	else
 		nb = ft_atoi_long(s);
 	if (ft_atoi_ulong(s) != nb)
-	 	return (0);
+		return (0);
 	return (1);
 }
 
