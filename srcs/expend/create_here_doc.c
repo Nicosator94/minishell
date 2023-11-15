@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 04:08:12 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/14 12:02:07 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/15 06:43:18 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*create_name(int nb, t_mini *minishell)
 
 void	end_of_here_doc(char *s, char *lim, int fd)
 {
-	if (s == NULL)
+	if (s == NULL && g_signal != 4)
 	{
 		ft_putstr_fd("minishell: warning: ", 2);
 		ft_putstr_fd("here-document delimited by end-of-file (wanted `", 2);
@@ -76,14 +76,17 @@ void	create_here_doc(t_mini *minishell)
 
 	cmd = minishell->cmd;
 	nb = 1;
-	while (cmd != NULL)
+	while (cmd != NULL && g_signal != 4)
 	{
 		tmp = cmd->file;
 		while (tmp != NULL)
 		{
 			if (tmp->status == 3)
 			{
+				g_signal = 3;
 				tmp->file = create_file(tmp->file, nb, minishell);
+				if (g_signal != 4)
+					g_signal = 0;
 				nb += 1;
 			}
 			tmp = tmp->next;

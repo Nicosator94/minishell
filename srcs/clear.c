@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 10:12:14 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/14 07:44:55 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/15 06:23:50 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,10 @@ void	clear_cmd(t_cmd *cmd)
 
 void	clear_all_malloc_failed(t_mini *minishell)
 {
+	if (minishell->stdin > -1)
+		close(minishell->stdin);
+	if (minishell->stdout > -1)
+		close(minishell->stdout);
 	if (minishell->env != NULL)
 		clear_env(minishell->env);
 	if (minishell->cmd != NULL)
@@ -115,6 +119,10 @@ void	clear_all_malloc_failed(t_mini *minishell)
 
 void	clear_all(t_mini *minishell)
 {
+	if (minishell->stdin > -1)
+		close(minishell->stdin);
+	if (minishell->stdout > -1)
+		close(minishell->stdout);
 	if (minishell->env != NULL)
 		clear_env(minishell->env);
 	if (minishell->cmd != NULL)

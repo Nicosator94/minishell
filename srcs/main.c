@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:19:42 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/14 12:02:55 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/15 07:06:44 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@ int	prompt(t_mini *minishell)
 
 	while (1)
 	{
+		check_signal(minishell);
 		s = readline(prompt);
+		check_signal(minishell);
 		if (s == NULL)
 		{
 			printf("exit\n");
@@ -32,7 +34,8 @@ int	prompt(t_mini *minishell)
 		{
 			minishell->cmd = parsing(s, minishell);
 			treatment_cmd(minishell);
-			exec(minishell);
+			if (g_signal != 4)
+				exec(minishell);
 			clear_cmd(minishell->cmd);
 			minishell->cmd = NULL;
 		}
@@ -44,17 +47,6 @@ int	prompt(t_mini *minishell)
 		}
 	}
 	return (0);
-}
-
-int	g_signal = 0;
-
-void	sigint()
-{
-	printf("\n");
-	if (g_signal == 0)
-		rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
 }
 
 int	main(int argc, char **argv, char **env)
@@ -78,6 +70,8 @@ int	main(int argc, char **argv, char **env)
 		minishell->env = create_own_env(env);
 	add_shlvl(minishell->env);
 	minishell->cmd = NULL;
+	minishell->stdin = dup(0);
+	minishell->stdout = dup(1);
 	prompt(minishell);
 	return (0);
 }

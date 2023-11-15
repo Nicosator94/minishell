@@ -5,6 +5,7 @@ HEADERS = minishell.h
 
 SOURCES = main.c \
 		clear.c \
+		signal.c \
 		env/env.c \
 		env/env_utils.c \
 		env/env_w_env.c \
