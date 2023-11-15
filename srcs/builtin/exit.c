@@ -6,17 +6,17 @@
 /*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 08:02:36 by agomes-g          #+#    #+#             */
-/*   Updated: 2023/11/14 09:57:13 by agomes-g         ###   ########.fr       */
+/*   Updated: 2023/11/15 09:50:36 by agomes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-long long	ft_atoi_long_long(const char *nptr)
+unsigned long long	ft_atoi_ulong(const char *nptr)
 {
-	int			i;
-	long long	s;
-	long long	conv;
+	int					i;
+	unsigned long long	s;
+	unsigned long long 	conv;
 
 	i = 0;
 	conv = 0;
@@ -36,12 +36,12 @@ long long	ft_atoi_long_long(const char *nptr)
 		conv = (conv * 10) + (nptr[i] - '0');
 		i ++;
 	}
-	return (s * conv);
+	return (conv);
 }
 
 long	ft_atoi_long(const char *nptr)
 {
-	int		i;
+	int			i;
 	long	s;
 	long	conv;
 
@@ -68,8 +68,14 @@ long	ft_atoi_long(const char *nptr)
 
 int	ft_overflow(char *s)
 {
-	if (ft_atoi_long_long(s) != ft_atoi_long(s))
-		return (0);
+	unsigned long	nb;
+
+	if (ft_atoi_long(s) < 0)
+		nb = (-1) * ft_atoi_long(s);
+	else
+		nb = ft_atoi_long(s);
+	if (ft_atoi_ulong(s) != nb)
+	 	return (0);
 	return (1);
 }
 
@@ -83,9 +89,12 @@ int	digits_spaces(char *s)
 	while (s[i] && sign < 2)
 	{
 		if (s[i] == '-' || s[i] == '+')
+		{
 			sign ++;
+			i ++;
+		}	
 		if (!((s[i] >= '0' && s[i] <= '9') || (s[i] >= 9 && s[i] <= 13)
-				|| s[i] == ' ' || sign < 2))
+				|| s[i] == ' ' || sign >= 2))
 			return (0);
 		i ++;
 	}
@@ -94,24 +103,23 @@ int	digits_spaces(char *s)
 
 unsigned int	my_exit(char **cmd, t_env *env)
 {
-	if (cmd[1])
-	{
-		if (cmd[2])
-		{
-			ft_putstr_fd("minishell: exit : Too many arguments\n", 2);
-			return (1);
-		}
-	}
 	clear_env(env);
 	if (!cmd[1])
-		exit(0);
+		return (-3);
 	if (!digits_spaces(cmd[1]) || !ft_overflow(cmd[1]))
 	{
 		ft_putstr_fd("minishell: exit : ", 2);
 		ft_putstr_fd(cmd[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
-		exit (2);
+		return (2);
 	}
-	else
-		exit((unsigned int)ft_atoi(cmd[1]));
+	if (cmd[1])
+	{
+		if (cmd[2])
+		{
+			ft_putstr_fd("minishell: exit : Too many arguments\n", 2);
+			return (-1);
+		}
+	}
+	return ((unsigned char)ft_atoi_long(cmd[1]));
 }

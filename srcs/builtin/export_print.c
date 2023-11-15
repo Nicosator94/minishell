@@ -6,7 +6,7 @@
 /*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 20:13:03 by agomes-g          #+#    #+#             */
-/*   Updated: 2023/11/14 08:39:11 by agomes-g         ###   ########.fr       */
+/*   Updated: 2023/11/15 09:47:36 by agomes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_env	*copy_env_annexe(t_env *tmp)
 	new->name = ft_strdup(tmp->name);
 	if (!new->name)
 		return (free(new), NULL);
-	if (tmp->value)
+	if (tmp->val)
 	{
 		new->value = ft_strdup(tmp->value);
 		if (!new->value)
