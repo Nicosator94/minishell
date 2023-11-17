@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 11:11:38 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/25 08:54:07 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/17 11:28:04 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,12 @@ char	**get_list_of_path(t_mini *minishell)
 			clear_all_malloc_failed(minishell);
 		return (list_of_path);
 	}
-	return (NULL);
+	list_of_path = malloc(sizeof(char *) * 2);
+	if (list_of_path == NULL)
+		clear_all_malloc_failed(minishell);
+	list_of_path[0] = getcwd(NULL, 0);
+	list_of_path[1] = NULL;
+	return (list_of_path);
 }
 
 char	*get_path(char *cmd, t_mini *minishell)
