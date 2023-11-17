@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/17 07:05:00 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/17 12:17:36 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ int		check_multi_brackets(char *s);
 int		check_space_brackets(char *s);
 int		check_opposite_brackets(char *s);
 int		check_spaces(char *s);
+int		passes_quotes(char *s, int i);
 
 t_cmd	*parsing(char *s, t_mini *minishell);
 int		pass_quotes(char *s, int i);

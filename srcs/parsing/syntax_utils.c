@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 10:56:08 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/18 23:35:56 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/17 12:16:56 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ int	check_multi_brackets(char *s)
 	brackets = 0;
 	while (s[i] != '\0')
 	{
+		if (s[i] == '\'' || s[i] == '\"')
+			i = passes_quotes(s, i);
 		if (s[i] == '>' || s[i] == '<')
 			brackets ++;
 		else if (s[i] != '>' && s[i] != '<' && s[i] != ' '
@@ -86,6 +88,8 @@ int	check_space_brackets(char *s)
 	i = 0;
 	while (s[i] != '\0')
 	{
+		if (s[i] == '\'' || s[i] == '\"')
+			i = passes_quotes(s, i);
 		if (s[i] == '<' || s[i] == '>')
 		{
 			i ++;
@@ -109,6 +113,8 @@ int	check_opposite_brackets(char *s)
 	i = 0;
 	while (s[i] != '\0')
 	{
+		if (s[i] == '\'' || s[i] == '\"')
+			i = passes_quotes(s, i);
 		if (s[i] == '<' || s[i] == '>')
 		{
 			if (s[i] == '<' && s[i + 1] == '>')
