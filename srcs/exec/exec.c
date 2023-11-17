@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 11:07:38 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/17 12:22:52 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/17 13:55:45 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	directory_check(char *cmd)
 	struct stat	buf;
 
 	stat(cmd, &buf);
-	if(buf.st_mode & __S_IFDIR)
+	if (buf.st_mode & __S_IFDIR)
 		return (0);
 	return (1);
 }
@@ -57,7 +57,7 @@ void	exec_failed(t_mini *minishell, char *path, char **mat_env, char *cmd)
 {
 	int	i;
 	int	return_value;
-  
+
 	i = 0;
 	if (path != NULL)
 		free(path);

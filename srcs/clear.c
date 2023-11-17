@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clear.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 10:12:14 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/15 09:39:26 by agomes-g         ###   ########.fr       */
+/*   Updated: 2023/11/17 13:55:01 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	clear_env(t_env *env)
 void	clear_list_cmd(t_list *l_cmd)
 {
 	t_list	*tmp;
-	
+
 	while (l_cmd != NULL)
 	{
 		if (l_cmd->content != NULL)

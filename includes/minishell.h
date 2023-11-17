@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/17 12:17:36 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/17 13:58:47 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,12 +124,12 @@ int		check_builtin(char *main_cmd);
 int		do_builtin(t_cmd *cmd, t_mini *minishell);
 void	do_builtin_in_exec(t_cmd *cmd, t_mini *minishell);
 
-int				pwd(void);
-int				my_env(t_env *env);
-int				my_echo(char **cmd);
-int				cd(char **cmd, t_env **env);
-int				unset(char **cmd, t_env **env);
-unsigned int 	my_exit(char **cmd);
+int		pwd(void);
+int		my_env(t_env *env);
+int		my_echo(char **cmd);
+int		cd(char **cmd, t_env **env);
+int		unset(char **cmd, t_env **env);
+int		my_exit(char **cmd);
 
 int		export(char **cmd, t_env **env);
 int		check_occurence(t_env **env, t_env *new);
@@ -139,7 +139,7 @@ char	*get_value(char *s);
 void	add_back(t_env **lst, t_env *new);
 t_env	*new_element(char *name, char *value, char *cmd);
 
-int	size_env(t_env *env);
+int		size_env(t_env *env);
 
 void	clear_all(t_mini *minishell);
 void	clear_all_malloc_failed(t_mini *minishell);

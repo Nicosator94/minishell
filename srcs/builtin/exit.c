@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 08:02:36 by agomes-g          #+#    #+#             */
-/*   Updated: 2023/11/15 10:38:37 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/17 13:57:05 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int	digits_spaces(char *s)
 	return (1);
 }
 
-unsigned int	my_exit(char **cmd)
+int	my_exit(char **cmd)
 {
 	if (!cmd[1])
 		return (-3);

@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:19:42 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/17 12:48:05 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/17 13:56:06 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	prompt(t_mini *minishell)
 {
 	char	*s;
+	char	*line;
 	int		exit_value;
 
 	while (1)
@@ -24,7 +25,6 @@ int	prompt(t_mini *minishell)
 			s = readline("minishell$ ");
 		else
 		{
-			char *line;
 			line = get_next_line(0, NULL);
 			s = ft_strtrim(line, "\n");
 			free(line);
