@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 09:06:23 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/17 09:28:27 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/17 11:55:30 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,9 @@ int	do_builtin(t_cmd *cmd, t_mini *minishell)
 		}
 		else if (res == -3)
 		{
+			res = minishell->exit_status;
 			clear_all(minishell);
-			exit(minishell->exit_status);
+			exit(res);
 		}
 		else
 		{
@@ -122,8 +123,9 @@ void	do_builtin_in_exec(t_cmd *cmd, t_mini *minishell)
 			res = 1;
 		else if (res == -3)
 		{
+			res = minishell->exit_status;
 			clear_all(minishell);
-			exit(minishell->exit_status);
+			exit(res);
 		}
 	}
 	if (res == -2)

@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 11:07:38 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/17 10:51:13 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/17 12:22:52 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	print_failed(char *cmd)
 	ft_putstr_fd(cmd, 2);
 	if (trig == 1)
 	{
-		if (directory_check(cmd) == 0)
+		if (access(cmd, F_OK) == 0 && directory_check(cmd) == 0)
 		{
 			ft_putstr_fd(": Is a directory\n", 2);
 			return (126);
