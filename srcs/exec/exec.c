@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 11:07:38 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/15 06:41:26 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/17 07:35:49 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ void	exec(t_mini *minishell)
 			tmp = tmp->next;
 		}
 		wait_all(minishell);
-		if (g_signal != 2)
+		if (g_signal != 2 && g_signal != 10)
 			g_signal = 0;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/15 07:08:12 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/17 07:05:00 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ typedef struct s_mini
 
 extern int	g_signal;
 void	sigint(int code);
+void	sigquit(int code);
 void	check_signal(t_mini *minishell);
 
 t_env	*create_own_env(char **env);
@@ -127,7 +128,7 @@ int				my_env(t_env *env);
 int				my_echo(char **cmd);
 int				cd(char **cmd, t_env **env);
 int				unset(char **cmd, t_env **env);
-unsigned int 	my_exit(char **cmd, t_env *env);
+unsigned int 	my_exit(char **cmd);
 
 int		export(char **cmd, t_env **env);
 int		check_occurence(t_env **env, t_env *new);

@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:19:42 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/15 07:06:44 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/17 07:04:22 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 int	prompt(t_mini *minishell)
 {
-	const char	*prompt = "minishell$ ";
-	char		*s;
+	char	*s;
 
 	while (1)
 	{
 		check_signal(minishell);
-		s = readline(prompt);
+		if (isatty(0) == 1)
+			s = readline("minishell$ ");
 		check_signal(minishell);
 		if (s == NULL)
 		{
@@ -56,7 +56,7 @@ int	main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 	signal(SIGINT, &sigint);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, &sigquit);
 	minishell = malloc(sizeof(t_mini));
 	if (minishell == NULL)
 	{

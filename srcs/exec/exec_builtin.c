@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 09:06:23 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/15 06:26:03 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/15 10:49:47 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,24 @@ int	do_builtin(t_cmd *cmd, t_mini *minishell)
 	else if (ft_strncmp(cmd->cmd[0], "exit", 5) == 0)
 	{
 		printf("exit\n");
-		res = my_exit(cmd->cmd, minishell->env);
+		res = my_exit(cmd->cmd);
+		if (res == -1)
+		{
+			if (minishell->exit_status == 0)
+				res = 1;
+			else
+				res = minishell->exit_status;
+		}
+		else if (res == -3)
+		{
+			clear_all(minishell);
+			exit(minishell->exit_status);
+		}
+		else
+		{
+			clear_all(minishell);
+			exit(res);
+		}
 	}
 	dup2(minishell->stdout, 1);
 	if (res == -2)
@@ -98,7 +115,16 @@ void	do_builtin_in_exec(t_cmd *cmd, t_mini *minishell)
 	else if (ft_strncmp(cmd->cmd[0], "env", 4) == 0)
 		res = my_env(minishell->env);
 	else if (ft_strncmp(cmd->cmd[0], "exit", 5) == 0)
-		res = my_exit(cmd->cmd, minishell->env);
+	{
+		res = my_exit(cmd->cmd);
+		if (res == -1)
+			res = 1;
+		else if (res == -3)
+		{
+			clear_all(minishell);
+			exit(minishell->exit_status);
+		}
+	}
 	if (res == -2)
 		clear_all_malloc_failed(minishell);
 	clear_all(minishell);
