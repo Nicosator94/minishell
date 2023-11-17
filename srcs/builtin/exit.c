@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 08:02:36 by agomes-g          #+#    #+#             */
-/*   Updated: 2023/11/15 09:53:12 by agomes-g         ###   ########.fr       */
+/*   Updated: 2023/11/15 10:38:37 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,9 +101,8 @@ int	digits_spaces(char *s)
 	return (1);
 }
 
-unsigned int	my_exit(char **cmd, t_env *env)
+unsigned int	my_exit(char **cmd)
 {
-	clear_env(env);
 	if (!cmd[1])
 		return (-3);
 	if (!digits_spaces(cmd[1]) || !ft_overflow(cmd[1]))
