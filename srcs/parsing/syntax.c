@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 11:22:03 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/25 10:44:57 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/17 09:57:11 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,18 @@ int	check_brackets_before_pipes(char *s)
 	i = 0;
 	while (s[i] != '\0')
 	{
+		if (s[i] == '\'')
+		{
+			i ++;
+			while (s[i] != '\'')
+				i ++;
+		}
+		if (s[i] == '\"')
+		{
+			i ++;
+			while (s[i] != '\"')
+				i ++;
+		}
 		if (s[i] == '<' || s[i] == '>')
 		{
 			i ++;

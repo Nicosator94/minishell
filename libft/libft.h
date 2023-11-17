@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 07:38:02 by niromano          #+#    #+#             */
-/*   Updated: 2023/06/28 13:25:21 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/17 08:11:46 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int		ft_tolower(int c);
 // Gnl
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 100
+#  define BUFFER_SIZE 1
 # endif
 
 char	*get_next_line(int fd, char *lim);

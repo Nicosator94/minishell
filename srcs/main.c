@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:19:42 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/17 07:04:22 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/17 10:03:33 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,20 @@ int	prompt(t_mini *minishell)
 		check_signal(minishell);
 		if (isatty(0) == 1)
 			s = readline("minishell$ ");
+		else
+		{
+			char *line;
+			line = get_next_line(0, NULL);
+			s = ft_strtrim(line, "\n");
+			free(line);
+		}
 		check_signal(minishell);
 		if (s == NULL)
 		{
-			printf("exit\n");
+			if (isatty(0) == 1)
+				printf("exit\n");
 			clear_all(minishell);
-			exit(0);
+			exit(minishell->exit_status);
 		}
 		if (s[0] != '\0')
 			add_history(s);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 10:10:33 by agomes-g          #+#    #+#             */
-/*   Updated: 2023/11/14 09:49:11 by agomes-g         ###   ########.fr       */
+/*   Updated: 2023/11/17 10:29:11 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	check_parsing(char *cmd)
 		i ++;
 		while (cmd[i])
 		{
-			if (!ft_isprint(cmd[i]))
+			if (!ft_isprint(cmd[i]) && !(cmd[i] >= 9 && cmd[i] <= 13))
 				return (0);
 			i ++;
 		}
