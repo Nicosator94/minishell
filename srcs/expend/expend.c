@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 10:17:45 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/20 12:51:46 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/20 13:02:20 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,8 @@ void	expend_utils(char **cmd, t_mini *minishell, int count)
 				i = -1;
 				count = 0;
 			}
-			else if (cmd[j][i] == '$' && (cmd[j][i + 1] == '\'' || cmd[j][i + 1] == '\"'))
+			else if (cmd[j][i] == '$'
+				&& (cmd[j][i + 1] == '\'' || cmd[j][i + 1] == '\"'))
 			{
 				if (count % 2 == 0)
 				{

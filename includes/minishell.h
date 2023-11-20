@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/20 07:44:00 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/20 13:18:27 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,9 @@ void	add_shlvl(t_env *env);
 char	**list_to_matrix(t_mini *minishell);
 
 int		syntax_error_check(char *s);
+int		check_pipes(char *s);
+int		check_multi_pipes(char *s);
+int		check_brackets_before_pipes(char *s);
 int		check_quotes(char *s);
 int		check_brackets(char *s);
 int		check_multi_brackets(char *s);

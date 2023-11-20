@@ -6,11 +6,22 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 10:51:40 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/13 11:13:14 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/20 13:37:23 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+static int	print_file_error(char *file)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(file, 2);
+	if (access(file, F_OK) == 0)
+		ft_putstr_fd(": Permission denied\n", 2);
+	else
+		ft_putstr_fd(": No such file or directory\n", 2);
+	return (-1);
+}
 
 int	take_infile(t_cmd *cmd, int tmp_file)
 {
@@ -27,15 +38,7 @@ int	take_infile(t_cmd *cmd, int tmp_file)
 				close(infile);
 			infile = open(tmp->file, O_RDONLY);
 			if (infile == -1)
-			{
-				ft_putstr_fd("minishell: ", 2);
-				ft_putstr_fd(tmp->file, 2);
-				if (access(tmp->file, F_OK) == 0)
-					ft_putstr_fd(": Permission denied\n", 2);
-				else
-					ft_putstr_fd(": No such file or directory\n", 2);
-				return (-1);
-			}
+				return (print_file_error(tmp->file));
 		}
 		tmp = tmp->next;
 	}
@@ -51,15 +54,7 @@ int	init_outfile(int outfile, t_redi *tmp)
 	else if (tmp->status == 4)
 		outfile = open(tmp->file, O_WRONLY | O_APPEND | O_CREAT, 0644);
 	if (outfile == -1)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(tmp->file, 2);
-		if (access(tmp->file, F_OK) == 0)
-			ft_putstr_fd(": Permission denied\n", 2);
-		else
-			ft_putstr_fd(": No such file or directory\n", 2);
-		return (-1);
-	}
+		return (print_file_error(tmp->file));
 	return (outfile);
 }
 

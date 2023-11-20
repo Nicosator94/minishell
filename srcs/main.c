@@ -6,30 +6,58 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:19:42 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/20 07:43:40 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/20 13:14:50 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	prompt(t_mini *minishell)
+char	*take_line(t_mini *minishell)
 {
 	char	*s;
 	char	*line;
+
+	check_signal(minishell);
+	if (isatty(0) == 1)
+		s = readline("minishell$ ");
+	else
+	{
+		line = get_next_line(0, NULL);
+		s = ft_strtrim(line, "\n");
+		free(line);
+	}
+	check_signal(minishell);
+	return (s);
+}
+
+void	pre_exec(char *s, t_mini *minishell)
+{
+	if (syntax_error_check(s) == 0)
+	{
+		minishell->cmd = parsing(s, minishell);
+		treatment_cmd(minishell);
+		expend(minishell);
+		if (g_signal != 4)
+			exec(minishell);
+		clear_cmd(minishell->cmd);
+		minishell->cmd = NULL;
+	}
+	else
+	{
+		if (check_spaces(s) == 0)
+			minishell->exit_status = 2;
+		free(s);
+	}
+}
+
+int	prompt(t_mini *minishell)
+{
+	char	*s;
 	int		exit_value;
 
 	while (1)
 	{
-		check_signal(minishell);
-		if (isatty(0) == 1)
-			s = readline("minishell$ ");
-		else
-		{
-			line = get_next_line(0, NULL);
-			s = ft_strtrim(line, "\n");
-			free(line);
-		}
-		check_signal(minishell);
+		s = take_line(minishell);
 		if (s == NULL)
 		{
 			if (isatty(0) == 1)
@@ -40,22 +68,7 @@ int	prompt(t_mini *minishell)
 		}
 		if (s[0] != '\0')
 			add_history(s);
-		if (syntax_error_check(s) == 0)
-		{
-			minishell->cmd = parsing(s, minishell);
-			treatment_cmd(minishell);
-			expend(minishell);
-			if (g_signal != 4)
-				exec(minishell);
-			clear_cmd(minishell->cmd);
-			minishell->cmd = NULL;
-		}
-		else
-		{
-			if (check_spaces(s) == 0)
-				minishell->exit_status = 2;
-			free(s);
-		}
+		pre_exec(s, minishell);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 11:07:38 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/17 13:55:45 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/20 13:39:31 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,24 @@ int	directory_check(char *cmd)
 	if (buf.st_mode & __S_IFDIR)
 		return (0);
 	return (1);
+}
+
+static int	print_file_error(char *cmd, int trig)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd, 2);
+	if (trig == 1)
+	{
+		if (access(cmd, F_OK) == 0 && directory_check(cmd) == 0)
+		{
+			ft_putstr_fd(": Is a directory\n", 2);
+			return (126);
+		}
+		ft_putstr_fd(": No such file or directory\n", 2);
+	}
+	else
+		ft_putstr_fd(": command not found\n", 2);
+	return (127);
 }
 
 int	print_failed(char *cmd)
@@ -37,20 +55,7 @@ int	print_failed(char *cmd)
 			trig = 1;
 		i ++;
 	}
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(cmd, 2);
-	if (trig == 1)
-	{
-		if (access(cmd, F_OK) == 0 && directory_check(cmd) == 0)
-		{
-			ft_putstr_fd(": Is a directory\n", 2);
-			return (126);
-		}
-		ft_putstr_fd(": No such file or directory\n", 2);
-	}
-	else
-		ft_putstr_fd(": command not found\n", 2);
-	return (127);
+	return (print_file_error(cmd, trig));
 }
 
 void	exec_failed(t_mini *minishell, char *path, char **mat_env, char *cmd)

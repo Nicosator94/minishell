@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 11:11:38 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/17 11:28:04 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/20 13:32:35 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,33 @@ char	**get_list_of_path(t_mini *minishell)
 	return (list_of_path);
 }
 
+char	*test_all_path(char	**path_of_env, char *tmp, char *path, t_mini *mini)
+{
+	int	i;
+
+	i = 0;
+	while (path_of_env != NULL && path_of_env[i] != NULL)
+	{
+		path = ft_strjoin(path_of_env[i], tmp);
+		if (path == NULL)
+		{
+			clear_mat(path_of_env);
+			clear_all_malloc_failed(mini);
+		}
+		if (access(path, F_OK | X_OK) == 0)
+		{
+			clear_mat(path_of_env);
+			free(tmp);
+			return (path);
+		}
+		free(path);
+		i ++;
+	}
+	clear_mat(path_of_env);
+	free(tmp);
+	return (NULL);
+}
+
 char	*get_path(char *cmd, t_mini *minishell)
 {
 	char	*path;
@@ -43,6 +70,7 @@ char	*get_path(char *cmd, t_mini *minishell)
 	int		i;
 
 	i = 0;
+	path = NULL;
 	if (cmd == NULL)
 		return (NULL);
 	if (cmd[0] == '.' || cmd[0] == '/')
@@ -59,24 +87,6 @@ char	*get_path(char *cmd, t_mini *minishell)
 		clear_mat(path_of_env);
 		clear_all_malloc_failed(minishell);
 	}
-	while (path_of_env != NULL && path_of_env[i] != NULL)
-	{
-		path = ft_strjoin(path_of_env[i], tmp);
-		if (path == NULL)
-		{
-			clear_mat(path_of_env);
-			clear_all_malloc_failed(minishell);
-		}
-		if (access(path, F_OK | X_OK) == 0)
-		{
-			clear_mat(path_of_env);
-			free(tmp);
-			return (path);
-		}
-		free(path);
-		i ++;
-	}
-	clear_mat(path_of_env);
-	free(tmp);
-	return (NULL);
+	path = test_all_path(path_of_env, tmp, path, minishell);
+	return (path);
 }

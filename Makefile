@@ -5,6 +5,7 @@ HEADERS = minishell.h
 
 SOURCES = main.c \
 		clear.c \
+		clear_utils.c \
 		signal.c \
 		env/env.c \
 		env/env_utils.c \
@@ -12,6 +13,7 @@ SOURCES = main.c \
 		env/env_list_to_matrix.c \
 		parsing/syntax.c \
 		parsing/syntax_utils.c \
+		parsing/syntax_utils_2.c \
 		parsing/parsing.c \
 		parsing/parsing_utils.c \
 		expend/expend.c \
