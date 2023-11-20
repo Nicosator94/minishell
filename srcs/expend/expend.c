@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 10:17:45 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/24 11:28:17 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/20 12:51:46 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	clear_for_failed(t_env *env, t_cmd *cmd, char *s)
 	exit(1);
 }
 
-char	*replace_with_env(char *s, int i, t_mini *minishell, t_cmd *cmd)
+char	*replace_with_env(char *s, int i, t_mini *minishell)
 {
 	char	*new_cmd;
 	char	*tmp1;
@@ -57,60 +57,303 @@ char	*replace_with_env(char *s, int i, t_mini *minishell, t_cmd *cmd)
 
 	tmp1 = copy(s, i);
 	if (tmp1 == NULL)
-		clear_for_failed(minishell->env, cmd, NULL);
+		clear_all_malloc_failed(minishell);
 	i ++;
 	len = dollar_len(s, i);
 	tmp2 = copy(&s[i], len);
 	if (tmp2 == NULL)
-		clear_for_failed(minishell->env, cmd, tmp1);
+	{
+		free(tmp1);
+		clear_all_malloc_failed(minishell);
+	}
 	tmp2 = replace(tmp2, minishell->env, &minishell->exit_status);
 	if (tmp2 == NULL)
-		clear_for_failed(minishell->env, cmd, tmp1);
+	{
+		free(tmp1);
+		clear_all_malloc_failed(minishell);
+	}
 	new_cmd = replace_with_env_utils(&s[i + len], tmp1, tmp2);
 	if (new_cmd == NULL)
-		clear_for_failed(minishell->env, cmd, NULL);
+		clear_all_malloc_failed(minishell);
 	free(s);
 	return (new_cmd);
 }
 
-void	expend_utils(t_cmd *cmd, t_cmd *start_cmd, t_mini *minishell, int count)
+void	expend_utils(char **cmd, t_mini *minishell, int count)
 {
 	int	i;
+	int	j;
 
 	i = 0;
-	while (cmd->line[i] != '\0')
+	j = 0;
+	while (cmd[j] != NULL)
 	{
-		if (cmd->line[i] == '\"')
-			count += 1;
-		if (cmd->line[i] == '\'' && count % 2 == 0)
+		while (cmd[j][i] != '\0')
 		{
-			i ++;
-			while (cmd->line[i] != '\'')
+			if (cmd[j][i] == '\"')
+				count += 1;
+			if (cmd[j][i] == '\'' && count % 2 == 0)
+			{
 				i ++;
+				while (cmd[j][i] != '\'')
+					i ++;
+			}
+			else if (cmd[j][i] == '$'
+				&& ((cmd[j][i + 1] >= 'a' && cmd[j][i + 1] <= 'z')
+					|| (cmd[j][i + 1] >= 'A' && cmd[j][i + 1] <= 'Z')
+					|| cmd[j][i + 1] == '_' || cmd[j][i + 1] == '?'))
+			{
+				cmd[j] = replace_with_env(cmd[j], i, minishell);
+				i = -1;
+				count = 0;
+			}
+			else if (cmd[j][i] == '$' && (cmd[j][i + 1] == '\'' || cmd[j][i + 1] == '\"'))
+			{
+				if (count % 2 == 0)
+				{
+					cmd[j] = replace_with_env(cmd[j], i, minishell);
+					i = -1;
+					count = 0;
+				}
+			}
+			i ++;
 		}
-		else if (cmd->line[i] == '$'
-			&& ((cmd->line[i + 1] >= 'a' && cmd->line[i + 1] <= 'z')
-				|| (cmd->line[i + 1] >= 'A' && cmd->line[i + 1] <= 'Z')
-				|| cmd->line[i + 1] == '_' || cmd->line[i + 1] == '?'))
+		i = 0;
+		j ++;
+	}
+}
+
+char	*rm(char *s, int start, int end)
+{
+	int		i;
+	char	*new_s;
+
+	i = 0;
+	new_s = malloc(sizeof(char) * (ft_strlen(s) - 1));
+	if (new_s == NULL)
+		return (NULL);
+	while (i != start)
+	{
+		new_s[i] = s[i];
+		i ++;
+	}
+	while (i + 1 != end)
+	{
+		new_s[i] = s[i + 1];
+		i ++;
+	}
+	while (s[i + 2] != '\0')
+	{
+		new_s[i] = s[i + 2];
+		i ++;
+	}
+	new_s[i] = '\0';
+	free(s);
+	return (new_s);
+}
+
+char	*remove_quotes_utils(char *cmd, t_mini *minishell)
+{
+	int		i;
+	int		start;
+	char	c;
+
+	i = 0;
+	while (cmd[i] != '\0')
+	{
+		if (cmd[i] == '\'' || cmd[i] == '\"')
 		{
-			cmd->line = replace_with_env(cmd->line, i, minishell, start_cmd);
-			i = -1;
-			count = 0;
+			c = cmd[i];
+			start = i;
+			i ++;
+			while (cmd[i] != c)
+				i ++;
+			cmd = rm(cmd, start, i);
+			if (cmd == NULL)
+				clear_all_malloc_failed(minishell);
+			i -= 2;
 		}
+		i ++;
+	}
+	return (cmd);
+}
+
+void	remove_quotes(t_cmd *cmd, t_mini *minishell)
+{
+	int		i;
+
+	i = 0;
+	while (cmd->cmd[i] != NULL)
+	{
+		cmd->cmd[i] = remove_quotes_utils(cmd->cmd[i], minishell);
 		i ++;
 	}
 }
 
-void	expend(t_cmd *cmd, t_mini *minishell)
+char	*join_all(char **cmd, t_mini *minishell)
+{
+	char	*s;
+	char	*tmp;
+	char	*space;
+	int		i;
+
+	i = 1;
+	s = ft_strdup(cmd[0]);
+	if (s == NULL)
+		clear_all_malloc_failed(minishell);
+	while (cmd[i] != NULL)
+	{
+		space = ft_strjoin(s, " ");
+		if (space == NULL)
+		{
+			free(s);
+			clear_all_malloc_failed(minishell);
+		}
+		tmp = ft_strjoin(space, cmd[i]);
+		free(s);
+		free(space);
+		if (tmp == NULL)
+			clear_all_malloc_failed(minishell);
+		s = ft_strdup(tmp);
+		free(tmp);
+		if (s == NULL)
+			clear_all_malloc_failed(minishell);
+		i ++;
+	}
+	return (s);
+}
+
+int	len_of_cmd(char *s)
+{
+	int	i;
+	int	len;
+
+	i = 0;
+	len = 0;
+	while (s[i] != '\0')
+	{
+		if (s[i] == '\'')
+		{
+			i ++;
+			while (s[i] != '\'')
+				i ++;
+			len += 1;
+			i ++;
+		}
+		else if (s[i] == '\"')
+		{
+			i ++;
+			while (s[i] != '\"')
+				i ++;
+			len += 1;
+			i ++;
+		}
+		else
+		{
+			len += 1;
+			while (s[i] != '\0' && s[i] != ' ' && !(s[i] >= 9 && s[i] <= 13))
+			{
+				if (s[i] == '\'')
+				{
+					i ++;
+					while (s[i] != '\'')
+						i ++;
+				}
+				else if (s[i] == '\"')
+				{
+					i ++;
+					while (s[i] != '\"')
+						i ++;
+				}
+				i ++;
+			}
+			while (s[i] != '\0' && (s[i] == ' ' || (s[i] >= 9 && s[i] <= 13)))
+				i ++;
+		}
+	}
+	return (len);
+}
+
+int	len_of_word(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] != '\0')
+	{
+		if (s[i] == '\'')
+		{
+			i ++;
+			while (s[i] != '\'')
+				i ++;
+		}
+		else if (s[i] == '\"')
+		{
+			i ++;
+			while (s[i] != '\"')
+				i ++;
+		}
+		else if (s[i] == '\0' || s[i] == ' ' || (s[i] >= 9 && s[i] <= 13))
+			return (i);
+		i ++;
+	}
+	return (i);
+}
+
+char	**split_all(char *s, t_mini *minishell)
+{
+	char	**new;
+	int		i;
+	int		j;
+	int		len;
+
+	i = 0;
+	j = 0;
+	new = malloc(sizeof(char *) * (len_of_cmd(s) + 1));
+	if (new == NULL)
+		clear_all_malloc_failed(minishell);
+	while (s[i] != '\0')
+	{
+		len = len_of_word(&s[i]);
+		new[j] = copy(&s[i], len);
+		if (new[j] == NULL)
+		{
+			clear_mat(new);
+			clear_all_malloc_failed(minishell);
+		}
+		i += len;
+		while (s[i] != '\0' && (s[i] == ' ' || (s[i] >= 9 && s[i] <= 13)))
+			i ++;
+		j ++;
+	}
+	new[j] = NULL;
+	return (new);
+}
+
+char	**join_split(char **cmd, t_mini *minishell)
+{
+	char	*tmp;
+
+	tmp = join_all(cmd, minishell);
+	clear_mat(cmd);
+	cmd = split_all(tmp, minishell);
+	free(tmp);
+	return (cmd);
+}
+
+void	expend(t_mini *minishell)
 {
 	int		count;
-	t_cmd	*start_cmd;
+	t_cmd	*tmp;
 
 	count = 0;
-	start_cmd = cmd;
-	while (cmd != NULL)
+	tmp = minishell->cmd;
+	while (tmp != NULL)
 	{
-		expend_utils(cmd, start_cmd, minishell, count);
-		cmd = cmd->next;
+		expend_utils(tmp->cmd, minishell, count);
+		if (tmp->cmd[0] != NULL)
+			tmp->cmd = join_split(tmp->cmd, minishell);
+		remove_quotes(tmp, minishell);
+		tmp = tmp->next;
 	}
 }

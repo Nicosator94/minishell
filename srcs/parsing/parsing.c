@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 10:05:41 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/24 11:26:25 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/20 07:36:23 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,5 @@ t_cmd	*parsing(char *s, t_mini *minishell)
 	t_cmd	*cmd;
 
 	cmd = init_cmd(s, minishell->env);
-	expend(cmd, minishell);
 	return (cmd);
 }

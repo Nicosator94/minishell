@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/17 13:58:47 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/20 07:44:00 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int		pass_quotes(char *s, int i);
 char	*init_new_cmd(char *s, int i, t_cmd *cmd);
 void	add_null_cmd(t_cmd *cmd);
 
-void	expend(t_cmd *cmd, t_mini *minishell);
+void	expend(t_mini *minishell);
 char	*replace_with_env_utils(char *s, char *tmp1, char *tmp2);
 char	*replace(char *name, t_env *env, int *exit_status);
 int		dollar_len(char *s, int i);
@@ -110,6 +110,7 @@ void	fill_mat_of_cmd(t_cmd *cmd, t_mini *minishell);
 void	set_redi(t_cmd *cmd, t_mini *minishell);
 
 void	create_here_doc(t_mini *minishell);
+char	*expend_in_heredoc(char *s, t_mini *minishell);
 void	clean_here_doc(t_cmd *cmd);
 
 void	all_clear_command(t_env *env, t_cmd *cmd);

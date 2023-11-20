@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:19:42 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/17 13:56:06 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/20 07:43:40 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int	prompt(t_mini *minishell)
 		{
 			minishell->cmd = parsing(s, minishell);
 			treatment_cmd(minishell);
+			expend(minishell);
 			if (g_signal != 4)
 				exec(minishell);
 			clear_cmd(minishell->cmd);
