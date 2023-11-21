@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 08:45:04 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/25 06:52:31 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/21 08:43:13 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,19 +56,19 @@ void	set_status(t_redi *file)
 	{
 		if (file->file[1] == '>')
 		{
-			file->status = APPEND;
+			file->status = 4;
 		}
 		else
-			file->status = OUTPUT;
+			file->status = 2;
 	}
 	else if (file->file[0] == '<')
 	{
 		if (file->file[1] == '<')
 		{
-			file->status = HEREDOC;
+			file->status = 3;
 		}
 		else
-			file->status = INPUT;
+			file->status = 1;
 	}
 }
 
