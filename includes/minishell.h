@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/21 15:16:00 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/22 07:49:18 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void	add_null_cmd(t_cmd *cmd);
 
 void	treatment_cmd(t_mini *minishell);
 int		get_file(t_cmd *cmd, int i, t_mini *minishell);
+char	*copy(char *s, int i);
 int		get_command(t_cmd *cmd, int i, t_mini *minishell);
 void	fill_mat_of_cmd(t_cmd *cmd, t_mini *minishell);
 void	set_redi(t_cmd *cmd, t_mini *minishell);
@@ -109,9 +110,9 @@ void	clean_here_doc(t_cmd *cmd);
 void	all_clear_command(t_env *env, t_cmd *cmd);
 
 void	expend(t_mini *minishell);
-char	*replace_with_env_utils(char *s, char *tmp1, char *tmp2);
-char	*replace(char *name, t_env *env, int *exit_status);
-int		dollar_len(char *s, int i);
+void	expend_utils(char **cmd, t_mini *minishell);
+char	*replace_with_env(char *s, int i, t_mini *minishell);
+char	**split_all(char *s, t_mini *minishell);
 void	remove_quotes(t_cmd *cmd, t_mini *minishell);
 
 void	exec(t_mini *minishell);

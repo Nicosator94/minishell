@@ -6,13 +6,13 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 10:07:07 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/12 10:48:48 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/22 05:07:51 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static char	*copy(char *s, int i, t_cmd *cmd)
+char	*copy_cmd(char *s, int i, t_cmd *cmd)
 {
 	int		j;
 	char	*new_s;
@@ -46,7 +46,7 @@ char	*init_new_cmd(char *s, int i, t_cmd *cmd)
 	t_cmd	*add_cmd;
 	char	*new_s;
 
-	new_s = copy(s, i, cmd);
+	new_s = copy_cmd(s, i, cmd);
 	if (new_s == NULL)
 		return (NULL);
 	add_cmd = malloc(sizeof(t_cmd));

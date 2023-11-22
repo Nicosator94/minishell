@@ -18,6 +18,8 @@ SOURCES = main.c \
 		parsing/parsing_utils.c \
 		expend/expend.c \
 		expend/expend_utils.c \
+		expend/replace_with_env.c \
+		expend/split_all.c \
 		expend/remove_quotes.c \
 		expend/treatment_cmd.c \
 		expend/treatment_cmd_utils.c \

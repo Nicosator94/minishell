@@ -6,11 +6,29 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 14:01:35 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/25 06:49:07 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/22 05:09:35 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+char	*copy(char *s, int i)
+{
+	char	*cpy;
+	int		j;
+
+	j = 0;
+	cpy = malloc(sizeof(char) * (i + 1));
+	if (cpy == NULL)
+		return (NULL);
+	while (j != i)
+	{
+		cpy[j] = s[j];
+		j ++;
+	}
+	cpy[j] = '\0';
+	return (cpy);
+}
 
 int	get_len_of_command(char *s)
 {
@@ -39,24 +57,6 @@ int	get_len_of_command(char *s)
 	return (i);
 }
 
-char	*copy_cmd(char *s, int len)
-{
-	int		i;
-	char	*cpy;
-
-	i = 0;
-	cpy = malloc(sizeof(char) * (len + 1));
-	if (cpy == NULL)
-		return (NULL);
-	while (i != len)
-	{
-		cpy[i] = s[i];
-		i ++;
-	}
-	cpy[i] = '\0';
-	return (cpy);
-}
-
 void	add_cmd(t_cmd *cmd, t_list *add)
 {
 	t_list	*tmp;
@@ -81,7 +81,7 @@ int	get_command(t_cmd *cmd, int i, t_mini *minishell)
 	add = malloc(sizeof(t_redi));
 	if (add == NULL)
 		clear_all_malloc_failed(minishell);
-	add->content = copy_cmd(&cmd->line[i], len);
+	add->content = copy(&cmd->line[i], len);
 	if (add->content == NULL)
 	{
 		free(add);
