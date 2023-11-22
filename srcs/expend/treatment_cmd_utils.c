@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 08:45:04 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/21 08:43:13 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/22 09:53:35 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,18 @@ void	set_status(t_redi *file)
 void	set_redi(t_cmd *cmd, t_mini *minishell)
 {
 	t_redi	*tmp;
+	char	*s;
 
 	tmp = cmd->file;
 	while (tmp != NULL)
 	{
 		set_status(tmp);
-		tmp->file = set_file(tmp);
+		s = set_file(tmp);
+		if (s[0] == '\'' || s[0] == '\"')
+			tmp->file = copy(&s[1], ft_strlen(s) - 2);
+		else
+			tmp->file = ft_strdup(s);
+		free(s);
 		if (tmp->file == NULL)
 			clear_all_malloc_failed(minishell);
 		tmp = tmp->next;
