@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 11:11:38 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/20 13:32:35 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/21 08:43:50 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,7 @@ char	*get_path(char *cmd, t_mini *minishell)
 	char	*path;
 	char	**path_of_env;
 	char	*tmp;
-	int		i;
 
-	i = 0;
 	path = NULL;
 	if (cmd == NULL)
 		return (NULL);

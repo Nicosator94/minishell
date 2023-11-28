@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 14:32:59 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/25 09:14:57 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/21 08:32:28 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	clear_list(t_list *list)
 }
 
 void	all_clear_command(t_env *env, t_cmd *cmd)
-{	
+{
 	if (env != NULL)
 		clear_env(env);
 	clean_here_doc(cmd);

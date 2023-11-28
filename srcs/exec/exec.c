@@ -6,83 +6,62 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 11:07:38 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/20 13:39:31 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/21 11:27:27 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	directory_check(char *cmd)
+void	prep_dup(int file[2], int tube[2])
 {
-	struct stat	buf;
-
-	stat(cmd, &buf);
-	if (buf.st_mode & __S_IFDIR)
-		return (0);
-	return (1);
-}
-
-static int	print_file_error(char *cmd, int trig)
-{
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(cmd, 2);
-	if (trig == 1)
+	if (file[0] == -1 || file[1] == -1)
 	{
-		if (access(cmd, F_OK) == 0 && directory_check(cmd) == 0)
-		{
-			ft_putstr_fd(": Is a directory\n", 2);
-			return (126);
-		}
-		ft_putstr_fd(": No such file or directory\n", 2);
+		if (file[0] > 0)
+			close(file[0]);
+		if (file[1] > 0)
+			close(file[1]);
+		close(tube[1]);
+		close(tube[0]);
+		exit(1);
+	}
+	close(tube[0]);
+	if (file[0] > 0)
+	{
+		dup2(file[0], 0);
+		close(file[0]);
+	}
+	if (file[1] > 0)
+	{
+		dup2(file[1], 1);
+		close(file[1]);
 	}
 	else
-		ft_putstr_fd(": command not found\n", 2);
-	return (127);
+		dup2(tube[1], 1);
+	close(tube[1]);
+	return ;
 }
 
-int	print_failed(char *cmd)
+void	do_exec(t_cmd *cmd, t_mini *minishell)
 {
-	int	i;
-	int	trig;
+	char	**mat_env;
+	char	*path;
 
-	i = 0;
-	trig = 0;
-	if (cmd == NULL)
-		return (0);
-	while (cmd[i] != '\0')
+	if (check_builtin(cmd->cmd[0]) == 0)
+		do_builtin_in_exec(cmd, minishell);
+	mat_env = list_to_matrix(minishell);
+	path = get_path(cmd->cmd[0], minishell);
+	if (path != NULL && mat_env != NULL)
 	{
-		if (cmd[i] == '/')
-			trig = 1;
-		i ++;
+		close(minishell->stdin);
+		close(minishell->stdout);
+		execve(path, cmd->cmd, mat_env);
 	}
-	return (print_file_error(cmd, trig));
-}
-
-void	exec_failed(t_mini *minishell, char *path, char **mat_env, char *cmd)
-{
-	int	i;
-	int	return_value;
-
-	i = 0;
-	if (path != NULL)
-		free(path);
-	while (mat_env[i] != NULL && mat_env != NULL)
-	{
-		free(mat_env[i]);
-		i ++;
-	}
-	if (mat_env != NULL)
-		free(mat_env);
-	return_value = print_failed(cmd);
-	clear_all(minishell);
-	exit(return_value);
+	exec_failed(minishell, path, mat_env, cmd->cmd[0]);
 }
 
 int	exec_cmd(t_cmd *cmd, t_mini *minishell, int tmp_file)
 {
 	int		file[2];
-	char	*path;
-	char	**mat_env;
 	int		tube[2];
 
 	pipe(tube);
@@ -94,41 +73,8 @@ int	exec_cmd(t_cmd *cmd, t_mini *minishell, int tmp_file)
 	cmd->pid = fork();
 	if (cmd->pid == 0)
 	{
-		if (file[0] == -1 || file[1] == -1)
-		{
-			if (file[0] > 0)
-				close(file[0]);
-			if (file[1] > 0)
-				close(file[1]);
-			close(tube[1]);
-			close(tube[0]);
-			exit(1);
-		}
-		close(tube[0]);
-		if (file[0] > 0)
-		{
-			dup2(file[0], 0);
-			close(file[0]);
-		}
-		if (file[1] > 0)
-		{
-			dup2(file[1], 1);
-			close(file[1]);
-		}
-		else
-			dup2(tube[1], 1);
-		close(tube[1]);
-		if (check_builtin(cmd->cmd[0]) == 0)
-			do_builtin_in_exec(cmd, minishell);
-		mat_env = list_to_matrix(minishell);
-		path = get_path(cmd->cmd[0], minishell);
-		if (path != NULL && mat_env != NULL)
-		{
-			close(minishell->stdin);
-			close(minishell->stdout);
-			execve(path, cmd->cmd, mat_env);
-		}
-		exec_failed(minishell, path, mat_env, cmd->cmd[0]);
+		prep_dup(file, tube);
+		do_exec(cmd, minishell);
 	}
 	if (file[0] > 0)
 		close(file[0]);

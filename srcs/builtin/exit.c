@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 08:02:36 by agomes-g          #+#    #+#             */
-/*   Updated: 2023/11/17 13:57:05 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/21 09:03:53 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,16 @@
 unsigned long long	ft_atoi_ulong(const char *nptr)
 {
 	int				i;
-	unsigned long	s;
 	unsigned long	conv;
 
 	i = 0;
 	conv = 0;
-	s = 1;
 	while ((nptr[i] >= 9 && nptr[i] <= 13) || nptr[i] == 32)
 		i ++;
 	if (nptr[i] != '-' && !(nptr[i] >= 48 && nptr[i] <= 57) && nptr[i] != '+')
 		return (0);
 	if (nptr[i] == '-' || nptr[i] == '+')
-	{
-		if (nptr[i] == '-')
-			s = -1;
 		i ++;
-	}
 	while (nptr[i] >= 48 && nptr[i] <= 57)
 	{
 		conv = (conv * 10) + (nptr[i] - '0');
@@ -92,7 +86,7 @@ int	digits_spaces(char *s)
 		{
 			sign ++;
 			i ++;
-		}	
+		}
 		if (!((s[i] >= '0' && s[i] <= '9') || (s[i] >= 9 && s[i] <= 13)
 				|| s[i] == ' ' || sign >= 2))
 			return (0);

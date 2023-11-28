@@ -18,13 +18,18 @@ SOURCES = main.c \
 		parsing/parsing_utils.c \
 		expend/expend.c \
 		expend/expend_utils.c \
+		expend/replace_with_env.c \
+		expend/split_all.c \
+		expend/remove_quotes.c \
 		expend/treatment_cmd.c \
 		expend/treatment_cmd_utils.c \
 		expend/get_file.c \
 		expend/get_command.c \
 		expend/create_here_doc.c \
 		parsing/all_clear_command.c \
+		exec/check_builtin.c \
 		exec/exec_builtin.c \
+		exec/exec_failed.c \
 		exec/exec.c \
 		exec/file.c \
 		exec/get_path.c \
