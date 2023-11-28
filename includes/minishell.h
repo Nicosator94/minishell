@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:20:25 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/22 07:49:18 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/28 10:27:20 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ void	fill_mat_of_cmd(t_cmd *cmd, t_mini *minishell);
 void	set_redi(t_cmd *cmd, t_mini *minishell);
 
 void	create_here_doc(t_mini *minishell);
-char	*expend_in_heredoc(char *s, t_mini *minishell);
 void	clean_here_doc(t_cmd *cmd);
 
 void	all_clear_command(t_env *env, t_cmd *cmd);
@@ -113,6 +112,7 @@ void	expend(t_mini *minishell);
 void	expend_utils(char **cmd, t_mini *minishell);
 char	*replace_with_env(char *s, int i, t_mini *minishell);
 char	**split_all(char *s, t_mini *minishell);
+int		check_after_dollar_files(char *file, int i, int count);
 void	remove_quotes(t_cmd *cmd, t_mini *minishell);
 
 void	exec(t_mini *minishell);

@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 05:19:03 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/22 08:15:21 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/28 09:39:20 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,19 @@ int	check_after_dollar(char **cmd, int j, int i, int count)
 		return (1);
 	else if (cmd[j][i] == '$' && count % 2 == 0
 		&& (cmd[j][i + 1] == '\'' || cmd[j][i + 1] == '\"'))
+		return (2);
+	return (0);
+}
+
+int	check_after_dollar_files(char *file, int i, int count)
+{
+	if (file[i] == '$'
+		&& ((file[i + 1] >= 'a' && file[i + 1] <= 'z')
+			|| (file[i + 1] >= 'A' && file[i + 1] <= 'Z')
+			|| file[i + 1] == '_' || file[i + 1] == '?'))
+		return (1);
+	else if (file[i] == '$' && count % 2 == 0
+		&& (file[i + 1] == '\'' || file[i + 1] == '\"'))
 		return (2);
 	return (0);
 }
