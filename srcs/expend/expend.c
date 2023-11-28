@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 10:17:45 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/22 07:49:12 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/28 09:43:06 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,42 @@ char	**join_split(char **cmd, t_mini *minishell)
 	return (cmd);
 }
 
+void	expend_files(t_redi *file, t_mini *minishell)
+{
+	t_redi	*tmp;
+	int		i;
+	int		count;
+	
+	tmp = file;
+	i = 0;
+	count = 0;
+	while (tmp != NULL)
+	{
+		if (tmp->status != 3)
+		{
+			while (tmp->file[i] != '\0')
+			{
+				if (tmp->file[i] == '\"')
+					count += 1;
+				if (tmp->file[i] == '\'' && count % 2 == 0)
+				{
+					i ++;
+					while (tmp->file[i] != '\'')
+						i ++;
+				}
+				if (check_after_dollar_files(tmp->file, i, count) > 0)
+				{
+					tmp->file = replace_with_env(tmp->file, i, minishell);
+					i = -1;
+					count = 0;
+				}
+				i ++;
+			}
+		}
+		tmp = tmp->next;
+	}
+}
+
 void	expend(t_mini *minishell)
 {
 	t_cmd	*tmp;
@@ -61,7 +97,9 @@ void	expend(t_mini *minishell)
 		expend_utils(tmp->cmd, minishell);
 		if (tmp->cmd[0] != NULL)
 			tmp->cmd = join_split(tmp->cmd, minishell);
+		expend_files(tmp->file, minishell);
 		remove_quotes(tmp, minishell);
 		tmp = tmp->next;
 	}
+	create_here_doc(minishell);
 }

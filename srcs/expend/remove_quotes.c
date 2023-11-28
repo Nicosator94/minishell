@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 15:11:11 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/21 15:11:40 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/28 08:48:34 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,18 @@ char	*remove_quotes_utils(char *cmd, t_mini *minishell)
 void	remove_quotes(t_cmd *cmd, t_mini *minishell)
 {
 	int		i;
+	t_redi	*tmp;
 
 	i = 0;
 	while (cmd->cmd[i] != NULL)
 	{
 		cmd->cmd[i] = remove_quotes_utils(cmd->cmd[i], minishell);
 		i ++;
+	}
+	tmp = cmd->file;
+	while (tmp != NULL)
+	{
+		tmp->file = remove_quotes_utils(tmp->file, minishell);
+		tmp = tmp->next;
 	}
 }

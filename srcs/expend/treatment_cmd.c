@@ -6,7 +6,7 @@
 /*   By: niromano <niromano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 09:51:12 by niromano          #+#    #+#             */
-/*   Updated: 2023/11/20 07:53:56 by niromano         ###   ########.fr       */
+/*   Updated: 2023/11/28 09:18:24 by niromano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,4 @@ void	treatment_cmd(t_mini *minishell)
 			set_redi(tmp, minishell);
 		tmp = tmp->next;
 	}
-	create_here_doc(minishell);
 }
