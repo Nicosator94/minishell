@@ -6,7 +6,7 @@
 /*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 09:00:36 by agomes-g          #+#    #+#             */
-/*   Updated: 2023/11/17 12:12:14 by agomes-g         ###   ########.fr       */
+/*   Updated: 2023/11/28 08:42:21 by agomes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	change_current(t_env **env)
 		return (-2);
 	new_current = new_element("PWD", current, "=ok");
 	if (!new_current)
-		return (free(current), -2);
+		return (-2);
 	new_current->name = ft_strdup("PWD");
 	if (!new_current->name)
 		return (free(current), free(new_current), -2);
@@ -70,7 +70,7 @@ int	change_path(char *old, t_env **env)
 	new_old = new_element("OLDPWD", old, "=ok");
 	if (!new_old)
 		return (-2);
-	new_old->name = ft_strdup("PWD");
+	new_old->name = ft_strdup("OLDPWD");
 	if (!new_old->name)
 		return (free(old), free(new_old), -2);
 	check = check_occurence(env, new_old);

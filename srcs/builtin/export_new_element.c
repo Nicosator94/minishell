@@ -6,7 +6,7 @@
 /*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 20:30:42 by agomes-g          #+#    #+#             */
-/*   Updated: 2023/10/24 09:17:49 by agomes-g         ###   ########.fr       */
+/*   Updated: 2023/11/28 08:42:00 by agomes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_env	*new_element(char *name, char *value, char *cmd)
 	}
 	liste = malloc(sizeof(t_env));
 	if (liste == NULL)
-		return (NULL);
+		return (free(name), free(value), NULL);
 	liste->name = name;
 	while (cmd[i] && cmd[i] != '=')
 		i ++;
